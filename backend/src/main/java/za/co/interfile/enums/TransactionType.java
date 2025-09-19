@@ -20,6 +20,7 @@ public enum TransactionType {
      * Refunds for failed transactions
      */
     REFUND("Refund"),
+    TRANSFER("Transfer"),
 
     /**
      * Manual adjustments by admin

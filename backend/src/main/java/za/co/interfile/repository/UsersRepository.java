@@ -23,6 +23,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     Optional<Users> findByIdNumber(String idNumber);
     Optional<Users> findByEmailAndStatus(String email, UsersStatus status);
     Optional<Users> findByUserIdAndStatus(Long userId, UsersStatus status);
+    Optional<Users> findByNationalId(String nationalId);
 
     @Query("SELECT u FROM Users u WHERE u.status = za.co.interfile.enums.UsersStatus.ACTIVE AND " +
             "(LOWER(u.fullName) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +

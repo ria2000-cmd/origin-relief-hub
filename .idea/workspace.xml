@@ -4,67 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="70b2db9c-433d-42e2-bd08-689132dfd35f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.gitattributes" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" afterPath="$PROJECT_DIR$/backend/mvnw" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/backend/mvnw.cmd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/relief-hub-backend" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/ReliefHubApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/ReliefHubApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/controller/UsersController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/controller/UsersController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/dtos/ApiResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/ApiResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/dtos/EmailVerificationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/EmailVerificationRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/dtos/EmailVerificationResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/EmailVerificationResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/dtos/LoginResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/LoginResponseDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/dtos/PasswordUpdateDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/PasswordUpdateDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/dtos/RegistrationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/RegistrationRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/dtos/RegistrationResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/RegistrationResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/dtos/UserLoginDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/UserLoginDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/dtos/UserProfileResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/UserProfileResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/dtos/UserRegistrationDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/UserRegistrationDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/dtos/UserResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/UserResponseDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/dtos/UserUpdateDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/UserUpdateDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/enums/AdminRole.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/enums/AdminRole.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/enums/AdminStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/enums/AdminStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/enums/GrantType.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/enums/GrantType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/enums/NotificationPriority.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/enums/NotificationPriority.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/enums/NotificationType.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/enums/NotificationType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/enums/PaymentMethod.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/enums/PaymentMethod.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/enums/SassaStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/enums/SassaStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/enums/TransactionStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/enums/TransactionStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/enums/TransactionType.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/enums/TransactionType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/enums/UsersStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/enums/UsersStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/enums/WithdrawalMethod.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/enums/WithdrawalMethod.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/enums/WithdrawalStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/enums/WithdrawalStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/exception/InvalidCredentialsException.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/exception/InvalidCredentialsException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/exception/ResourceNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/exception/ResourceNotFoundException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/exception/UserAlreadyExistsException.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/exception/UserAlreadyExistsException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/model/AdminUsers.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/model/AdminUsers.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/model/Notification.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/model/Notification.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/model/SassaAccounts.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/model/SassaAccounts.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/model/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/model/Transaction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/model/UserBalance.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/model/UserBalance.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/model/Users.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/model/Users.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/model/WithdrawalRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/model/WithdrawalRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/repository/NotificationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/NotificationRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/repository/SassaAccountsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/SassaAccountsRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/repository/TransactionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/TransactionRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/repository/UsersRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/UsersRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/security/JwtTokenProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/security/JwtTokenProvider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/security/config/PasswordConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/security/config/PasswordConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/security/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/security/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/service/GrantPaymentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/service/GrantPaymentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/co/interfile/service/UsersService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/service/UsersService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/za/co/interfile/ReliefHubApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/za/co/interfile/ReliefHubApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/style.css" beforeDir="false" />
+    <list default="true" id="70b2db9c-433d-42e2-bd08-689132dfd35f" name="Changes" comment="back-end package">
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/controller/PaymentHistoryController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/controller/WithdrawalController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/PaymentHistoryDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/PaymentHistoryFilterDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/PaymentHistoryResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/UserBalanceDetailsDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/WithdrawalRequestDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/WithdrawalResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/UserBalanceRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/service/PaymentExportService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/service/PaymentHistoryService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/service/WithdrawalService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/enums/TransactionType.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/enums/TransactionType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/TransactionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/TransactionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/UsersRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/UsersRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,10 +30,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Enum" />
-        <option value="Class" />
         <option value="Record" />
+        <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -101,6 +57,9 @@
   &quot;associatedIndex&quot;: 1
 }</component>
   <component name="ProjectId" id="32s9wFkZqw049y6aoElB7eCAGPl" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -164,12 +123,33 @@
       <workItem from="1758269627287" duration="1656000" />
       <workItem from="1758271413253" duration="13037000" />
       <workItem from="1758287771582" duration="250000" />
-      <workItem from="1758288206162" duration="337000" />
+      <workItem from="1758288206162" duration="3938000" />
     </task>
+    <task id="LOCAL-00001" summary="back-end package">
+      <option name="closed" value="true" />
+      <created>1758288661128</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1758288661128</updated>
+    </task>
+    <task id="LOCAL-00002" summary="back-end package">
+      <option name="closed" value="true" />
+      <created>1758290716986</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1758290716986</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="back-end package" />
+    <option name="LAST_COMMIT_MESSAGE" value="back-end package" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
