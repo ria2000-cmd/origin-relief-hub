@@ -1,0 +1,305 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+  color: #333;
+}
+
+/* Navbar */
+/* Navbar */
+.navbar {
+  background: #ddd;
+  padding: 0.5rem 1rem; /* Add internal padding for better spacing */ 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  border-radius: 12px;      /* Rounded corners for box effect */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10); /* Subtle shadow */
+  width: 90%;               /* Optional: control navbar width */
+  margin: 30px auto 0 auto; /* Center the navbar and add top margin */
+  gap: 1rem;
+
+  /* Performance optimization */
+  will-change: transform, box-shadow; /* Hint browser for smoother animations */
+
+   /* Accessibility */
+  min-height: 44px; /* Minimum touch target size for accessibility */
+}
+
+.nav-left-home {
+  /* Visual styling */
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.nav-left-services {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.nav-left-contact {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.nav-left-home:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.nav-left-services:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.nav-left-service {
+  background-color: #FFFF66;
+  background: #f5f5f5;
+}
+
+.nav-left-contact:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.nav-left ul {
+  list-style: none;
+  display: flex;
+  position: relative;
+  border-radius: 12px;
+  padding: 0.5rem 1rem;
+  overflow: hidden;
+  background-color: #FBAB60;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  gap: 1rem;
+  justify-content: space-between;
+  will-change: transform, box-shadow;
+  min-height: 44px;
+}
+
+.nav-left a {
+   display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  background: transparent;
+  
+  /* Accessibility */
+  position: relative;
+}
+
+/* Focus state for keyboard navigation */
+.nav-left a:focus {
+ outline: 2px solid #007bff;
+ outline-offset: 2px;
+}
+
+/* Active state */
+.nav-left a:active {
+ transform: translateY(0);
+ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 30px;
+  font-weight: bold;
+}
+
+/* Auth Links - Authentication navigation component */
+.auth-links {
+  /* Visual styling */
+  background-color: #FBAB60;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+  
+  /* Layout and spacing */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem; /* Consistent with navbar spacing */
+  padding: 0.5rem 1rem; /* Add internal padding for better spacing */
+  position: relative;
+  
+  /* Performance optimization */
+  will-change: transform, box-shadow; /* Hint browser for smoother animations */
+  
+  /* Accessibility */
+  min-height: 44px; /* Minimum touch target size for accessibility */
+}
+
+/* Individual auth link styling */
+.auth-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  background: transparent;
+  
+  /* Accessibility */
+  position: relative;
+}
+
+/* Hover state */
+.auth-link:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Focus state for keyboard navigation */
+.auth-link:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+/* Active state */
+.auth-link:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .auth-links {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem;
+  }
+  
+  .auth-link {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .auth-links {
+    border: 2px solid #000;
+  }
+  
+  .auth-link {
+    border: 1px solid #000;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .auth-link {
+    transition: none;
+  }
+}
+
+
+/* Cards */
+.cards {
+  display: flex;
+  justify-content: space-around;
+  margin: 40px;
+}
+
+.card {
+  background: #e0e0e0;
+  padding: 20px;
+  border-radius: 10px;
+  width: 25%;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Spacer */
+.spacer {
+  height: 40px;
+}
+
+/* How To */
+.how-to {
+  background: #ddd;
+  color: white;
+  padding: 40px;
+  text-align: center;
+}
+
+.how-to-grid {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 20px;
+}
+
+.how-item {
+  text-align: center;
+}
+
+.circle {
+  width: 100px;
+  height: 100px;
+  background: #666;
+  border-radius: 50%;
+  margin: 0 auto 10px;
+}
+
+.how-to button {
+  padding: 10px 20px;
+  border: none;
+  background: #fff;
+  color: #444;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* About */
+.about {
+  background: #ddd;
+  padding: 40px;
+  text-align: center;
+}
+
+.about button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: #444;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Footer */
+.footer {
+  background: #ddd;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.footer a {
+  text-decoration: none;
+  font-size: 20px;
+  color: #333;
+}
+
