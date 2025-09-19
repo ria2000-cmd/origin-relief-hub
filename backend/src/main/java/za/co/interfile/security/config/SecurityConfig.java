@@ -1,4 +1,4 @@
-package za.co.interfile.config;
+package za.co.interfile.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
