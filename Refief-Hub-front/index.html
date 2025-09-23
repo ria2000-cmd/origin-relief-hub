@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relief-Hub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+  <nav class="nav-left">
+    <nav class="nav-links">
+      <a href="#" class="nav-left-home">Home</a>
+      <a href="#" class="nav-left-services">Services</a>
+      <a href="#" class="nav-left-contact">Contact Us</a>
+    </nav>
+  </nav>
+
+  <div class="logo">
+    <img src="images/logotransp.png" alt="Relief-Hub Logo" />
+  </div>
+
+  <nav class="nav-links">
+    <a href="login.html" class="nav-links" role="button" aria-label="Login to your account">Login</a>
+    <a href="register.html" class="nav-links" role="button" aria-label="Create new account">Register</a>
+  </nav>
+</header>
+
+
+<main class="main-content">
+  <section class="hero-section">
+    <h1 class="hero-title">Relief Hub</h1>
+    <p class="hero-subtitle">Your comprehensive SASSA grant management solution with AI-powered assistance</p>
+  </section>
+
+
+  <!-- Main Content -->
+  <main>
+  <!-- Cards -->
+  <section class="info-cards">
+    <div class="info-card" onclick="window.location.href='dashboard.html'">
+      <h3 class="card-title">Dashboard</h3>
+      <p class="card-content">View your grant status, payment history, and account overview in one convenient location.</p>
+      <span class="card-status">Active</span>
+      <div class="notification-badge">3</div>
+    </div>
+            
+    <div class="info-card" onclick="navigateTo('payment')">
+      <h3 class="card-title">Payment</h3>
+      <p class="card-content">Make secure payments, schedule transfers, and manage your financial transactions.</p>
+      <span class="card-status" style="background: #FBAB60;">Available</span>
+    </div>
+            
+    <div class="info-card" onclick="navigateTo('transfer')">
+      <h3 class="card-title">Transfer</h3>
+      <p class="card-content">Send money to family members, pay bills, or transfer funds between accounts.</p>
+      <span class="card-status" style="background: #87CEEB;">Ready</span>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+    <section>
+      <div class="stats">
+        <div class="stat-beneficiaries">
+          <h3>18.4m+</h3>
+          <p>Beneficiaries</p>
+          </div>
+        <div class="stat-success">
+          <h3>97%</h3>
+          <p>Success rate</p>
+        </div>  
+        <div class="stat-serve">
+          <h3>350+</h3>
+          <p>Service Points</p>
+        </div>
+      </div>
+
+    <!-- Spacer -->
+    <div class="spacer"></div>
+
+    
+
+    </section>  
+
+    <!-- How To Section -->
+    <section class="how-to-section">
+      <h2 class="how-to-title">How To Get Started</h2>
+            
+      <div class="how-to-steps">
+        <div class="step">
+          <div class="step-circle">
+            📋
+          </div>
+            <button class="step-button" onclick="showStepDetails(1, this)">Register Account</button>
+        </div>
+
+        <div class="step">
+          <div class="step-circle">
+            💳
+          </div>
+            <button class="step-button" onclick="showStepDetails(2, this)">Link Your Grant</button>
+        </div>
+
+        <div class="step">
+          <div class="step-circle">
+            🤖
+          </div>
+            <button class="step-button" onclick="showStepDetails(3, this)">Get AI Support</button>
+          </div>
+      </div>
+    </section>
+
+    <!--2nd section Cards-->
+    <div class="container">
+    <!-- Card 1 -->
+    <div class="card-one">
+      <div class="icon">
+        👤
+      </div>
+      <h3>About SASSA Grants</h3>
+      <p>The South African Social Security Agency (SASSA) provides social grants to support vulnerable individuals and families who require government assistance.</p>
+      <p>These grants play a vital role in reducing poverty and providing basic services to those in need across South Africa.</p>
+      <ul>
+        <li>Social Relief of Distress (SRD) R350 grant</li>
+        <li>Child Support Grant (CSG)</li>
+        <li>Older Persons Grant</li>
+        <li>Disability Grant</li>
+      </ul>
+    </div>
+
+     <!-- Card 2 -->
+    <div class="card-two">
+      <div class="icon">
+        🧰
+      </div>
+      <h3>Relief Hub's Role</h3>
+      <p>Relief Hub simplifies the application process for SASSA grants through our advanced digital platform and nationwide support network.</p>
+      <p>We help eligible beneficiaries navigate the grant system efficiently while ensuring compliance with government requirements.</p>
+      <ul>
+        <li>Online application assistance</li>
+        <li>Document verification support</li>
+        <li>Application status tracking</li>
+        <li>Secure document uploading</li>
+        <li>Payment assistance programs</li>
+      </ul>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="card-three">
+      <div class="icon">
+        ⏳
+      </div>
+      <h3>Application Timeline</h3>
+      <p>Understanding the grant application process is key to a successful submission. Our streamlined approach ensures efficiency at every step.</p>
+      <p>From initial eligibility check to final payment, we guide applicants through each stage of the process.</p>
+      <ul>
+        <li>Applications processed within 10 working days</li>
+        <li>Automatic ID verification system</li>
+        <li>Mobile payment options available</li>
+        <li>Status updates via SMS and email</li>
+        <li>Appeal process assistance</li>
+      </ul>
+    </div>
+  </div>
+
+    <!-- About Section -->
+    <section class="about-section">
+    <h2 class="about-title">About Relief Hub</h2>
+    <p class="about-content">
+      Relief Hub is your comprehensive digital solution for managing SASSA grants with ease and confidence. 
+      Our AI-powered platform helps you track payments, manage transfers, and get instant support for all 
+      your grant-related needs. Built with security and accessibility in mind, we're here to simplify 
+      your financial management experience.
+    </p>
+    <button class="learn-more-btn" onclick="window.location.href='learnmore.html'">Learn More</button>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <a href="#">f</a>
+    <a href="#">t</a>
+    <a href="#">i</a>
+  </footer>
+
+<script>
+ // Navigation functions
+  function navigateTo(page) {
+ // Add loading animation
+   event.target.classList.add('loading');
+            
+   setTimeout(() => {
+   alert(`Navigating to ${page} page...`);
+   event.target.classList.remove('loading');
+   }, 1000);
+   }
+
+   function showStepDetails(step, element) {
+    const steps = {
+    1: "Create your secure Relief Hub account with your SASSA details and identity verification.",
+    2: "Safely connect your existing SASSA grant to your Relief Hub account for seamless management.",
+    3: "Chat with our AI assistant for instant help with payments, transfers, and grant information."
+    };
+
+  // Add animation
+   element.style.transform = 'scale(0.95)';
+   setTimeout(() => {
+   element.style.transform = 'scale(1)';
+   alert(steps[step]);
+   }, 150);
+  }
+
+   function learnMore() {
+  // Add shimmer effect
+   event.target.style.background = 'linear-gradient(135deg, #77DD77, #FBAB60)';
+    setTimeout(() => {
+    event.target.style.background = 'linear-gradient(135deg, #4B5563, #374151)';
+    alert('Learn more about Relief Hub features and services...');
+    }, 300);
+    }
+
+  // Smooth scroll animation on load
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.info-card').forEach((card, index) => {
+        setTimeout(() => {
+        card.style.animation = 'fadeInUp 0.6s ease-out forwards';
+        }, index * 200);
+        });
+        });
+
+  // Add intersection observer for scroll animations
+    const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+            }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.about-section, .how-to-section').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+
+
+
+</body>
+</html>

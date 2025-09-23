@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Relief Hub Dashboard</title>
+   <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="dashboard-sidebar">
+    <h2>Relief Hub</h2>
+    <div class="dashboard-logo">
+      <img src="images/logotransp.png" alt="Relief-Hub Logo" />
+    </div>
+    <button class="nav-link active" data-tab="home">Home</button>
+    <button class="nav-link" data-tab="manage-profile">Manage Profile</button>
+    <button class="nav-link" data-tab="sassa-account">SASSA Account</button>
+    <button class="nav-link" data-tab="payments">Payments</button>
+    <button class="nav-link" data-tab="quick-links">Quick Links</button>
+  </div>
+
+  <!-- Main Content -->
+  <div class="dashboard-main">
+
+    <!-- Home Tab -->
+    <div id="home" class="tab-content active">
+      <h1 class="dashboard-welcome">Welcome back, User!</h1>
+
+      <div class="dashboard-progress-section">
+        <h3>Profile Completion</h3>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 75%;"></div>
+        </div>
+        <p>75% Complete</p>
+      </div>
+
+      <div class="dashboard-cards">
+        <div class="dashboard-card">
+          <h3>Next Payment</h3>
+          <p>Your next payment is scheduled for <strong>25 September 2025</strong>.</p>
+        </div>
+        <div class="dashboard-card">
+          <h3>Recent Activity</h3>
+          <p>Last withdrawal: R350 on 15 September 2025 via C-Number.</p>
+        </div>
+        <div class="dashboard-card">
+          <h3>Action Required</h3>
+          <p>Please verify your email address to complete your profile.</p>
+          <button class="dashboard-btn">Verify Now</button>
+        </div>
+        <div class="dashboard-card">
+          <h3>Support</h3>
+          <p>Need help? Contact our AI chatbot or call center.</p>
+          <button class="dashboard-btn" style="background: #77DD77; color: white;">Chat with AI</button>
+          <button class="dashboard-btn" style="background: #87CEEB; color: white; margin-left: 10px;">Call Center</button>
+        </div>
+      </div>
+
+      <div class="dashboard-reminders">
+        <h3>Reminders</h3>
+        <ul>
+          <li>• Update your contact information for better service.</li>
+          <li>• Check your payment schedule regularly.</li>
+          <li>• Enable SMS notifications for important updates.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Manage Profile Tab -->
+    <div id="manage-profile" class="tab-content">
+      <h2 class="dashboard-section-title">Manage Profile</h2>
+
+      <div class="dashboard-card">
+        <h3>Change Password</h3>
+        <div class="dashboard-form-group">
+          <label>Current Password</label>
+          <input type="password" placeholder="Enter current password">
+        </div>
+        <div class="dashboard-form-group">
+          <label>New Password</label>
+          <input type="password" placeholder="Enter new password">
+        </div>
+        <div class="dashboard-form-group">
+          <label>Confirm New Password</label>
+          <input type="password" placeholder="Confirm new password">
+        </div>
+        <button class="dashboard-btn">Update Password</button>
+      </div>
+
+      <div class="dashboard-card">
+        <h3>Personal Information</h3>
+        <div class="dashboard-form-group">
+          <label>Full Name</label>
+          <input type="text" value="John Doe">
+        </div>
+        <div class="dashboard-form-group">
+          <label>ID Number</label>
+          <input type="text" value="9001015001087" readonly>
+        </div>
+        <div class="dashboard-form-group">
+          <label>Phone Number</label>
+          <input type="tel" value="+27 82 123 4567">
+        </div>
+        <div class="dashboard-form-group">
+          <label>Email Address</label>
+          <input type="email" value="john.doe@example.com">
+        </div>
+        <button class="dashboard-btn">Save Changes</button>
+      </div>
+
+      <div class="dashboard-card">
+        <h3>Communication Preferences</h3>
+        <div class="dashboard-form-group">
+          <label>
+            <input type="checkbox" checked> Receive SMS notifications
+          </label>
+        </div>
+        <div class="dashboard-form-group">
+          <label>
+            <input type="checkbox" checked> Receive email updates
+          </label>
+        </div>
+        <div class="dashboard-form-group">
+          <label>
+            <input type="checkbox"> Receive WhatsApp messages
+          </label>
+        </div>
+        <button class="dashboard-btn">Update Preferences</button>
+      </div>
+    </div>
+
+    <!-- SASSA Account Tab -->
+    <div id="sassa-account" class="tab-content">
+      <h2 class="dashboard-section-title">SASSA Account</h2>
+
+      <div class="dashboard-card">
+        <h3>Link SASSA Account</h3>
+        <div class="dashboard-form-group">
+          <label>SASSA Reference Number</label>
+          <input type="text" placeholder="Enter SASSA reference number">
+        </div>
+        <button class="dashboard-btn">Add Account</button>
+        <button class="dashboard-btn" style="background: #dc3545; color: white; margin-left: 10px;">Delete Account</button>
+      </div>
+
+      <div class="dashboard-card">
+        <h3>Statement History</h3>
+        <p>Download your payment history as PDF.</p>
+        <a href="#" class="dashboard-btn" style="background: #77DD77; color: white; text-decoration: none; display: inline-block;">📥 Download Statement (PDF)</a>
+      </div>
+
+      <div class="dashboard-card">
+        <p>⏳ <strong>Next Payment Date:</strong> 25 September 2025</p>
+      </div>
+    </div>
+
+    <!-- Payments Tab -->
+    <div id="payments" class="tab-content">
+      <h2 class="dashboard-section-title">Payments</h2>
+
+      <div class="dashboard-card">
+        <h3>Withdraw Funds</h3>
+        <div class="dashboard-form-group">
+          <label>Withdrawal Method</label>
+          <select id="withdraw-method">
+            <option value="">-- Select Method --</option>
+            <option value="c-number">C-Number (CashSend)</option>
+            <option value="m-number">M-Number (Mobile Money)</option>
+          </select>
+        </div>
+
+        <div id="c-number-fields" class="payment-method" style="display:none;">
+          <div class="dashboard-form-group">
+            <label>C-Number</label>
+            <input type="text" placeholder="Enter C-Number">
+          </div>
+          <div class="dashboard-form-group">
+            <label>Amount (ZAR)</label>
+            <input type="number" placeholder="Enter amount">
+          </div>
+          <button class="dashboard-btn">Withdraw via C-Number</button>
+        </div>
+
+        <div id="m-number-fields" class="payment-method" style="display:none;">
+          <div class="dashboard-form-group">
+            <label>M-Number (Phone)</label>
+            <input type="tel" placeholder="Enter mobile number">
+          </div>
+          <div class="dashboard-form-group">
+            <label>Amount (ZAR)</label>
+            <input type="number" placeholder="Enter amount">
+          </div>
+          <button class="dashboard-btn">Withdraw via M-Number</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Links Tab -->
+    <div id="quick-links" class="tab-content">
+      <h2 class="dashboard-section-title">Quick Links</h2>
+      <div class="quick-links-grid">
+        <div class="quick-link-btn" onclick="switchTab('manage-profile')" style="background: #FBAB60; color: #333;">✏️ Update Personal Info</div>
+        <div class="quick-link-btn" onclick="switchTab('sassa-account')" style="background: #87CEEB; color: white;">➕ View/Add Account</div>
+        <div class="quick-link-btn" onclick="switchTab('sassa-account')" style="background: #77DD77; color: white;">⚙️ Manage Account</div>
+        <div class="quick-link-btn" onclick="switchTab('payments')" style="background: #FFFF66; color: #333;">💸 Withdraw</div>
+        <div class="quick-link-btn" onclick="switchTab('manage-profile')" style="background: #4B5563; color: white;">📩 Select Communication</div>
+        <div class="quick-link-btn" onclick="alert('Chat with AI Bot')" style="background: linear-gradient(135deg, #FBAB60, #87CEEB); color: white;">💬 Chat Bot</div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function switchTab(tabId) {
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+
+      // Show selected tab
+      document.getElementById(tabId).classList.add('active');
+
+      // Update active nav link
+      document.querySelectorAll('.nav-link').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+    }
+
+    // Add event listeners to nav buttons
+    document.querySelectorAll('.nav-link').forEach(button => {
+      button.addEventListener('click', () => {
+        const tabId = button.getAttribute('data-tab');
+        switchTab(tabId);
+      });
+    });
+
+    // Handle withdrawal method selection
+    document.getElementById('withdraw-method').addEventListener('change', function() {
+      document.getElementById('c-number-fields').style.display = 'none';
+      document.getElementById('m-number-fields').style.display = 'none';
+
+      if (this.value === 'c-number') {
+        document.getElementById('c-number-fields').style.display = 'flex';
+      } else if (this.value === 'm-number') {
+        document.getElementById('m-number-fields').style.display = 'flex';
+      }
+    });
+  </script>
+
+</body>
+</html>

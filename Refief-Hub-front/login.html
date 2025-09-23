@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Relief Hub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<header class="navbar">
+<nav class="nav-left">
+  <nav class="nav-links">
+    <a href="index.html" class="nav-left-home">Home</a>
+    <a href="#" class="nav-left-services">Services</a>
+    <a href="#" class="nav-left-contact">Contact Us</a>
+  </nav>
+</nav>
+
+<div class="logo">
+  <img src="images/logotransp.png" alt="Relief-Hub Logo" />
+</div>
+
+<nav class="nav-links">
+  <a href="login.html" class="nav-links" role="button" aria-label="Login to your account">Login</a>
+  <a href="register.html" class="nav-links" role="button" aria-label="Create new account">Register</a>
+</nav>
+</header>
+
+<main class="main-content">
+  <section class="hero-section">
+    <h1 class="hero-title">Login to Relief Hub</h1>
+    <p class="hero-subtitle">Access your account securely and manage your SASSA grants with ease</p>
+  </section>
+
+  <div class="login-container">
+      <h2>Login to Your Account</h2>
+      <form id="loginForm" autocomplete="off">
+          <div class="form-group">
+              <label for="loginid">Email or ID</label>
+              <input type="text" id="loginid" name="loginid" required>
+          </div>
+          <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" name="password" required>
+          </div>
+          <button type="submit">Login</button>
+      </form>
+      <p><a href="#reset-section" id="forgot-link">Forgot Password?</a></p>
+      <div id="reset-section" style="display:none;">
+        <h3>Reset Your Password</h3>
+        <p>Choose how you want to reset your password:</p>
+        <label>
+        <input type="radio" name="reset-method" value="email" checked>
+            Email
+        </label>
+        <label>
+        <input type="radio" name="reset-method" value="sms">
+            SMS
+        </label>
+  <br><br>
+  <button type="button">Send Reset Link</button>
+</div>
+</div>
+
+<!-- Spacer -->
+<div class="spacer"></div>
+
+<!-- How To Section -->
+<section class="how-to-section">
+<h2 class="how-to-title">How To Get Started</h2>
+
+<div class="how-to-steps">
+  <div class="step">
+    <div class="step-circle">
+      📋
+    </div>
+    <button class="step-button" onclick="showStepDetails(1, this)">Register Account</button>
+  </div>
+
+  <div class="step">
+    <div class="step-circle">
+      💳
+    </div>
+    <button class="step-button" onclick="showStepDetails(2, this)">Link Your Grant</button>
+  </div>
+
+  <div class="step">
+    <div class="step-circle">
+      🤖
+    </div>
+    <button class="step-button" onclick="showStepDetails(3, this)">Get AI Support</button>
+  </div>
+</div>
+</section>
+
+<!-- About Section -->
+<section class="about-section">
+<h2 class="about-title">About Relief Hub</h2>
+<p class="about-content">
+  Relief Hub is your comprehensive digital solution for managing SASSA grants with ease and confidence.
+  Our AI-powered platform helps you track payments, manage transfers, and get instant support for all
+  your grant-related needs. Built with security and accessibility in mind, we're here to simplify
+  your financial management experience.
+</p>
+<button class="learn-more-btn" onclick="learnMore()">Learn More</button>
+</section>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <a href="#">f</a>
+  <a href="#">t</a>
+  <a href="#">i</a>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const forgotLink = document.getElementById('forgot-link');
+  const resetSection = document.getElementById('reset-section');
+
+  forgotLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    resetSection.style.display = resetSection.style.display === 'none' ? 'block' : 'none';
+  });
+});
+
+// Navigation functions
+function navigateTo(page) {
+  // Add loading animation
+  event.target.classList.add('loading');
+
+  setTimeout(() => {
+    alert(`Navigating to ${page} page...`);
+    event.target.classList.remove('loading');
+  }, 1000);
+}
+
+function showStepDetails(step, element) {
+  const steps = {
+    1: "Create your secure Relief Hub account with your SASSA details and identity verification.",
+    2: "Safely connect your existing SASSA grant to your Relief Hub account for seamless management.",
+    3: "Chat with our AI assistant for instant help with payments, transfers, and grant information."
+  };
+
+  // Add animation
+  element.style.transform = 'scale(0.95)';
+  setTimeout(() => {
+    element.style.transform = 'scale(1)';
+    alert(steps[step]);
+  }, 150);
+}
+
+function learnMore() {
+  // Add shimmer effect
+  event.target.style.background = 'linear-gradient(135deg, #77DD77, #FBAB60)';
+  setTimeout(() => {
+    event.target.style.background = 'linear-gradient(135deg, #4B5563, #374151)';
+    alert('Learn more about Relief Hub features and services...');
+  }, 300);
+}
+
+// Smooth scroll animation on load
+window.addEventListener('load', () => {
+  document.querySelectorAll('.info-card').forEach((card, index) => {
+    setTimeout(() => {
+      card.style.animation = 'fadeInUp 0.6s ease-out forwards';
+    }, index * 200);
+  });
+});
+
+// Add intersection observer for scroll animations
+const observerOptions = {
+  threshold: 0.1,
+  rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+    }
+  });
+}, observerOptions);
+
+document.querySelectorAll('.about-section, .how-to-section').forEach(el => {
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
