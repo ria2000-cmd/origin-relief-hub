@@ -1,13 +1,16 @@
 package za.co.interfile.service;
 
+import jakarta.mail.internet.MimeMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import za.co.interfile.dtos.*;
+import za.co.interfile.exception.*;
+import za.co.interfile.model.PasswordResetToken;
 import za.co.interfile.model.Users;
 import za.co.interfile.enums.UsersStatus;
+import za.co.interfile.repository.PasswordResetTokenRepository;
 import za.co.interfile.repository.UsersRepository;
 import za.co.interfile.security.JwtTokenProvider;
-import za.co.interfile.exception.ResourceNotFoundException;
-import za.co.interfile.exception.UserAlreadyExistsException;
-import za.co.interfile.exception.InvalidCredentialsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -20,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +33,10 @@ public class UsersService {
     private final UsersRepository usersRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+
+    private PasswordResetTokenRepository passwordResetTokenRepository;
+    private JavaMailSender mailSender;
+
 
     @Transactional
     public UserResponseDto registerUser(UserRegistrationDto registrationDto) {
@@ -79,11 +87,9 @@ public class UsersService {
             throw new InvalidCredentialsException("Invalid email or password");
         }
 
-        // Update last login time
         user.updateLastLogin();
         usersRepository.save(user);
 
-        // Generate JWT token
         String token = jwtTokenProvider.createToken(user.getUserId(), user.getEmail(), user.getUsername());
         long expirationTime = jwtTokenProvider.getExpirationTime();
 
@@ -94,6 +100,99 @@ public class UsersService {
 
         log.info("User logged in successfully: {}", user.getUserId());
         return response;
+    }
+
+    public void initiatePasswordReset(String email) {
+        Users user = usersRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
+
+        LocalDateTime oneHourAgo = LocalDateTime.now().minusHours(1);
+        long recentAttempts = passwordResetTokenRepository.countByUserAndCreatedAtAfter(user, oneHourAgo);
+
+        if (recentAttempts >= 3) {
+            throw new RuntimeException("Too many password reset attempts. Please try again later.");
+        }
+
+        passwordResetTokenRepository.deleteByUser(user);
+
+        String token = UUID.randomUUID().toString();
+        LocalDateTime expiryDate = LocalDateTime.now().plusHours(1); // 1 hour expiry
+
+        PasswordResetToken resetToken = PasswordResetToken.builder()
+                .token(token)
+                .user(user)
+                .expiryDate(expiryDate)
+                .used(false)
+                .build();
+
+        passwordResetTokenRepository.save(resetToken);
+
+        sendPasswordResetEmail(user.getEmail(), token);
+
+        log.info("Password reset token generated for user: {}", email);
+    }
+
+    public void resetPassword(String token, String newPassword) {
+        PasswordResetToken resetToken = passwordResetTokenRepository.findByTokenAndUsedFalse(token)
+                .orElseThrow(() -> new InvalidTokenException("Invalid or expired reset token"));
+
+        if (resetToken.isExpired()) {
+            throw new InvalidTokenException("Reset token has expired");
+        }
+
+        if (resetToken.isUsed()) {
+            throw new InvalidTokenException("Reset token has already been used");
+        }
+
+        Users user = resetToken.getUser();
+        user.setPasswordHash(passwordEncoder.encode(newPassword));
+        usersRepository.save(user);
+
+        resetToken.setUsed(true);
+        passwordResetTokenRepository.save(resetToken);
+
+        log.info("Password successfully reset for user: {}", user.getEmail());
+    }
+
+    private void sendPasswordResetEmail(String toEmail, String token) {
+        try {
+            String resetUrl = "http://localhost:7005/reset-password?token=" + token;
+
+            String subject = "Password Reset Request";
+            String body = """
+            <html>
+            <body>
+                <h2>Password Reset Request</h2>
+                <p>You have requested to reset your password. Click the link below to reset it:</p>
+                <p><a href="%s" style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Reset Password</a></p>
+                <p>If the button doesn't work, copy and paste this link into your browser:</p>
+                <p>%s</p>
+                <p>This link will expire in 1 hour.</p>
+                <p>If you didn't request this password reset, please ignore this email.</p>
+            </body>
+            </html>
+            """.formatted(resetUrl, resetUrl);
+
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            helper.setTo(toEmail);
+            helper.setSubject(subject);
+            helper.setText(body, true);
+            helper.setFrom("noreply@reliefhub.com");
+
+            mailSender.send(message);
+
+            log.info("Password reset email sent to: {}", toEmail);
+        } catch (Exception e) {
+            log.error("Failed to send password reset email to: {}", toEmail, e);
+            throw new RuntimeException("Failed to send reset email");
+        }
+    }
+
+    @Transactional
+    public void cleanupExpiredTokens() {
+        passwordResetTokenRepository.deleteExpiredTokens(LocalDateTime.now());
     }
 
     public UserResponseDto getUserById(Long userId) {

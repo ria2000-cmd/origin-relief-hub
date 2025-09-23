@@ -10,6 +10,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import za.co.interfile.dtos.*;
 import za.co.interfile.enums.UsersStatus;
+import za.co.interfile.exception.InvalidTokenException;
+import za.co.interfile.exception.UserNotFoundException;
 import za.co.interfile.service.UsersService;
 
 import java.util.HashMap;
@@ -20,10 +22,10 @@ import java.util.Map;
  * Handles user registration, authentication, and profile management
  */
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/relief-hub")
 @RequiredArgsConstructor
 @Slf4j
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:7005", maxAge = 3600)
 public class UsersController {
 
     private final UsersService userService;
@@ -85,6 +87,84 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
+
+    @PostMapping("/auth/forgot-password")
+    public ResponseEntity<ApiResponse<String>> forgotPassword(
+            @Valid @RequestBody ForgotPasswordDto forgotPasswordDto) {
+
+        log.info("Forgot password request received for email: {}", forgotPasswordDto.getEmail());
+
+        try {
+            userService.initiatePasswordReset(forgotPasswordDto.getEmail());
+
+            ApiResponse<String> response = ApiResponse.<String>builder()
+                    .success(true)
+                    .message("Password reset instructions have been sent to your email")
+                    .data("Reset email sent successfully")
+                    .build();
+
+            return ResponseEntity.ok(response);
+
+        } catch (UserNotFoundException e) {
+            log.warn("Password reset requested for non-existent email: {}", forgotPasswordDto.getEmail());
+
+            ApiResponse<String> response = ApiResponse.<String>builder()
+                    .success(true)
+                    .message("If this email exists, password reset instructions have been sent")
+                    .build();
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            log.error("Password reset failed for email: {}", forgotPasswordDto.getEmail(), e);
+
+            ApiResponse<String> response = ApiResponse.<String>builder()
+                    .success(false)
+                    .message("Password reset failed. Please try again later.")
+                    .build();
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @PostMapping("/auth/reset-password")
+    public ResponseEntity<ApiResponse<String>> resetPassword(
+            @Valid @RequestBody ResetPasswordDto resetPasswordDto) {
+
+        log.info("Password reset attempt with token");
+
+        try {
+            userService.resetPassword(resetPasswordDto.getToken(), resetPasswordDto.getNewPassword());
+
+            ApiResponse<String> response = ApiResponse.<String>builder()
+                    .success(true)
+                    .message("Password has been reset successfully")
+                    .build();
+
+            return ResponseEntity.ok(response);
+
+        } catch (InvalidTokenException e) {
+            log.warn("Invalid or expired reset token used");
+
+            ApiResponse<String> response = ApiResponse.<String>builder()
+                    .success(false)
+                    .message("Invalid or expired reset token")
+                    .build();
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+
+        } catch (Exception e) {
+            log.error("Password reset failed", e);
+
+            ApiResponse<String> response = ApiResponse.<String>builder()
+                    .success(false)
+                    .message("Password reset failed. Please try again.")
+                    .build();
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
 
     // ==================== USER PROFILE ENDPOINTS ====================
 

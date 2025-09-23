@@ -307,6 +307,7 @@ public class Transaction {
             case WITHDRAWAL -> "Withdrawal";
             case PAYMENT -> "Payment";
             case REFUND -> "Refund";
+            case TRANSFER -> "Transfer";
             case ADJUSTMENT -> "Adjustment";
         };
     }
@@ -343,15 +344,14 @@ public class Transaction {
      * Get CSS class for transaction type styling
      * @return CSS class name
      */
-    public String getTransactionTypeCssClass() {
-        return switch (this.transactionType) {
-            case DEPOSIT -> "transaction-credit";
-            case PAYMENT -> "transaction-credit";
-            case WITHDRAWAL -> "transaction-debit";
-            case REFUND -> "transaction-credit";
-            case ADJUSTMENT -> "transaction-neutral";
-        };
-    }
+//    public String getTransactionTypeCssClass() {
+//        return switch (this.transactionType) {
+//            case DEPOSIT, PAYMENT -> "transaction-credit";
+//            case WITHDRAWAL -> "transaction-debit";
+//            case REFUND -> "transaction-credit";
+//            case ADJUSTMENT -> "transaction-neutral";
+//        };
+//    }
 
     /**
      * Check if transaction is a credit (increases balance)
