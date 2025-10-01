@@ -12,13 +12,13 @@ import DashboardContent from './DashboardContent';
 import ManageProfile from '../manage-profile/ManageProfile';
 import SassaAccount from "../sassa-account/SassaAccount";
 import PaymentsAndTransfers from "../payments-and-transfers/PaymentsAndTransfers";
+import QuickLinks from "../quick-links/QuickLinks";
 
 const Dashboard = ({ themePreference, setThemePreference, user,onLogout }) => {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState('home');
     const drawerWidth = 260;
 
-    // Preferences state
     const [preferences, setPreferences] = useState({
         theme: themePreference,
         emailNotifications: true,
@@ -59,17 +59,13 @@ const Dashboard = ({ themePreference, setThemePreference, user,onLogout }) => {
     const handleSavePreferences = async () => {
         setLoading(true);
         try {
-            // Simulate API call
             await new Promise(resolve => setTimeout(resolve, 1000));
 
-            // Save to localStorage or API
             localStorage.setItem('userPreferences', JSON.stringify(preferences));
 
             console.log('Preferences saved:', preferences);
-            // You could show a success message here
         } catch (error) {
             console.error('Error saving preferences:', error);
-            // You could show an error message here
         } finally {
             setLoading(false);
         }
@@ -84,7 +80,7 @@ const Dashboard = ({ themePreference, setThemePreference, user,onLogout }) => {
     const renderCurrentPage = () => {
         switch (currentPage) {
             case 'home':
-                return <DashboardContent user={user} />;
+                return <DashboardContent user={user}  />;
             case 'manage-profile':
                 return (
                     <ManageProfile
@@ -100,16 +96,7 @@ const Dashboard = ({ themePreference, setThemePreference, user,onLogout }) => {
             case 'payments':
                 return <PaymentsAndTransfers user={user} />;
             case 'quick-links':
-                return (
-                    <Box sx={{ p: 3, mt: { xs: 8, md: 0 } }}>
-                        <Typography variant="h4" fontWeight="bold" sx={{ color: '#facc15' }}>
-                            Quick Links
-                        </Typography>
-                        <Typography variant="body1" color="text.secondary" sx={{ mt: 2 }}>
-                            Quick links coming soon...
-                        </Typography>
-                    </Box>
-                );
+                return <QuickLinks/>
             default:
                 return <DashboardContent user={user}/>;
         }
@@ -151,6 +138,7 @@ const Dashboard = ({ themePreference, setThemePreference, user,onLogout }) => {
                 }}
             >
                 <Sidebar
+                    logout={onLogout}
                     mobileOpen={mobileOpen}
                     onClose={handleDrawerToggle}
                     onNavigate={handleNavigation}

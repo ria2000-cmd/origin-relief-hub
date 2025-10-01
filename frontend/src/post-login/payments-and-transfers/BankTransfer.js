@@ -12,20 +12,27 @@ import {
     Alert,
     CircularProgress,
     InputAdornment,
-    Divider
+    Divider,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions
 } from '@mui/material';
 import {
     CreditCard,
     AlertCircle,
+    CheckCircle
 } from 'lucide-react';
 import SassaService from '../../service/sassa-service';
+import WithdrawService from '../../service/withdraw-service';
 
 const BankTransfer = () => {
     const [balance, setBalance] = useState(0);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState('');
     const [error, setError] = useState('');
-    const [sassaAccountId, setSassaAccountId] = useState(null);
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [withdrawalResult, setWithdrawalResult] = useState(null);
 
     const [formData, setFormData] = useState({
         amount: '',
@@ -55,32 +62,20 @@ const BankTransfer = () => {
 
     const fetchBalance = async () => {
         try {
-            const accountResponse = await SassaService.getActiveSassaAccount();
+            const result = await SassaService.getSassaBalance();
 
-            if (accountResponse.data && accountResponse.data?.sassaAccountId) {
-                const sassaId = accountResponse.data?.sassaAccountId;
-                setSassaAccountId(sassaId);
-
-                const balanceResponse = await SassaService.getBalanceBySassaId(sassaId);
-
-                if (balanceResponse.data.success) {
-                    setBalance(balanceResponse.data.data);
-                }
+            if (result.success) {
+                setBalance(result.balance);
             } else {
                 setBalance(0);
-                setError('No active SASSA account found. Please link your SASSA account first.');
+                setError(result.error);
             }
         } catch (err) {
             console.error('Error fetching balance:', err);
-            if (err.response?.status === 404) {
-                setError('No active SASSA account found. Please link your SASSA account first.');
-            } else {
-                setError('Failed to load balance');
-            }
+            setError('Failed to load balance');
             setBalance(0);
         }
     };
-
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -138,30 +133,31 @@ const BankTransfer = () => {
         setLoading(true);
 
         try {
-            const token = localStorage.getItem('token');
-            const response = await axios.post(
-                'http://localhost:8080/api/withdrawals/withdraw',
-                {
-                    amount: parseFloat(formData.amount),
-                    bankName: formData.bankName,
-                    accountNumber: formData.accountNumber,
-                    accountHolderName: formData.accountHolderName,
-                    accountType: formData.accountType,
-                    reference: formData.reference || null
-                },
-                {
-                    headers: { Authorization: `Bearer ${token}` }
-                }
-            );
+            const response = await WithdrawService.withdraw({
+                amount: parseFloat(formData.amount),
+                bankName: formData.bankName,
+                accountNumber: formData.accountNumber,
+                accountHolderName: formData.accountHolderName,
+                accountType: formData.accountType,
+                reference: formData.reference || null
+            });
 
             if (response.data.success) {
-                setSuccess(
-                    `Withdrawal successful! Transaction Reference: ${response.data.data.transactionReference}. ` +
-                    `Remaining balance: R${response.data.data.remainingBalance.toFixed(2)}`
-                );
+                const remainingBalance = response.data.remainingBalance || response.data.data?.remainingBalance || 0;
+                const transactionRef = response.data.transactionReference || response.data.data?.transactionReference || 'N/A';
+                const amount = parseFloat(formData.amount);
 
-                // Update balance
-                setBalance(response.data.data.remainingBalance);
+                setWithdrawalResult({
+                    transactionReference: transactionRef,
+                    amount: amount,
+                    remainingBalance: remainingBalance,
+                    bankName: formData.bankName,
+                    accountNumber: formData.accountNumber,
+                    accountHolderName: formData.accountHolderName
+                });
+
+                setShowSuccess(true);
+                setBalance(remainingBalance);
 
                 // Clear form
                 setFormData({
@@ -180,6 +176,11 @@ const BankTransfer = () => {
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleCloseSuccess = () => {
+        setShowSuccess(false);
+        setWithdrawalResult(null);
     };
 
     return (
@@ -202,7 +203,6 @@ const BankTransfer = () => {
                             R {balance.toFixed(2)}
                         </Typography>
                     </Box>
-                    {/*<DollarSign size={48} />*/}
                 </Box>
             </Paper>
 
@@ -210,11 +210,6 @@ const BankTransfer = () => {
             {error && (
                 <Alert severity="error" sx={{ mb: 3 }} onClose={() => setError('')}>
                     {error}
-                </Alert>
-            )}
-            {success && (
-                <Alert severity="success" sx={{ mb: 3 }} onClose={() => setSuccess('')}>
-                    {success}
                 </Alert>
             )}
 
@@ -360,6 +355,82 @@ const BankTransfer = () => {
                     </Box>
                 </Box>
             </Paper>
+
+            {/* Success Dialog */}
+            <Dialog
+                open={showSuccess}
+                onClose={handleCloseSuccess}
+                maxWidth="sm"
+                fullWidth
+            >
+                <DialogTitle sx={{ bgcolor: '#10b981', color: 'white', display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <CheckCircle size={24} />
+                    Withdrawal Successful!
+                </DialogTitle>
+                <DialogContent sx={{ mt: 2 }}>
+                    {withdrawalResult && (
+                        <Box>
+                            <Typography variant="body1" sx={{ mb: 3 }}>
+                                Your withdrawal has been processed successfully
+                            </Typography>
+
+                            <Paper sx={{ p: 2, bgcolor: '#f3f4f6', mb: 2 }}>
+                                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                                    Transaction Reference
+                                </Typography>
+                                <Typography variant="h6" fontWeight="bold" sx={{ fontFamily: 'monospace' }}>
+                                    {withdrawalResult.transactionReference}
+                                </Typography>
+                            </Paper>
+
+                            <Box sx={{ mb: 2 }}>
+                                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                                    <Typography variant="body2">Amount Withdrawn</Typography>
+                                    <Typography variant="body2" fontWeight="600">
+                                        R {withdrawalResult.amount.toFixed(2)}
+                                    </Typography>
+                                </Box>
+                                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                                    <Typography variant="body2">Bank</Typography>
+                                    <Typography variant="body2" fontWeight="600">
+                                        {withdrawalResult.bankName}
+                                    </Typography>
+                                </Box>
+                                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                                    <Typography variant="body2">Account Holder</Typography>
+                                    <Typography variant="body2" fontWeight="600">
+                                        {withdrawalResult.accountHolderName}
+                                    </Typography>
+                                </Box>
+                                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                                    <Typography variant="body2">Account Number</Typography>
+                                    <Typography variant="body2" fontWeight="600">
+                                        ****{withdrawalResult.accountNumber.slice(-4)}
+                                    </Typography>
+                                </Box>
+                                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                                    <Typography variant="body2">Remaining Balance</Typography>
+                                    <Typography variant="body2" fontWeight="600" color="primary">
+                                        R {withdrawalResult.remainingBalance.toFixed(2)}
+                                    </Typography>
+                                </Box>
+                            </Box>
+
+                            <Box sx={{ mt: 3, p: 2, bgcolor: '#dbeafe', borderRadius: 1 }}>
+                                <Typography variant="body2" sx={{ color: '#1e40af' }}>
+                                    <strong>Processing Time:</strong> Your withdrawal will be processed within 1-3 business days.
+                                    Please keep your transaction reference for your records.
+                                </Typography>
+                            </Box>
+                        </Box>
+                    )}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseSuccess} variant="contained" sx={{ bgcolor: '#1e3a8a' }}>
+                        Done
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };

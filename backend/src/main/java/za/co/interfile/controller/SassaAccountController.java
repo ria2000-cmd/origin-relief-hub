@@ -13,10 +13,13 @@ import za.co.interfile.dtos.LinkSassaAccountRequest;
 import za.co.interfile.dtos.LinkSassaAccountResponse;
 import za.co.interfile.exception.SassaAccountException;
 import za.co.interfile.model.SassaAccounts;
+import za.co.interfile.model.UserBalance;
 import za.co.interfile.model.Users;
+import za.co.interfile.repository.UserBalanceRepository;
 import za.co.interfile.service.SassaAccountService;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -26,6 +29,7 @@ import java.math.BigDecimal;
 public class SassaAccountController {
 
     private final SassaAccountService sassaAccountService;
+    private final UserBalanceRepository userBalanceRepository;
 
     @PostMapping("/sassa-accounts/link")
     public ResponseEntity<?> linkSassaAccount(
@@ -54,6 +58,25 @@ public class SassaAccountController {
                             .build());
         }
     }
+
+    @GetMapping("/user/balance")
+    public ResponseEntity<?> getBalance(@AuthenticationPrincipal Users user) {
+        try {
+            UserBalance balance = userBalanceRepository.findByUser(user)
+                    .orElseThrow(() -> new RuntimeException("Balance not found"));
+
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "balance", balance.getAvailableBalance(),
+                    "pendingBalance", balance.getPendingBalance(),
+                    "totalReceived", balance.getTotalReceived(),
+                    "totalWithdrawn", balance.getTotalWithdrawn()
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("success", false, "error", e.getMessage()));
+        }
+}
 
     @GetMapping("/sassa-accounts/active")
     public ResponseEntity<?> getActiveSassaAccount(@AuthenticationPrincipal Users currentUser) {

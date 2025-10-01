@@ -24,6 +24,8 @@ public interface SassaAccountsRepository extends JpaRepository<SassaAccounts, Lo
     Optional<SassaAccounts> findByUserAndStatus(Users user, SassaStatus status);
 
     Optional<SassaAccounts> findByIdNumber(String idNumber);
+    Optional<SassaAccounts> findByUser(Users user);
 
     Optional<SassaAccounts> findByAccountNumber(String accountNumber);
+
 }

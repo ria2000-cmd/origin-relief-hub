@@ -13,4 +13,5 @@ public interface CashSendRepository extends JpaRepository<CashSendTransaction, L
     Optional<CashSendTransaction> findByVoucherCode(String voucherCode);
 
     List<CashSendTransaction> findByUserUserIdOrderByCreatedAtDesc(Long userId);
+    boolean existsByVoucherCode(String voucherCode);
 }

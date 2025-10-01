@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import za.co.interfile.dtos.WithdrawalHistoryDto;
 import za.co.interfile.dtos.WithdrawalRequestDTO;
 import za.co.interfile.dtos.WithdrawalResponseDTO;
 import za.co.interfile.enums.WithdrawalMethod;
@@ -23,8 +24,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -173,6 +176,64 @@ public class WithdrawalService {
         } catch (JsonProcessingException e) {
             log.error("Failed to create bank details JSON", e);
             throw new WithdrawalException("Failed to process bank details");
+        }
+    }
+    public List<WithdrawalHistoryDto> getUserWithdrawalHistory(Users user) {
+        List<WithdrawalRequest> withdrawals = withdrawalRequestRepository.findByUserOrderByRequestedAtDesc(user);
+
+        return withdrawals.stream()
+                .map(this::convertToHistoryDto)
+                .collect(Collectors.toList());
+    }
+
+    private WithdrawalHistoryDto convertToHistoryDto(WithdrawalRequest withdrawal) {
+        // Parse bank details JSON
+        String bankName = "";
+        String accountNumber = "";
+        String accountHolderName = "";
+        String accountType = "";
+
+        if (withdrawal.getBankDetails() != null) {
+            try {
+                String details = withdrawal.getBankDetails();
+                bankName = extractJsonValue(details, "bankName");
+                accountNumber = extractJsonValue(details, "accountNumber");
+                accountHolderName = extractJsonValue(details, "accountHolderName");
+                accountType = extractJsonValue(details, "accountType");
+            } catch (Exception e) {
+            }
+        }
+
+        return WithdrawalHistoryDto.builder()
+                .id(withdrawal.getWithdrawalId())
+                .amount(withdrawal.getRequestedAmount())
+                .fees(withdrawal.getCalculatedFees())
+                .bankName(bankName)
+                .accountHolderName(accountHolderName)
+                .accountNumber(accountNumber)
+                .accountType(accountType)
+                .status(withdrawal.getStatus().name())
+                .transactionReference(withdrawal.getTransactionReference())
+                .createdAt(withdrawal.getRequestedAt())
+                .build();
+    }
+
+    private String extractJsonValue(String json, String key) {
+        try {
+            String searchKey = "\"" + key + "\"";
+            int startIndex = json.indexOf(searchKey);
+            if (startIndex == -1) return "";
+
+            startIndex = json.indexOf(":", startIndex) + 1;
+            int endIndex = json.indexOf(",", startIndex);
+            if (endIndex == -1) {
+                endIndex = json.indexOf("}", startIndex);
+            }
+
+            String value = json.substring(startIndex, endIndex).trim();
+            return value.replace("\"", "").trim();
+        } catch (Exception e) {
+            return "";
         }
     }
 }

@@ -40,7 +40,6 @@ const ManageProfile = ({ user,
         username: ''
     });
 
-    // Password Change State
     const [passwordData, setPasswordData] = useState({
         currentPassword: '',
         newPassword: '',
@@ -51,7 +50,6 @@ const ManageProfile = ({ user,
         console.log('user on manage profile', user)
     }, [user]);
 
-    // Load user data on component mount
     useEffect(() => {
         loadUserData();
     }, []);
@@ -59,7 +57,6 @@ const ManageProfile = ({ user,
     const loadUserData = async () => {
         setLoading(true);
         try {
-            // Real API call to get user profile
             const userResponse = await profileService.getUserProfile();
             setPersonalDetails(userResponse.data);
 
@@ -71,17 +68,15 @@ const ManageProfile = ({ user,
         }
     };
 
-    // Event Handlers
     const handlePersonalDetailsChange = (e) => {
         const { name, value } = e.target;
 
-        // Input sanitization for specific fields
         let sanitizedValue = value;
         if (name === 'idNumber') {
-            sanitizedValue = value.replace(/\D/g, ''); // Only digits
+            sanitizedValue = value.replace(/\D/g, '');
         }
         if (name === 'phone') {
-            sanitizedValue = value.replace(/[^\d+]/g, ''); // Only digits and +
+            sanitizedValue = value.replace(/[^\d+]/g, '');
         }
 
         setPersonalDetails(prev => ({
@@ -98,7 +93,6 @@ const ManageProfile = ({ user,
         }));
     };
 
-    // Enhanced Validation Functions
     const validatePersonalDetails = () => {
         const { firstName, lastName, email, phone, idNumber } = personalDetails;
 

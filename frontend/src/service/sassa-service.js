@@ -13,31 +13,28 @@ const SassaService = {
         return httpCommon.delete(`/sassa-accounts/${accountId}/unlink`);
     },
 
-    getBalanceBySassaId: (sassaAccountId) => {
-        return httpCommon.get(`/sassa-accounts/${sassaAccountId}/balance`);
+    getUserBalance: () => {
+        return httpCommon.get('/user/balance');
     },
 
     getSassaBalance: async () => {
         try {
-            const accountResponse = await httpCommon.get('/sassa-accounts/active');
+            const balanceResponse = await httpCommon.get('/user/balance');
 
-            if (accountResponse.data && accountResponse.data.sassaAccountId) {
-
-                const balanceResponse = await httpCommon.get(
-                    `/sassa-accounts/${accountResponse.data.sassaAccountId}/balance`
-                );
-
+            if (balanceResponse.data && balanceResponse.data.success) {
                 return {
                     success: true,
-                    balance: balanceResponse.data.data,
-                    sassaAccountId: accountResponse.data.sassaAccountId
+                    balance: balanceResponse.data.balance,
+                    pendingBalance: balanceResponse.data.pendingBalance,
+                    totalReceived: balanceResponse.data.totalReceived,
+                    totalWithdrawn: balanceResponse.data.totalWithdrawn
                 };
             }
 
             return {
                 success: false,
                 balance: 0,
-                error: 'No active SASSA account found'
+                error: 'Failed to fetch balance'
             };
 
         } catch (error) {

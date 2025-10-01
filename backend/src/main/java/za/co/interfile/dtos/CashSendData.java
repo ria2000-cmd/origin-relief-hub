@@ -12,19 +12,14 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CashSendResponseDto {
-    private boolean success;
-    private String message;
-    private Long cashSendId;
-    private String voucherCode;
-    private String pin;
+public class CashSendData {
     private BigDecimal amount;
     private BigDecimal fee;
-    private BigDecimal totalCost;
-    private BigDecimal remainingBalance;
     private String recipientPhone;
     private String recipientName;
+    private String voucherCode;
+    private String pin;
     private LocalDateTime expiryDate;
-    private LocalDateTime timestamp;
+    private BigDecimal remainingBalance;
     private String transactionReference;
 }

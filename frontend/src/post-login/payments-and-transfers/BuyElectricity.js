@@ -42,7 +42,6 @@ const BuyElectricity = () => {
     const [purchaseResult, setPurchaseResult] = useState(null);
     const [calculatedUnits, setCalculatedUnits] = useState(0);
     const [purchaseHistory, setPurchaseHistory] = useState([]);
-    const [sassaAccountId, setSassaAccountId] = useState(null);
 
     const [formData, setFormData] = useState({
         amount: '',
@@ -68,7 +67,7 @@ const BuyElectricity = () => {
 
     useEffect(() => {
         fetchBalance();
-        fetchPurchaseHistory();
+        // fetchPurchaseHistory();
     }, []);
 
     useEffect(() => {
@@ -86,7 +85,6 @@ const BuyElectricity = () => {
 
             if (result.success) {
                 setBalance(result.balance);
-                setSassaAccountId(result.sassaAccountId);
             } else {
                 setBalance(0);
                 setError(result.error);
@@ -98,17 +96,17 @@ const BuyElectricity = () => {
         }
     };
 
-    const fetchPurchaseHistory = async () => {
-        try {
-            const response = await ElectricityService.getPurchaseHistory(5);
-
-            if (response.data.success) {
-                setPurchaseHistory(response.data.data);
-            }
-        } catch (err) {
-            console.error('Error fetching history:', err);
-        }
-    };
+    // const fetchPurchaseHistory = async () => {
+    //     try {
+    //         const response = await ElectricityService.getPurchaseHistory(5);
+    //
+    //         if (response.data.success) {
+    //             setPurchaseHistory(response.data.data);
+    //         }
+    //     } catch (err) {
+    //         console.error('Error fetching history:', err);
+    //     }
+    // };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -188,7 +186,7 @@ const BuyElectricity = () => {
                 });
 
                 // Refresh history
-                fetchPurchaseHistory();
+                // fetchPurchaseHistory();
             }
 
         } catch (err) {

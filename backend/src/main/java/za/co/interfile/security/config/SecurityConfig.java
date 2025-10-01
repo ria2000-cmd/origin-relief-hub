@@ -65,9 +65,15 @@ public class SecurityConfig {
                                 "/api/relief-hub/sassa-accounts/active",
                                 "/api/relief-hub/sassa-accounts/*/balance",
                                 "/api/relief-hub/cash-send/send",
+                                "/api/relief-hub/cash-send/history",
                                 "/api/relief-hub/electricity/purchase",
                                 "/api/relief-hub/electricity/history",
-                                "/api/relief-hub/electricity/calculate-units"
+                                "/api/relief-hub/electricity/calculate-units",
+                                "/api/relief-hub/user/balance",
+                                "/api/relief-hub/electricity/purchase",
+                                "/api/relief-hub/withdraw",
+                                "/api/relief-hub/withdraw/history"
+
                         ).permitAll()
                         .requestMatchers("/actuator/**", "/error").permitAll()
                         .anyRequest().authenticated()

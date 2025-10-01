@@ -5,9 +5,10 @@ const CashSendService = {
         return httpCommon.post('/cash-send/send', data);
     },
 
-    getBalance: () => {
-        return httpCommon.get('cash-send/calculate-cost');
+    cashSendHistory: () => {
+        return httpCommon.get('/cash-send/history')
     }
+
 };
 
-export default {CashSendService}
+export default CashSendService

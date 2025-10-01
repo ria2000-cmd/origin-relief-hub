@@ -17,7 +17,7 @@ import {
 import DashboardCard from './DashboardCard';
 import ProfileCompletionCard from './ProfileCompletionCard';
 
-const DashboardContent = ({user}) => {
+const DashboardContent = ({user, logout}) => {
 
     useEffect(() => {
         console.log('dashboard content', user)

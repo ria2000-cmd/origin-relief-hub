@@ -21,7 +21,7 @@ import {
     LogOut
 } from 'lucide-react';
 
-const Sidebar = ({ mobileOpen, onClose, drawerWidth, onNavigate }) => {
+const Sidebar = ({ mobileOpen, onClose, drawerWidth, onNavigate ,logout}) => {
     const [selectedIndex, setSelectedIndex] = useState(0);
 
     const menuItems = [
@@ -37,17 +37,14 @@ const Sidebar = ({ mobileOpen, onClose, drawerWidth, onNavigate }) => {
         if (onNavigate) {
             onNavigate(route);
         }
-        // Close mobile drawer when item is clicked
         if (mobileOpen) {
             onClose();
         }
     };
 
     const handleLogout = () => {
-        // Add your logout logic here
+        logout();
         console.log('Logging out...');
-        // Example: localStorage.removeItem('token');
-        // Example: navigate('/login');
     };
 
     const drawer = (

@@ -16,7 +16,6 @@ const CashSend = () => {
     const [error, setError] = useState('');
     const [showSuccess, setShowSuccess] = useState(false);
     const [cashSendResult, setCashSendResult] = useState(null);
-    const [sassaAccountId, setSassaAccountId] = useState(null);
 
     const [formData, setFormData] = useState({
         amount: '',
@@ -37,7 +36,6 @@ const CashSend = () => {
 
             if (result.success) {
                 setBalance(result.balance);
-                setSassaAccountId(result.sassaAccountId);
             } else {
                 setBalance(0);
                 setError(result.error);

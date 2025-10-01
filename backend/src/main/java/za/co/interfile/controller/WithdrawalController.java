@@ -3,23 +3,29 @@ package za.co.interfile.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import za.co.interfile.dtos.ApiResponse;
+import za.co.interfile.dtos.WithdrawalHistoryDto;
 import za.co.interfile.dtos.WithdrawalRequestDTO;
 import za.co.interfile.dtos.WithdrawalResponseDTO;
 import za.co.interfile.exception.InsufficientBalanceException;
 import za.co.interfile.exception.WithdrawalException;
+import za.co.interfile.model.Users;
+import za.co.interfile.model.WithdrawalRequest;
 import za.co.interfile.service.UsersService;
 import za.co.interfile.service.WithdrawalService;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/withdrawals")
+@RequestMapping("/api/relief-hub")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class WithdrawalController {
@@ -135,6 +141,23 @@ public class WithdrawalController {
                     .build();
 
             return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    @GetMapping("/withdraw/history")
+    public ResponseEntity<?> getWithdrawalHistory(@AuthenticationPrincipal Users user) {
+        try {
+            List<WithdrawalHistoryDto> history = withdrawalService.getUserWithdrawalHistory(user);
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "data", history
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of(
+                            "success", false,
+                            "message", "Failed to retrieve history: " + e.getMessage()
+                    ));
         }
     }
 }

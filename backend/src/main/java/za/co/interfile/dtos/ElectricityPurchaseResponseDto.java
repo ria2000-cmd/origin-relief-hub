@@ -15,14 +15,14 @@ import java.time.LocalDateTime;
 public class ElectricityPurchaseResponseDto {
     private boolean success;
     private String message;
-    private Long transactionId;
-    private String token; // 20-digit electricity token
+    private Long electricityId;
+    private String voucherCode;
     private BigDecimal amount;
-    private BigDecimal units; // kWh purchased
-    private BigDecimal remainingBalance;
+    private BigDecimal fee;
+    private BigDecimal totalCost;
+    private BigDecimal units;
     private String meterNumber;
-    private String municipality;
+    private BigDecimal remainingBalance;
     private String transactionReference;
     private LocalDateTime timestamp;
-    private LocalDateTime tokenExpiryDate;
 }
