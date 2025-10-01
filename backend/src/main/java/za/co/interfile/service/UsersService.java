@@ -219,32 +219,91 @@ public class UsersService {
     }
 
     @Transactional
-    public UserResponseDto updateUser(Long userId, UserUpdateDto updateDto) {
-        Users user = usersRepository.findByUserIdAndStatus(userId, UsersStatus.ACTIVE)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    public UserResponseDto updateUser(Long userId, UserUpdateDto updateDto, String profilePhotoFileName) {
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (updateDto.getFullName() != null) {
-            user.setFullName(updateDto.getFullName());
+        if (updateDto.getFirstName() != null && updateDto.getLastName() != null) {
+            user.setFullName(updateDto.getFirstName() + " " + updateDto.getLastName());
+        } else if (updateDto.getFirstName() != null) {
+            String[] nameParts = user.getFullName() != null ? user.getFullName().split(" ", 2) : new String[]{""};
+            String lastName = nameParts.length > 1 ? nameParts[1] : "";
+            user.setFullName(updateDto.getFirstName() + " " + lastName);
+        } else if (updateDto.getLastName() != null) {
+            String[] nameParts = user.getFullName() != null ? user.getFullName().split(" ", 2) : new String[]{""};
+            String firstName = nameParts[0];
+            user.setFullName(firstName + " " + updateDto.getLastName());
+        }
+        if (updateDto.getEmail() != null && !updateDto.getEmail().trim().isEmpty()) {
+            if (usersRepository.existsByEmailAndUserIdNot(updateDto.getEmail(), userId)) {
+                throw new RuntimeException("Email is already taken by another user");
+            }
+            user.setEmail(updateDto.getEmail());
         }
 
-        if (updateDto.getPhone() != null) {
-            user.setPhone(updateDto.getPhone());
+        if (updateDto.getUsername() != null && !updateDto.getUsername().trim().isEmpty()) {
+            if (usersRepository.existsByUsernameAndUserIdNot(updateDto.getUsername(), userId)) {
+                throw new RuntimeException("Username is already taken by another user");
+            }
+            user.setUsername(updateDto.getUsername());
         }
 
-        if (updateDto.getAddress() != null) {
-            user.setAddress(updateDto.getAddress());
+        if (updateDto.getPhoneNumber() != null && !updateDto.getPhoneNumber().trim().isEmpty()) {
+            user.setPhone(updateDto.getPhoneNumber());
         }
 
         if (updateDto.getDateOfBirth() != null) {
             user.setDateOfBirth(updateDto.getDateOfBirth());
         }
 
-        Users updatedUser = usersRepository.save(user);
-        log.info("User updated successfully: {}", userId);
+        if (updateDto.getAddress() != null) {
+            user.setAddress(updateDto.getAddress());
+        }
 
-        return convertToResponseDto(updatedUser);
+        if (profilePhotoFileName != null) {
+            user.setProfilePhotoPath(profilePhotoFileName);
+        }
+
+        user.setUpdatedAt(LocalDateTime.now());
+        Users savedUser = usersRepository.save(user);
+
+        log.info("Successfully updated profile for user ID: {}", userId);
+
+        return convertToDto(savedUser);
     }
 
+    @Transactional
+    public UserResponseDto updateUser(Long userId, UserUpdateDto updateDto) {
+        return updateUser(userId, updateDto, null);
+    }
+
+    private UserResponseDto convertToDto(Users user) {
+        return UserResponseDto.builder()
+                .userId(user.getUserId())
+                .fullName(user.getFullName())
+                .idNumber(user.getIdNumber())
+                .email(user.getEmail())
+                .username(user.getUsername())
+                .phone(user.getPhone())
+                .address(user.getAddress())
+                .dateOfBirth(user.getDateOfBirth())
+                .status(user.getStatus())
+                .createdAt(user.getCreatedAt())
+                .updatedAt(user.getUpdatedAt())
+                .lastLogin(user.getLastLogin())
+                .emailVerified(user.getEmailVerified())
+                .phoneVerified(user.getPhoneVerified())
+                .profilePhotoPath(user.getProfilePhotoPath())
+
+                .displayName(user.getDisplayName())
+                .maskedIdNumber(user.getMaskedIdNumber())
+                .age(user.getAgeFromIdNumber())
+                .isActive(user.isActive())
+                .isFullyVerified(user.isFullyVerified())
+                .canWithdraw(user.canWithdraw())
+                .unreadNotificationCount(user.getUnreadNotificationCount())
+                .build();
+    }
     @Transactional
     public void updatePassword(Long userId, PasswordUpdateDto passwordDto) {
         Users user = usersRepository.findByUserIdAndStatus(userId, UsersStatus.ACTIVE)
@@ -373,14 +432,14 @@ public class UsersService {
     private UserResponseDto convertToResponseDto(Users user) {
         return UserResponseDto.builder()
                 .userId(user.getUserId())
-                .fullName(user.getFullName())
+//                .firstName(user.getFullName())
                 .idNumber(user.getIdNumber())
                 .email(user.getEmail())
                 .username(user.getUsername())
                 .phone(user.getPhone())
                 .address(user.getAddress())
                 .dateOfBirth(user.getDateOfBirth())
-                .status(user.getStatus())
+                .status(UsersStatus.valueOf(user.getStatus().name()))
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
                 .lastLogin(user.getLastLogin())

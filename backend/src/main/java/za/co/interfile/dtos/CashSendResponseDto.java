@@ -12,15 +12,18 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class WithdrawalResponseDTO {
+public class CashSendResponseDto {
     private boolean success;
     private String message;
-    private Long withdrawalId;
+    private Long cashSendId;
+    private String voucherCode;
+    private String pin;
     private BigDecimal amount;
+    private BigDecimal fee;
+    private BigDecimal totalCost;
     private BigDecimal remainingBalance;
-    private String status;
-    private String transactionReference;
+    private String recipientPhone;
+    private String recipientName;
+    private LocalDateTime expiryDate;
     private LocalDateTime timestamp;
-
 }
-

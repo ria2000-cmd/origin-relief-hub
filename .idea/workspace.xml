@@ -5,26 +5,49 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="70b2db9c-433d-42e2-bd08-689132dfd35f" name="Changes" comment="back-end end-points">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/ForgotPasswordDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/ResetPasswordDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/exception/InvalidTokenException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/exception/UserNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/model/PasswordResetToken.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/PasswordResetTokenRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/security/config/CorsFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/config/JacksonConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/controller/CashSendController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/controller/ElectricityController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/controller/SassaAccountController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/CashSendRequestDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/CashSendResponseDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/ElectricityPurchaseRequestDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/ElectricityPurchaseResponseDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/LinkSassaAccountRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/LinkSassaAccountResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/enums/CashSendStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/enums/ElectricityTransactionStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/exception/CashSendException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/exception/ElectricityPurchaseException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/exception/InsufficientBalanceException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/exception/SassaAccountException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/exception/WithdrawalException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/model/CashSendTransaction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/model/ElectricityTransaction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/CashSendRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/ElectricityTransactionRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/WithdrawalRequestRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/security/JwtAuthenticationFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/service/CashSendService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/service/CustomUserDetailsService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/service/ElectricityService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/service/SassaAccountService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/ReliefHubApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/ReliefHubApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/controller/PaymentHistoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/controller/PaymentHistoryController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/controller/UsersController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/controller/UsersController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/model/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/model/Transaction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/controller/WithdrawalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/controller/WithdrawalController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/UserResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/UserResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/UserUpdateDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/UserUpdateDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/WithdrawalRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/WithdrawalRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/WithdrawalResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/WithdrawalResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/enums/SassaStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/enums/SassaStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/model/SassaAccounts.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/model/SassaAccounts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/model/Users.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/model/Users.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/SassaAccountsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/SassaAccountsRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/UsersRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/UsersRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/security/config/PasswordConfig.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/security/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/security/config/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/service/UsersService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/service/UsersService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/service/WithdrawalService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/service/WithdrawalService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,8 +59,8 @@
       <list>
         <option value="Enum" />
         <option value="Record" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -68,34 +91,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "MavenSettings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="ReliefHubApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="relief-hub" />
@@ -129,7 +151,13 @@
       <workItem from="1758271413253" duration="13037000" />
       <workItem from="1758287771582" duration="250000" />
       <workItem from="1758288206162" duration="4221000" />
-      <workItem from="1758520640713" duration="14495000" />
+      <workItem from="1758520640713" duration="17259000" />
+      <workItem from="1758783882342" duration="476000" />
+      <workItem from="1758786583523" duration="1584000" />
+      <workItem from="1758790309613" duration="544000" />
+      <workItem from="1758801358617" duration="11961000" />
+      <workItem from="1759125744551" duration="18567000" />
+      <workItem from="1759213313138" duration="15113000" />
     </task>
     <task id="LOCAL-00001" summary="back-end package">
       <option name="closed" value="true" />
@@ -155,7 +183,15 @@
       <option name="project" value="LOCAL" />
       <updated>1758292836446</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="back-end end-points">
+      <option name="closed" value="true" />
+      <created>1758618901351</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1758618901351</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -170,9 +206,9 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/backend/src/main/java/za/co/interfile/controller/UsersController.java</url>
-          <line>65</line>
-          <option name="timeStamp" value="3" />
+          <url>file://$PROJECT_DIR$/backend/src/main/java/za/co/interfile/controller/SassaAccountController.java</url>
+          <line>36</line>
+          <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

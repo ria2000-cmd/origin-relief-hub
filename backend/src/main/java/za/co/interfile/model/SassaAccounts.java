@@ -1,5 +1,6 @@
 package za.co.interfile.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -27,10 +28,15 @@ public class SassaAccounts {
     @Column(name = "sassa_account_id")
     private Long sassaAccountId;
 
-    @NotBlank(message = "SASSA reference number is required")
-    @Size(max = 50, message = "SASSA reference number must not exceed 50 characters")
-    @Column(name = "sassa_reference_number", unique = true, nullable = false, length = 50)
-    private String sassaReferenceNumber;
+    @NotBlank(message = "SASSA account number is required")
+    @Size(max = 50, message = "SASSA account number must not exceed 50 characters")
+    @Column(name = "account_number", unique = true, nullable = false, length = 50)
+    private String accountNumber;
+
+    @NotBlank(message = "ID number is required")
+    @Pattern(regexp = "\\d{13}", message = "ID number must be exactly 13 digits")
+    @Column(name = "id_number", nullable = false, length = 13)
+    private String idNumber;
 
     @NotNull(message = "Grant type is required")
     @Enumerated(EnumType.STRING)
@@ -63,7 +69,8 @@ public class SassaAccounts {
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
+    @JoinColumn(name = "user_id")
     private Users user;
 
     @Column(name = "last_sync_date")

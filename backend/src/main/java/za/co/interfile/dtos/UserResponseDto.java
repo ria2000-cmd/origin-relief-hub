@@ -35,4 +35,5 @@ public class UserResponseDto {
     private Boolean isFullyVerified;
     private Boolean canWithdraw;
     private int unreadNotificationCount;
+    private String profilePhotoPath;
 }

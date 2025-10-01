@@ -13,15 +13,24 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WithdrawalRequestDTO {
-    @NotBlank(message = "ID number is required")
-    @Pattern(regexp = "\\d{13}", message = "ID number must be exactly 13 digits")
-    private String idNumber;
 
     @NotNull(message = "Amount is required")
-    @DecimalMin(value = "1.0", message = "Minimum withdrawal amount is R1.00")
-    @DecimalMax(value = "10000.0", message = "Maximum withdrawal amount is R10,000.00")
-    @Digits(integer = 8, fraction = 2, message = "Invalid amount format")
+    @DecimalMin(value = "10.00", message = "Minimum withdrawal amount is R10.00")
+    @DecimalMax(value = "50000.00", message = "Maximum withdrawal amount is R50,000.00")
     private BigDecimal amount;
 
-    private String description;
+    @NotBlank(message = "Bank name is required")
+    private String bankName;
+
+    @NotBlank(message = "Account number is required")
+    @Pattern(regexp = "\\d{8,12}", message = "Account number must be 8-12 digits")
+    private String accountNumber;
+
+    @NotBlank(message = "Account holder name is required")
+    private String accountHolderName;
+
+    @NotBlank(message = "Account type is required")
+    private String accountType;
+
+    private String reference;
 }

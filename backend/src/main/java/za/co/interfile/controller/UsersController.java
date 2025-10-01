@@ -8,12 +8,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import za.co.interfile.dtos.*;
 import za.co.interfile.enums.UsersStatus;
 import za.co.interfile.exception.InvalidTokenException;
 import za.co.interfile.exception.UserNotFoundException;
 import za.co.interfile.service.UsersService;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -240,13 +247,49 @@ public class UsersController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ApiResponse<UserResponseDto>> updateUserProfile(
             @RequestHeader("Authorization") String token,
+            @RequestParam(value = "profilePhoto", required = false) MultipartFile profilePhoto, // Single file, not array
             @Valid @RequestBody UserUpdateDto updateDto) {
 
         try {
             String jwtToken = token.substring(7);
             Long userId = userService.getUserIdFromToken(jwtToken);
 
-            UserResponseDto updatedUser = userService.updateUser(userId, updateDto);
+            String profilePhotoFileName = null;
+
+            if (profilePhoto != null && !profilePhoto.isEmpty()) {
+                String uploadDir = Paths.get(System.getProperty("user.dir"), "profile_pictures").toString();
+                Path path = Paths.get(uploadDir);
+
+                if (!Files.exists(path)) {
+                    Files.createDirectories(path);
+                }
+
+                UserResponseDto currentUser = userService.getUserById(userId);
+
+                if (currentUser.getProfilePhotoPath() != null && !currentUser.getProfilePhotoPath().isEmpty()) {
+                    Path oldPhotoPath = Paths.get(uploadDir, currentUser.getProfilePhotoPath());
+                    try {
+                        Files.deleteIfExists(oldPhotoPath);
+                        log.info("Deleted old profile photo: {}", currentUser.getProfilePhotoPath());
+                    } catch (IOException e) {
+                        log.warn("Failed to delete old profile photo: {}", e.getMessage());
+                    }
+                }
+
+                String originalFileName = profilePhoto.getOriginalFilename();
+                String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+                String fileName = "user_" + userId + "_" +
+                        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) +
+                        extension;
+
+                Path imagePath = Paths.get(uploadDir, fileName);
+                profilePhoto.transferTo(imagePath.toFile());
+
+                profilePhotoFileName = fileName;
+                log.info("Saved new profile photo: {}", fileName);
+            }
+
+            UserResponseDto updatedUser = userService.updateUser(userId, updateDto, profilePhotoFileName);
 
             ApiResponse<UserResponseDto> response = ApiResponse.<UserResponseDto>builder()
                     .success(true)

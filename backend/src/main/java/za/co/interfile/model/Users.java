@@ -4,6 +4,8 @@ package za.co.interfile.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import za.co.interfile.enums.UsersStatus;
 import za.co.interfile.enums.SassaStatus;
 
@@ -11,6 +13,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -23,7 +26,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Users {
+public class Users implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -93,6 +96,9 @@ public class Users {
     @Builder.Default
     private Boolean phoneVerified = false;
 
+    @Column(name = "profile_photo_path")
+    private String profilePhotoPath;
+
     // Relationships
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
@@ -129,46 +135,45 @@ public class Users {
         }
     }
 
-//    @PreUpdate
-//    private void onUpdate() {
-//        this.updatedAt = LocalDateTime.now();
-//    }
-//
-//    // Spring Security UserDetails implementation
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return List.of(() -> "ROLE_USER");
-//    }
-//
-//    @Override
-//    public String getPassword() {
-//        return this.passwordHash;
-//    }
-//
-//    @Override
-//    public String getUsername() {
-//        return this.email;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonExpired() {
-//        return this.status != UsersStatus.DELETED;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return this.status != UsersStatus.SUSPENDED;
-//    }
-//
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isEnabled() {
-//        return this.status == UsersStatus.ACTIVE;
-//    }
+    @PreUpdate
+    private void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(() -> "ROLE_USER");
+    }
+
+    @Override
+    public String getPassword() {
+        return this.passwordHash;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return this.status != UsersStatus.DELETED;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return this.status != UsersStatus.SUSPENDED;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.status == UsersStatus.ACTIVE;
+    }
 
     public boolean isActive() {
         return this.status == UsersStatus.ACTIVE;

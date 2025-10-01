@@ -6,5 +6,6 @@ public enum SassaStatus {
     SUSPENDED,
     PENDING_VERIFICATION,
     REJECTED,
-    EXPIRED
+    EXPIRED,
+    CLOSED
 }

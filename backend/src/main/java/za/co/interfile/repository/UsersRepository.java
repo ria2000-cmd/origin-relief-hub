@@ -39,4 +39,8 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
 
     @Query("SELECT u FROM Users u WHERE u.emailVerified = true AND u.phoneVerified = true")
     Page<Users> findFullyVerifiedUsers(Pageable pageable);
+
+    boolean existsByEmailAndUserIdNot(String email, Long userId);
+
+    boolean existsByUsernameAndUserIdNot(String username, Long userId);
 }

@@ -12,15 +12,17 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class WithdrawalResponseDTO {
+public class ElectricityPurchaseResponseDto {
     private boolean success;
     private String message;
-    private Long withdrawalId;
+    private Long transactionId;
+    private String token; // 20-digit electricity token
     private BigDecimal amount;
+    private BigDecimal units; // kWh purchased
     private BigDecimal remainingBalance;
-    private String status;
+    private String meterNumber;
+    private String municipality;
     private String transactionReference;
     private LocalDateTime timestamp;
-
+    private LocalDateTime tokenExpiryDate;
 }
-
