@@ -42,11 +42,9 @@ const TransferHistory = () => {
     };
 
     const formatDate = (dateString) => {
-        // Handle both array format [2025, 10, 1, 14, 7, 15] and ISO string
         let date;
 
         if (Array.isArray(dateString)) {
-            // Array format from Java LocalDateTime
             date = new Date(dateString[0], dateString[1] - 1, dateString[2],
                 dateString[3] || 0, dateString[4] || 0, dateString[5] || 0);
         } else {
@@ -111,31 +109,41 @@ const TransferHistory = () => {
                     <TableHead>
                         <TableRow>
                             <TableCell><strong>Date</strong></TableCell>
-                            <TableCell><strong>Bank</strong></TableCell>
-                            <TableCell><strong>Account Holder</strong></TableCell>
+                            <TableCell><strong>Account Type</strong></TableCell>
                             <TableCell><strong>Account Number</strong></TableCell>
                             <TableCell><strong>Amount</strong></TableCell>
+                            <TableCell><strong>Fee</strong></TableCell>
+                            <TableCell><strong>Total</strong></TableCell>
                             <TableCell><strong>Status</strong></TableCell>
                             <TableCell><strong>Reference</strong></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {transfers.map((transfer) => (
-                            <TableRow key={transfer.id}>
+                            <TableRow key={transfer.withdrawalId}>
                                 <TableCell>{formatDate(transfer.createdAt)}</TableCell>
-                                <TableCell>{transfer.bankName}</TableCell>
-                                <TableCell>{transfer.accountHolderName}</TableCell>
-                                <TableCell>****{transfer.accountNumber.slice(-4)}</TableCell>
-                                <TableCell>R {transfer.amount.toFixed(2)}</TableCell>
+                                <TableCell>{transfer.accountType
+                                    ?.replace(/_/g, ' ')}</TableCell>
+                                <TableCell>
+                                    {transfer.accountNumber || transfer.eNumber || 'N/A'}
+                                </TableCell>
+                                <TableCell>R {transfer.amount?.toFixed(2)}</TableCell>
+                                <TableCell>R {transfer.fees?.toFixed(2)}</TableCell>
+                                <TableCell><strong>R {transfer.totalAmount?.toFixed(2)}</strong></TableCell>
                                 <TableCell>
                                     <Chip
                                         label={transfer.status}
                                         color={getStatusColor(transfer.status)}
                                         size="small"
                                     />
+                                    {transfer.failureReason && (
+                                        <Typography variant="caption" color="error" display="block">
+                                            {transfer.failureReason}
+                                        </Typography>
+                                    )}
                                 </TableCell>
                                 <TableCell sx={{ fontFamily: 'monospace', fontSize: '0.85rem' }}>
-                                    {transfer.transactionReference}
+                                    {transfer.transactionReference || 'N/A'}
                                 </TableCell>
                             </TableRow>
                         ))}

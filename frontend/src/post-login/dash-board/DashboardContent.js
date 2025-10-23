@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Box,
     Typography,
@@ -14,14 +14,36 @@ import {
     Phone,
     Bell
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import DashboardCard from './DashboardCard';
 import ProfileCompletionCard from './ProfileCompletionCard';
+import ChatbotModal from '../../chatbot/ChatbotModal';
+import CallCenterModal from '../../call-center/CallCenterModal';
 
-const DashboardContent = ({user, logout}) => {
+const DashboardContent = ({ user, logout }) => {
+    const { t } = useTranslation();
+    const [chatbotOpen, setChatbotOpen] = useState(false);
+    const [callCenterOpen, setCallCenterOpen] = useState(false);
 
     useEffect(() => {
-        console.log('dashboard content', user)
+        console.log('dashboard content', user);
     }, []);
+
+    const handleOpenChatbot = () => {
+        setChatbotOpen(true);
+    };
+
+    const handleCloseChatbot = () => {
+        setChatbotOpen(false);
+    };
+
+    const handleOpenCallCenter = () => {
+        setCallCenterOpen(true);
+    };
+
+    const handleCloseCallCenter = () => {
+        setCallCenterOpen(false);
+    };
 
     return (
         <Box
@@ -35,7 +57,7 @@ const DashboardContent = ({user, logout}) => {
         >
             {/* Welcome Header */}
             <Typography variant="h4" fontWeight="bold" sx={{ color: '#facc15', mb: 4 }}>
-                Welcome back, {user?.displayName || 'User'}!
+                {t('common.welcome')}, {user?.displayName || 'User'}!
             </Typography>
 
             {/* Profile Completion */}
@@ -51,15 +73,14 @@ const DashboardContent = ({user, logout}) => {
                         icon={<Calendar size={20} />}
                     >
                         <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                            Your next payment is scheduled for 25 September 2025
+                            Your next payment is scheduled for 05 October 2025
                         </Typography>
                         <Typography variant="h6" sx={{ color: 'primary.main', fontWeight: 600 }}>
-                            R1,890.00
+                            R 480.00
                         </Typography>
                     </DashboardCard>
                 </Grid>
 
-                {/* Recent Activity Card */}
                 <Grid item xs={12} md={6}>
                     <DashboardCard
                         title="Recent Activity"
@@ -106,6 +127,7 @@ const DashboardContent = ({user, logout}) => {
                                 variant="contained"
                                 size="small"
                                 startIcon={<MessageCircle size={16} />}
+                                onClick={handleOpenChatbot}
                                 sx={{
                                     bgcolor: '#10b981',
                                     '&:hover': { bgcolor: '#059669' },
@@ -118,6 +140,7 @@ const DashboardContent = ({user, logout}) => {
                                 variant="outlined"
                                 size="small"
                                 startIcon={<Phone size={16} />}
+                                onClick={handleOpenCallCenter}
                                 sx={{
                                     borderColor: 'primary.main',
                                     color: 'primary.main',
@@ -158,6 +181,10 @@ const DashboardContent = ({user, logout}) => {
                     </Typography>
                 </Box>
             </Alert>
+
+            {/* Modals */}
+            <ChatbotModal open={chatbotOpen} onClose={handleCloseChatbot} />
+            <CallCenterModal open={callCenterOpen} onClose={handleCloseCallCenter} />
         </Box>
     );
 };

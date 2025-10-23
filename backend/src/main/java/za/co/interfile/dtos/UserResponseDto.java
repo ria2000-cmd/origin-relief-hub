@@ -36,4 +36,5 @@ public class UserResponseDto {
     private Boolean canWithdraw;
     private int unreadNotificationCount;
     private String profilePhotoPath;
+    private String role;
 }

@@ -62,13 +62,16 @@ const BankTransfer = () => {
 
     const fetchBalance = async () => {
         try {
-            const result = await SassaService.getSassaBalance();
+            const result = await SassaService.getUserBalance();
+            console.log('result', result)
 
-            if (result.success) {
-                setBalance(result.balance);
+            if (result && result.data.balance !== undefined) {
+                setBalance(result.data.balance);
+            } else if (result.data && result.data.balance !== undefined) {
+                setBalance(result.data.balance);
             } else {
                 setBalance(0);
-                setError(result.error);
+                setError('Failed to load balance');
             }
         } catch (err) {
             console.error('Error fetching balance:', err);
@@ -142,10 +145,21 @@ const BankTransfer = () => {
                 reference: formData.reference || null
             });
 
+            console.log('Withdrawal response:', response.data);
+
             if (response.data.success) {
-                const remainingBalance = response.data.remainingBalance || response.data.data?.remainingBalance || 0;
-                const transactionRef = response.data.transactionReference || response.data.data?.transactionReference || 'N/A';
+                // Access the nested data object
+                const withdrawalData = response.data.data;
                 const amount = parseFloat(formData.amount);
+
+                // Calculate remaining balance (fallback to current balance minus amount)
+                const remainingBalance = withdrawalData?.remainingBalance ??
+                    (balance - amount);
+
+                // Get transaction reference
+                const transactionRef = withdrawalData?.transactionReference ||
+                    withdrawalData?.referenceNumber ||
+                    `WTX${Date.now()}`;
 
                 setWithdrawalResult({
                     transactionReference: transactionRef,
@@ -168,6 +182,11 @@ const BankTransfer = () => {
                     accountType: 'SAVINGS',
                     reference: ''
                 });
+
+                // Refresh balance from server after 2 seconds
+                setTimeout(() => fetchBalance(), 2000);
+            } else {
+                setError(response.data.message || 'Withdrawal failed');
             }
 
         } catch (err) {

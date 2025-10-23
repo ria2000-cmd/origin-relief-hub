@@ -22,7 +22,7 @@ import {
     LogOut
 } from 'lucide-react';
 
-const AdminSidebar = ({ mobileOpen, onClose, drawerWidth, onNavigate }) => {
+const AdminSidebar = ({ mobileOpen, onClose, drawerWidth, onNavigate, onlogout}) => {
     const [selectedIndex, setSelectedIndex] = useState(0);
 
     const menuItems = [
@@ -45,21 +45,18 @@ const AdminSidebar = ({ mobileOpen, onClose, drawerWidth, onNavigate }) => {
     };
 
     const handleLogout = () => {
-        // Add your logout logic here
-        console.log('Admin logging out...');
-        // Example: localStorage.removeItem('adminToken');
-        // Example: navigate('/admin/login');
+        onlogout()
     };
 
     const drawer = (
         <Box sx={{
-            height: '100vh', // Full viewport height
+            height: '100vh',
             bgcolor: '#1e293b',
             color: 'white',
             display: 'flex',
             flexDirection: 'column'
         }}>
-            {/* Sidebar Header */}
+
             <Box sx={{ p: 3, textAlign: 'center', bgcolor: '#334155' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 1 }}>
                     <Shield size={24} className="text-yellow-400" />
@@ -72,7 +69,6 @@ const AdminSidebar = ({ mobileOpen, onClose, drawerWidth, onNavigate }) => {
                 </Avatar>
             </Box>
 
-            {/* Sidebar Menu - Takes up remaining space */}
             <Box sx={{ flex: 1, px: 2, py: 3 }}>
                 <List sx={{ height: '100%' }}>
                     {menuItems.map((item, index) => (

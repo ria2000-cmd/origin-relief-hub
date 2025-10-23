@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { X } from "lucide-react";
 import {
     Box, Button, IconButton, TextField, Typography, Checkbox,
-    FormControlLabel, Divider, Alert, CircularProgress
+    FormControlLabel, Divider, Alert, CircularProgress, Snackbar
 } from "@mui/material";
 import service from "../service/service";
 
@@ -22,6 +22,11 @@ const RegisterForm = ({ isOpen, onClose, onSwitchToLogin }) => {
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [snackbar, setSnackbar] = useState({
+        open: false,
+        message: '',
+        severity: 'success' // 'success' or 'error'
+    });
 
     if (!isOpen) return null;
 
@@ -31,6 +36,10 @@ const RegisterForm = ({ isOpen, onClose, onSwitchToLogin }) => {
             ...prev,
             [name]: type === 'checkbox' ? checked : value
         }));
+    };
+
+    const handleCloseSnackbar = () => {
+        setSnackbar({ ...snackbar, open: false });
     };
 
     const validateForm = () => {
@@ -95,6 +104,11 @@ const RegisterForm = ({ isOpen, onClose, onSwitchToLogin }) => {
         const validationError = validateForm();
         if (validationError) {
             setError(validationError);
+            setSnackbar({
+                open: true,
+                message: validationError,
+                severity: 'error'
+            });
             setLoading(false);
             return;
         }
@@ -115,253 +129,282 @@ const RegisterForm = ({ isOpen, onClose, onSwitchToLogin }) => {
 
             const data = await service.register(registrationData);
 
-            onClose();
+            setSnackbar({
+                open: true,
+                message: 'Registration successful! You can now sign in.',
+                severity: 'success'
+            });
+
+            setTimeout(() => {
+                onClose();
+                onSwitchToLogin();
+            }, 2000);
 
         } catch (err) {
             console.error("Registration error:", err);
-            setError(err.response?.data?.message || 'Registration failed. Please try again.');
+            const errorMessage = err.response?.data?.message || 'Registration failed. Please try again.';
+
+            setError(errorMessage);
+            setSnackbar({
+                open: true,
+                message: errorMessage,
+                severity: 'error'
+            });
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <Box
-            sx={{
-                position: "fixed",
-                inset: 0,
-                bgcolor: "rgba(0,0,0,0.5)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                zIndex: 50,
-                p: 2,
-            }}
-        >
+        <>
             <Box
-                component="form"
-                onSubmit={handleSubmit}
                 sx={{
-                    bgcolor: "background.paper",
-                    borderRadius: 3,
-                    p: 4,
-                    width: "100%",
-                    maxWidth: 420,
-                    boxShadow: 8,
-                    maxHeight: "90vh",
-                    overflowY: "auto"
+                    position: "fixed",
+                    inset: 0,
+                    bgcolor: "rgba(0,0,0,0.5)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    zIndex: 50,
+                    p: 2,
                 }}
             >
-                <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
-                    <Typography variant="h5" fontWeight="bold" color="text.primary">
-                        Create an Account
-                    </Typography>
-                    <IconButton onClick={onClose} disabled={loading}>
-                        <X size={22} />
-                    </IconButton>
-                </Box>
+                <Box
+                    component="form"
+                    onSubmit={handleSubmit}
+                    sx={{
+                        bgcolor: "background.paper",
+                        borderRadius: 3,
+                        p: 4,
+                        width: "100%",
+                        maxWidth: 420,
+                        boxShadow: 8,
+                        maxHeight: "90vh",
+                        overflowY: "auto"
+                    }}
+                >
+                    <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+                        <Typography variant="h5" fontWeight="bold" color="text.primary">
+                            Create an Account
+                        </Typography>
+                        <IconButton onClick={onClose} disabled={loading}>
+                            <X size={22} />
+                        </IconButton>
+                    </Box>
 
-                <Divider sx={{ mb: 3 }} />
+                    <Divider sx={{ mb: 3 }} />
 
-                {error && (
-                    <Alert severity="error" sx={{ mb: 2 }}>
-                        {error}
-                    </Alert>
-                )}
+                    {error && (
+                        <Alert severity="error" sx={{ mb: 2 }}>
+                            {error}
+                        </Alert>
+                    )}
 
-                <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2, mb: 2 }}>
-                    <TextField
-                        label="First Name"
-                        name="firstName"
-                        fullWidth
-                        size="small"
-                        required
-                        value={formData.firstName}
-                        onChange={handleInputChange}
-                        disabled={loading}
-                        inputProps={{ maxLength: 127 }}
-                    />
-                    <TextField
-                        label="Last Name"
-                        name="lastName"
-                        fullWidth
-                        size="small"
-                        required
-                        value={formData.lastName}
-                        onChange={handleInputChange}
-                        disabled={loading}
-                        inputProps={{ maxLength: 127 }}
-                    />
-                </Box>
+                    <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2, mb: 2 }}>
+                        <TextField
+                            label="First Name"
+                            name="firstName"
+                            fullWidth
+                            size="small"
+                            required
+                            value={formData.firstName}
+                            onChange={handleInputChange}
+                            disabled={loading}
+                            inputProps={{ maxLength: 127 }}
+                        />
+                        <TextField
+                            label="Last Name"
+                            name="lastName"
+                            fullWidth
+                            size="small"
+                            required
+                            value={formData.lastName}
+                            onChange={handleInputChange}
+                            disabled={loading}
+                            inputProps={{ maxLength: 127 }}
+                        />
+                    </Box>
 
-                {/* ID Number */}
-                <Box sx={{ mb: 2 }}>
-                    <TextField
-                        label="ID Number"
-                        name="idNumber"
-                        fullWidth
-                        size="small"
-                        required
-                        value={formData.idNumber}
-                        onChange={handleInputChange}
-                        disabled={loading}
-                        inputProps={{
-                            maxLength: 13,
-                            pattern: "\\d{13}"
-                        }}
-                        helperText="Must be exactly 13 digits"
-                    />
-                </Box>
+                    <Box sx={{ mb: 2 }}>
+                        <TextField
+                            label="ID Number"
+                            name="idNumber"
+                            fullWidth
+                            size="small"
+                            required
+                            value={formData.idNumber}
+                            onChange={handleInputChange}
+                            disabled={loading}
+                            inputProps={{
+                                maxLength: 13,
+                                pattern: "\\d{13}"
+                            }}
+                            helperText="Must be exactly 13 digits"
+                        />
+                    </Box>
 
-                <Box sx={{ mb: 2 }}>
-                    <TextField
-                        label="Email"
-                        name="email"
-                        fullWidth
-                        type="email"
-                        size="small"
-                        required
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        disabled={loading}
-                        inputProps={{ maxLength: 255 }}
-                    />
-                </Box>
+                    <Box sx={{ mb: 2 }}>
+                        <TextField
+                            label="Email"
+                            name="email"
+                            fullWidth
+                            type="email"
+                            size="small"
+                            required
+                            value={formData.email}
+                            onChange={handleInputChange}
+                            disabled={loading}
+                            inputProps={{ maxLength: 255 }}
+                        />
+                    </Box>
 
-                <Box sx={{ mb: 2 }}>
-                    <TextField
-                        label="Username"
-                        name="username"
-                        fullWidth
-                        size="small"
-                        required
-                        value={formData.username}
-                        onChange={handleInputChange}
-                        disabled={loading}
-                        inputProps={{ maxLength: 255 }}
-                    />
-                </Box>
+                    <Box sx={{ mb: 2 }}>
+                        <TextField
+                            label="Username"
+                            name="username"
+                            fullWidth
+                            size="small"
+                            required
+                            value={formData.username}
+                            onChange={handleInputChange}
+                            disabled={loading}
+                            inputProps={{ maxLength: 255 }}
+                        />
+                    </Box>
 
-                <Box sx={{ mb: 2 }}>
-                    <TextField
-                        label="Phone Number"
-                        name="phone"
-                        fullWidth
-                        type="tel"
-                        size="small"
-                        required
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        disabled={loading}
-                        helperText="10-15 digits (e.g., +1234567890)"
-                        inputProps={{ maxLength: 16 }}
-                    />
-                </Box>
+                    <Box sx={{ mb: 2 }}>
+                        <TextField
+                            label="Phone Number"
+                            name="phone"
+                            fullWidth
+                            type="tel"
+                            size="small"
+                            required
+                            value={formData.phone}
+                            onChange={handleInputChange}
+                            disabled={loading}
+                            helperText="10-15 digits (e.g., +1234567890)"
+                            inputProps={{ maxLength: 16 }}
+                        />
+                    </Box>
 
-                {/* Date of Birth */}
-                <Box sx={{ mb: 2 }}>
-                    <TextField
-                        label="Date of Birth"
-                        name="dateOfBirth"
-                        fullWidth
-                        type="date"
-                        size="small"
-                        required
-                        value={formData.dateOfBirth}
-                        onChange={handleInputChange}
-                        disabled={loading}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />
-                </Box>
+                    <Box sx={{ mb: 2 }}>
+                        <TextField
+                            label="Date of Birth"
+                            name="dateOfBirth"
+                            fullWidth
+                            type="date"
+                            size="small"
+                            required
+                            value={formData.dateOfBirth}
+                            onChange={handleInputChange}
+                            disabled={loading}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                    </Box>
 
-                {/* Address (Optional) */}
-                <Box sx={{ mb: 2 }}>
-                    <TextField
-                        label="Address (Optional)"
-                        name="address"
-                        fullWidth
-                        multiline
-                        rows={2}
-                        size="small"
-                        value={formData.address}
-                        onChange={handleInputChange}
-                        disabled={loading}
-                        inputProps={{ maxLength: 1000 }}
-                        helperText={`${formData.address.length}/1000 characters`}
-                    />
-                </Box>
+                    <Box sx={{ mb: 2 }}>
+                        <TextField
+                            label="Address (Optional)"
+                            name="address"
+                            fullWidth
+                            multiline
+                            rows={2}
+                            size="small"
+                            value={formData.address}
+                            onChange={handleInputChange}
+                            disabled={loading}
+                            inputProps={{ maxLength: 1000 }}
+                            helperText={`${formData.address.length}/1000 characters`}
+                        />
+                    </Box>
 
-                {/* Password */}
-                <Box sx={{ mb: 2 }}>
-                    <TextField
-                        label="Password"
-                        name="password"
-                        fullWidth
-                        type="password"
-                        size="small"
-                        required
-                        value={formData.password}
-                        onChange={handleInputChange}
-                        disabled={loading}
-                        helperText="Minimum 8 characters"
-                    />
-                </Box>
+                    <Box sx={{ mb: 2 }}>
+                        <TextField
+                            label="Password"
+                            name="password"
+                            fullWidth
+                            type="password"
+                            size="small"
+                            required
+                            value={formData.password}
+                            onChange={handleInputChange}
+                            disabled={loading}
+                            helperText="Minimum 8 characters"
+                        />
+                    </Box>
 
-                {/* Confirm Password */}
-                <Box sx={{ mb: 2 }}>
-                    <TextField
-                        label="Confirm Password"
-                        name="confirmPassword"
-                        fullWidth
-                        type="password"
-                        size="small"
-                        required
-                        value={formData.confirmPassword}
-                        onChange={handleInputChange}
-                        disabled={loading}
-                    />
-                </Box>
-
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            name="agreeToTerms"
-                            checked={formData.agreeToTerms}
+                    <Box sx={{ mb: 2 }}>
+                        <TextField
+                            label="Confirm Password"
+                            name="confirmPassword"
+                            fullWidth
+                            type="password"
+                            size="small"
+                            required
+                            value={formData.confirmPassword}
                             onChange={handleInputChange}
                             disabled={loading}
                         />
-                    }
-                    label="I agree to the Terms and Conditions"
-                    sx={{ mt: 1, mb: 2 }}
-                />
+                    </Box>
 
-                <Button
-                    type="submit"
-                    fullWidth
-                    variant="gold"
-                    disabled={loading || !formData.agreeToTerms}
-                    sx={{ mt: 2, py: 1.3, fontSize: "1rem" }}
-                >
-                    {loading ? <CircularProgress size={24} color="inherit" /> : "Create Account"}
-                </Button>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                name="agreeToTerms"
+                                checked={formData.agreeToTerms}
+                                onChange={handleInputChange}
+                                disabled={loading}
+                            />
+                        }
+                        label="I agree to the Terms and Conditions"
+                        sx={{ mt: 1, mb: 2 }}
+                    />
 
-                <Box sx={{ mt: 3, textAlign: "center" }}>
-                    <Typography variant="body2" color="text.secondary">
-                        Already have an account?{" "}
-                        <Button
-                            onClick={onSwitchToLogin}
-                            variant="text"
-                            disabled={loading}
-                            sx={{ textTransform: "none", fontSize: "0.9rem" }}
-                        >
-                            Sign in
-                        </Button>
-                    </Typography>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="gold"
+                        disabled={loading || !formData.agreeToTerms}
+                        sx={{ mt: 2, py: 1.3, fontSize: "1rem" }}
+                    >
+                        {loading ? <CircularProgress size={24} color="inherit" /> : "Create Account"}
+                    </Button>
+
+                    <Box sx={{ mt: 3, textAlign: "center" }}>
+                        <Typography variant="body2" color="text.secondary">
+                            Already have an account?{" "}
+                            <Button
+                                onClick={onSwitchToLogin}
+                                variant="text"
+                                disabled={loading}
+                                sx={{ textTransform: "none", fontSize: "0.9rem" }}
+                            >
+                                Sign in
+                            </Button>
+                        </Typography>
+                    </Box>
                 </Box>
             </Box>
-        </Box>
+
+            <Snackbar
+                open={snackbar.open}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            >
+                <Alert
+                    onClose={handleCloseSnackbar}
+                    severity={snackbar.severity}
+                    sx={{ width: '100%' }}
+                    variant="filled"
+                >
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
+        </>
     );
 };
 

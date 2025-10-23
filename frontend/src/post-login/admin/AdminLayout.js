@@ -12,8 +12,9 @@ import AdminDashboard from './AdminDashboard';
 import ManageUsers from './ManageUsers';
 import ManagePayments from './ManagePayments';
 import ViewReports from './ViewReports';
+import AdminSettings from './AdminSettings';
 
-const AdminLayout = () => {
+const AdminLayout = ({onLogout}) => {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState('dashboard');
     const drawerWidth = 260;
@@ -36,6 +37,8 @@ const AdminLayout = () => {
                 return <ManagePayments />;
             case 'view-reports':
                 return <ViewReports />;
+            case 'admin-settings':
+                return <AdminSettings />;
             default:
                 return <AdminDashboard />;
         }
@@ -78,6 +81,7 @@ const AdminLayout = () => {
                 }}
             >
                 <AdminSidebar
+                    onlogout={onLogout}
                     mobileOpen={mobileOpen}
                     onClose={handleDrawerToggle}
                     onNavigate={handleNavigation}

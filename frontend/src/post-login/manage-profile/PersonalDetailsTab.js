@@ -1,58 +1,90 @@
-import React, {useEffect, useState} from 'react';
-import {Box, Typography, TextField,
-    Button, Grid, Avatar, CircularProgress
+import React from 'react';
+import {
+    Box,
+    Typography,
+    TextField,
+    Button,
+    Grid,
+    Avatar,
+    CircularProgress,
+    IconButton
 } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
+import CloseIcon from '@mui/icons-material/Close';
 import {
     Camera,
     Save,
 } from 'lucide-react';
 
+const getProfilePhotoUrl = (profilePhotoPath) => {
+    if (!profilePhotoPath) {
+        return null;
+    }
 
-const PersonalDetailsTab = ({ user,
+    const baseUrl = 'http://localhost:8083';
+    return `${baseUrl}/profile_pictures/${profilePhotoPath}`;
+};
+
+const PersonalDetailsTab = ({
+                                user,
                                 personalDetails,
                                 onPersonalDetailsChange,
                                 onSave,
                                 onReset,
-                                loading
+                                loading,
+                                selectedFile,
+                                previewUrl,
+                                onFileChange,
+                                onClearFile
                             }) => {
-
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-
-    const splitDisplayName = (displayName) => {
-        if (!displayName) return { firstName: '', lastName: '' };
-
-        const parts = displayName.trim().split(' ');
-        const first = parts[0] || '';
-        const last = parts.slice(1).join(' ') || '';
-
-        setFirstName(first);
-        setLastName(last);
-
-        return { firstName: first, lastName: last };
+    const handleFileInputChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            onFileChange(file);
+        }
     };
 
-    useEffect(() => {
-        if (user?.displayName) {
-            splitDisplayName(user.displayName);
-        }
-    }, [user]);
-
-    const handleNameChange = (e) => {
-        const { name, value } = e.target;
-        if (name === 'firstName') {
-            setFirstName(value);
-        } else if (name === 'lastName') {
-            setLastName(value);
-        }
-        // Also call the parent's onChange if needed
-        onPersonalDetailsChange(e);
-    };
-
-    return (
-        <Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
+    // Determine which image to show: preview, existing profile photo, or initials
+    const getAvatarContent = () => {
+        if (previewUrl) {
+            // Show preview of newly selected image
+            return (
+                <Avatar
+                    src={previewUrl}
+                    sx={{
+                        width: 100,
+                        height: 100,
+                        border: '3px solid #facc15'
+                    }}
+                />
+            );
+        } else if (user?.profilePhotoPath) {
+            // Show existing profile photo from database
+            const photoUrl = getProfilePhotoUrl(user.profilePhotoPath);
+            return (
+                <Avatar
+                    src={photoUrl}
+                    alt={`${personalDetails?.firstName || 'User'}'s profile`}
+                    sx={{
+                        width: 100,
+                        height: 100,
+                        border: '2px solid #e5e7eb'
+                    }}
+                    imgProps={{
+                        onError: (e) => {
+                            console.error('Failed to load profile photo:', photoUrl);
+                            // Hide the broken image and show initials instead
+                            e.target.style.display = 'none';
+                        }
+                    }}
+                >
+                    {/* Fallback to initials if image fails */}
+                    {personalDetails?.firstName?.[0] || 'U'}{personalDetails?.lastName?.[0] || ''}
+                </Avatar>
+            );
+        } else {
+            // Show initials as fallback
+            return (
                 <Avatar
                     sx={{
                         width: 100,
@@ -60,22 +92,78 @@ const PersonalDetailsTab = ({ user,
                         bgcolor: '#facc15',
                         color: '#1e293b',
                         fontSize: '2rem',
-                        mr: 3
+                        fontWeight: 'bold'
                     }}
                 >
-                    {firstName?.[0] || 'U'}{lastName?.[0] || ''}
+                    {personalDetails?.firstName?.[0] || 'U'}{personalDetails?.lastName?.[0] || ''}
                 </Avatar>
-                <Box>
+            );
+        }
+    };
+
+    return (
+        <Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 4, position: 'relative' }}>
+                <Box sx={{ position: 'relative' }}>
+                    {getAvatarContent()}
+
+                    {selectedFile && (
+                        <IconButton
+                            onClick={onClearFile}
+                            sx={{
+                                position: 'absolute',
+                                right: -10,
+                                top: -10,
+                                bgcolor: 'error.main',
+                                color: 'white',
+                                '&:hover': { bgcolor: 'error.dark' },
+                                width: 32,
+                                height: 32,
+                                boxShadow: 2
+                            }}
+                            size="small"
+                        >
+                            <CloseIcon fontSize="small" />
+                        </IconButton>
+                    )}
+                </Box>
+
+                <Box sx={{ ml: 3 }}>
                     <Typography variant="h6" gutterBottom>
                         Profile Picture
                     </Typography>
-                    <Button
-                        variant="outlined"
-                        startIcon={<Camera size={16} />}
-                        sx={{ textTransform: 'none' }}
-                    >
-                        Change Photo
-                    </Button>
+                    <input
+                        accept="image/*"
+                        style={{ display: 'none' }}
+                        id="profile-photo-upload"
+                        type="file"
+                        onChange={handleFileInputChange}
+                        disabled={loading}
+                    />
+                    <label htmlFor="profile-photo-upload">
+                        <Button
+                            variant="outlined"
+                            component="span"
+                            startIcon={<Camera size={16} />}
+                            sx={{ textTransform: 'none' }}
+                            disabled={loading}
+                        >
+                            {selectedFile ? 'Change Photo' : user?.profilePhotoPath ? 'Update Photo' : 'Upload Photo'}
+                        </Button>
+                    </label>
+                    {selectedFile && (
+                        <Typography variant="caption" display="block" sx={{ mt: 1, color: 'success.main' }}>
+                            ✓ {selectedFile.name} selected
+                        </Typography>
+                    )}
+                    {user?.profilePhotoPath && !selectedFile && (
+                        <Typography variant="caption" display="block" sx={{ mt: 1, color: 'text.secondary' }}>
+                            Current: {user.profilePhotoPath}
+                        </Typography>
+                    )}
+                    <Typography variant="caption" display="block" sx={{ mt: 0.5, color: 'text.secondary' }}>
+                        Max size: 5MB (JPG, PNG, GIF)
+                    </Typography>
                 </Box>
             </Box>
 
@@ -85,8 +173,8 @@ const PersonalDetailsTab = ({ user,
                         fullWidth
                         label="First Name"
                         name="firstName"
-                        value={firstName}
-                        onChange={handleNameChange}
+                        value={personalDetails?.firstName || ''}
+                        onChange={onPersonalDetailsChange}
                         disabled={loading}
                         required
                     />
@@ -96,8 +184,8 @@ const PersonalDetailsTab = ({ user,
                         fullWidth
                         label="Last Name"
                         name="lastName"
-                        value={lastName}
-                        onChange={handleNameChange}
+                        value={personalDetails?.lastName || ''}
+                        onChange={onPersonalDetailsChange}
                         disabled={loading}
                         required
                     />
@@ -108,7 +196,7 @@ const PersonalDetailsTab = ({ user,
                         label="Email"
                         name="email"
                         type="email"
-                        value={user?.email || ''}
+                        value={personalDetails?.email || ''}
                         onChange={onPersonalDetailsChange}
                         disabled={loading}
                         required
@@ -119,7 +207,7 @@ const PersonalDetailsTab = ({ user,
                         fullWidth
                         label="Username"
                         name="username"
-                        value={user?.username || ''}
+                        value={personalDetails?.username || ''}
                         onChange={onPersonalDetailsChange}
                         disabled={loading}
                         required
@@ -130,7 +218,7 @@ const PersonalDetailsTab = ({ user,
                         fullWidth
                         label="Phone Number"
                         name="phone"
-                        value={user?.phone || ''}
+                        value={personalDetails?.phone || ''}
                         onChange={onPersonalDetailsChange}
                         disabled={loading}
                         required
@@ -142,7 +230,7 @@ const PersonalDetailsTab = ({ user,
                         fullWidth
                         label="ID Number"
                         name="idNumber"
-                        value={user?.idNumber || ''}
+                        value={personalDetails?.idNumber || ''}
                         onChange={onPersonalDetailsChange}
                         disabled={loading}
                         inputProps={{ maxLength: 13 }}
@@ -156,7 +244,7 @@ const PersonalDetailsTab = ({ user,
                         label="Date of Birth"
                         name="dateOfBirth"
                         type="date"
-                        value={user?.dateOfBirth || ''}
+                        value={personalDetails?.dateOfBirth || ''}
                         onChange={onPersonalDetailsChange}
                         disabled={loading}
                         InputLabelProps={{
@@ -169,7 +257,7 @@ const PersonalDetailsTab = ({ user,
                         fullWidth
                         label="Address"
                         name="address"
-                        value={user?.address || ''}
+                        value={personalDetails?.address || ''}
                         onChange={onPersonalDetailsChange}
                         disabled={loading}
                         helperText="Enter your full residential address"
@@ -180,7 +268,6 @@ const PersonalDetailsTab = ({ user,
                 </Grid>
             </Grid>
 
-            {/* Action Buttons */}
             <Box sx={{ mt: 4, display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
                 <Button
                     variant="outlined"

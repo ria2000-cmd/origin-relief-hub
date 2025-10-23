@@ -19,7 +19,7 @@ const SassaService = {
 
     getSassaBalance: async () => {
         try {
-            const balanceResponse = await httpCommon.get('/user/balance');
+            const balanceResponse = await httpCommon.get(`sassa-accounts/${accountId}/balance`);
 
             if (balanceResponse.data && balanceResponse.data.success) {
                 return {

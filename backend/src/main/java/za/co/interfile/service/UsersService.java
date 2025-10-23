@@ -90,7 +90,7 @@ public class UsersService {
         user.updateLastLogin();
         usersRepository.save(user);
 
-        String token = jwtTokenProvider.createToken(user.getUserId(), user.getEmail(), user.getUsername());
+        String token = jwtTokenProvider.createToken(user.getUserId(), user.getEmail(), user.getUsername(), user.getRole());
         long expirationTime = jwtTokenProvider.getExpirationTime();
 
         LoginResponseDto response = new LoginResponseDto();
@@ -220,61 +220,84 @@ public class UsersService {
 
     @Transactional
     public UserResponseDto updateUser(Long userId, UserUpdateDto updateDto, String profilePhotoFileName) {
+
+
         Users user = usersRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
+
         if (updateDto.getFirstName() != null && updateDto.getLastName() != null) {
-            user.setFullName(updateDto.getFirstName() + " " + updateDto.getLastName());
+            String newFullName = updateDto.getFirstName() + " " + updateDto.getLastName();
+            user.setFullName(newFullName);
+
         } else if (updateDto.getFirstName() != null) {
             String[] nameParts = user.getFullName() != null ? user.getFullName().split(" ", 2) : new String[]{""};
             String lastName = nameParts.length > 1 ? nameParts[1] : "";
             user.setFullName(updateDto.getFirstName() + " " + lastName);
+
         } else if (updateDto.getLastName() != null) {
             String[] nameParts = user.getFullName() != null ? user.getFullName().split(" ", 2) : new String[]{""};
             String firstName = nameParts[0];
             user.setFullName(firstName + " " + updateDto.getLastName());
+
         }
+
         if (updateDto.getEmail() != null && !updateDto.getEmail().trim().isEmpty()) {
-            if (usersRepository.existsByEmailAndUserIdNot(updateDto.getEmail(), userId)) {
-                throw new RuntimeException("Email is already taken by another user");
+            if (!updateDto.getEmail().equals(user.getEmail())) {
+                if (usersRepository.existsByEmail(updateDto.getEmail())) {
+                    throw new RuntimeException("Email is already taken by another user");
+                }
+                user.setEmail(updateDto.getEmail());
+                log.info("Setting email to: {}", updateDto.getEmail());
+            } else {
+                log.info("Email unchanged, skipping update");
             }
-            user.setEmail(updateDto.getEmail());
         }
 
         if (updateDto.getUsername() != null && !updateDto.getUsername().trim().isEmpty()) {
-            if (usersRepository.existsByUsernameAndUserIdNot(updateDto.getUsername(), userId)) {
-                throw new RuntimeException("Username is already taken by another user");
+            if (!updateDto.getUsername().equals(user.getUsername())) {
+                if (usersRepository.existsByUsername(updateDto.getUsername())) {
+                    throw new RuntimeException("Username is already taken by another user");
+                }
+                user.setUsername(updateDto.getUsername());
+                log.info("Setting username to: {}", updateDto.getUsername());
+            } else {
+                log.info("Username unchanged, skipping update");
             }
-            user.setUsername(updateDto.getUsername());
         }
 
         if (updateDto.getPhoneNumber() != null && !updateDto.getPhoneNumber().trim().isEmpty()) {
             user.setPhone(updateDto.getPhoneNumber());
+            log.info("Setting phone to: {}", updateDto.getPhoneNumber());
+        }
+
+        if (updateDto.getIdNumber() != null && !updateDto.getIdNumber().trim().isEmpty()) {
+            user.setIdNumber(updateDto.getIdNumber());
+            log.info("Setting ID number to: {}", updateDto.getIdNumber());
         }
 
         if (updateDto.getDateOfBirth() != null) {
             user.setDateOfBirth(updateDto.getDateOfBirth());
+            log.info("Setting date of birth to: {}", updateDto.getDateOfBirth());
         }
 
-        if (updateDto.getAddress() != null) {
+        if (updateDto.getAddress() != null && !updateDto.getAddress().trim().isEmpty()) {
             user.setAddress(updateDto.getAddress());
+            log.info("Setting address to: {}", updateDto.getAddress());
+        } else {
+            log.info("Address is null or empty, skipping");
         }
 
         if (profilePhotoFileName != null) {
             user.setProfilePhotoPath(profilePhotoFileName);
+            log.info("Setting profile photo to: {}", profilePhotoFileName);
         }
 
         user.setUpdatedAt(LocalDateTime.now());
+
         Users savedUser = usersRepository.save(user);
 
-        log.info("Successfully updated profile for user ID: {}", userId);
-
         return convertToDto(savedUser);
-    }
-
-    @Transactional
-    public UserResponseDto updateUser(Long userId, UserUpdateDto updateDto) {
-        return updateUser(userId, updateDto, null);
     }
 
     private UserResponseDto convertToDto(Users user) {
@@ -294,7 +317,6 @@ public class UsersService {
                 .emailVerified(user.getEmailVerified())
                 .phoneVerified(user.getPhoneVerified())
                 .profilePhotoPath(user.getProfilePhotoPath())
-
                 .displayName(user.getDisplayName())
                 .maskedIdNumber(user.getMaskedIdNumber())
                 .age(user.getAgeFromIdNumber())
@@ -302,6 +324,7 @@ public class UsersService {
                 .isFullyVerified(user.isFullyVerified())
                 .canWithdraw(user.canWithdraw())
                 .unreadNotificationCount(user.getUnreadNotificationCount())
+                .role(user.getRole())
                 .build();
     }
     @Transactional
@@ -380,11 +403,11 @@ public class UsersService {
                 Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
 
         Pageable pageable = PageRequest.of(page, size, sort);
-        Page<Users> users = usersRepository.findByStatus(UsersStatus.ACTIVE, pageable);
 
-        return users.map(this::convertToResponseDto);
+        Page<Users> users = usersRepository.findAll(pageable);
+
+        return users.map(this::convertToDto);
     }
-
     public Page<UserResponseDto> getAllUsersByStatus(UsersStatus status, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Page<Users> users = usersRepository.findByStatus(status, pageable);
@@ -429,22 +452,91 @@ public class UsersService {
         return usersRepository.countByStatus(UsersStatus.SUSPENDED);
     }
 
+    @Transactional
+    public void makeUserAdmin(Long userId) {
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        user.setRole("ADMIN");
+        user.setUpdatedAt(LocalDateTime.now());
+        usersRepository.save(user);
+
+        log.info("User {} role updated to ADMIN", userId);
+    }
+
+    @Transactional
+    public UserResponseDto updateUserByAdmin(Long userId, AdminUserUpdateDto updateDto) {
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        if (updateDto.getFullName() != null && !updateDto.getFullName().trim().isEmpty()) {
+            user.setFullName(updateDto.getFullName());
+        }
+
+        if (updateDto.getEmail() != null && !updateDto.getEmail().trim().isEmpty()) {
+            if (!updateDto.getEmail().equals(user.getEmail())) {
+                if (usersRepository.existsByEmail(updateDto.getEmail())) {
+                    throw new RuntimeException("Email is already taken by another user");
+                }
+                user.setEmail(updateDto.getEmail());
+            }
+        }
+
+        if (updateDto.getUsername() != null && !updateDto.getUsername().trim().isEmpty()) {
+            if (!updateDto.getUsername().equals(user.getUsername())) {
+                if (usersRepository.existsByUsername(updateDto.getUsername())) {
+                    throw new RuntimeException("Username is already taken by another user");
+                }
+                user.setUsername(updateDto.getUsername());
+            }
+        }
+
+        if (updateDto.getPhone() != null && !updateDto.getPhone().trim().isEmpty()) {
+            user.setPhone(updateDto.getPhone());
+        }
+
+        if (updateDto.getDateOfBirth() != null) {
+            user.setDateOfBirth(updateDto.getDateOfBirth());
+        }
+
+        if (updateDto.getAddress() != null && !updateDto.getAddress().trim().isEmpty()) {
+            user.setAddress(updateDto.getAddress());
+        }
+
+        if (updateDto.getRole() != null && !updateDto.getRole().trim().isEmpty()) {
+            user.setRole(updateDto.getRole());
+        }
+
+        if (updateDto.getStatus() != null) {
+            user.setStatus(updateDto.getStatus());
+        }
+
+        user.setUpdatedAt(LocalDateTime.now());
+
+        Users savedUser = usersRepository.save(user);
+
+        log.info("User {} updated by admin", userId);
+
+        return convertToDto(savedUser);
+    }
+
     private UserResponseDto convertToResponseDto(Users user) {
         return UserResponseDto.builder()
                 .userId(user.getUserId())
-//                .firstName(user.getFullName())
+                .fullName(user.getFullName())
                 .idNumber(user.getIdNumber())
                 .email(user.getEmail())
                 .username(user.getUsername())
                 .phone(user.getPhone())
                 .address(user.getAddress())
                 .dateOfBirth(user.getDateOfBirth())
-                .status(UsersStatus.valueOf(user.getStatus().name()))
+                .status(user.getStatus())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
                 .lastLogin(user.getLastLogin())
                 .emailVerified(user.getEmailVerified())
                 .phoneVerified(user.getPhoneVerified())
+                .profilePhotoPath(user.getProfilePhotoPath())
                 .displayName(user.getDisplayName())
                 .maskedIdNumber(user.getMaskedIdNumber())
                 .age(user.getAgeFromIdNumber())
@@ -452,6 +544,7 @@ public class UsersService {
                 .isFullyVerified(user.isFullyVerified())
                 .canWithdraw(user.canWithdraw())
                 .unreadNotificationCount(user.getUnreadNotificationCount())
+                .role(user.getRole())
                 .build();
     }
 }

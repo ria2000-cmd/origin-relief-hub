@@ -22,6 +22,7 @@ import {
     Globe,
     Palette
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const PreferencesTab = ({
                             preferences,
@@ -29,6 +30,8 @@ const PreferencesTab = ({
                             onSavePreferences,
                             loading
                         }) => {
+    const { t } = useTranslation();
+
     const PreferenceSection = ({ title, icon, children }) => (
         <Paper sx={{ p: 3, mb: 3, borderRadius: 2 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
@@ -55,7 +58,7 @@ const PreferencesTab = ({
         <Box>
             {/* Notification Preferences */}
             <PreferenceSection
-                title="Notification Preferences"
+                title={t('preferences.notifications')}
                 icon={<Bell size={20} />}
             >
                 <Grid container spacing={2}>
@@ -73,12 +76,12 @@ const PreferencesTab = ({
                             label={
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                     <Mail size={16} />
-                                    Email Notifications
+                                    {t('preferences.emailNotifications')}
                                 </Box>
                             }
                         />
                         <Typography variant="body2" color="text.secondary" sx={{ ml: 4 }}>
-                            Receive important updates via email
+                            {t('preferences.emailNotifications')}
                         </Typography>
                     </Grid>
 
@@ -96,12 +99,12 @@ const PreferencesTab = ({
                             label={
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                     <MessageSquare size={16} />
-                                    SMS Notifications
+                                    {t('preferences.smsNotifications')}
                                 </Box>
                             }
                         />
                         <Typography variant="body2" color="text.secondary" sx={{ ml: 4 }}>
-                            Get text messages for urgent notifications
+                            {t('preferences.smsNotifications')}
                         </Typography>
                     </Grid>
 
@@ -116,10 +119,10 @@ const PreferencesTab = ({
                                     color="primary"
                                 />
                             }
-                            label="Marketing Emails"
+                            label={t('preferences.marketingEmails')}
                         />
                         <Typography variant="body2" color="text.secondary" sx={{ ml: 4 }}>
-                            Receive promotional content and updates
+                            {t('preferences.marketingEmails')}
                         </Typography>
                     </Grid>
 
@@ -137,12 +140,12 @@ const PreferencesTab = ({
                             label={
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                     <Shield size={16} />
-                                    Security Alerts
+                                    {t('preferences.securityAlerts')}
                                 </Box>
                             }
                         />
                         <Typography variant="body2" color="text.secondary" sx={{ ml: 4 }}>
-                            Get notified about account security events
+                            {t('preferences.securityAlerts')}
                         </Typography>
                     </Grid>
                 </Grid>
@@ -150,37 +153,38 @@ const PreferencesTab = ({
 
             {/* General Preferences */}
             <PreferenceSection
-                title="General Preferences"
+                title={t('preferences.generalPreferences')}
                 icon={<Settings size={20} />}
             >
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={6}>
                         <FormControl fullWidth>
-                            <InputLabel>Language</InputLabel>
+                            <InputLabel>{t('preferences.language')}</InputLabel>
                             <Select
                                 value={preferences.language}
-                                label="Language"
+                                label={t('preferences.language')}
                                 name="language"
                                 onChange={onPreferencesChange}
                                 disabled={loading}
                                 startAdornment={<Globe size={16} style={{ marginRight: 8 }} />}
                             >
-                                <MenuItem value="en">English</MenuItem>
-                                <MenuItem value="af">Afrikaans</MenuItem>
-                                <MenuItem value="zu">Zulu</MenuItem>
-                                <MenuItem value="xh">Xhosa</MenuItem>
-                                <MenuItem value="st">Sotho</MenuItem>
-                                <MenuItem value="ts">Tsonga</MenuItem>
+                                <MenuItem value="en">{t('languages.en')}</MenuItem>
+                                <MenuItem value="af">{t('languages.af')}</MenuItem>
+                                <MenuItem value="zu">{t('languages.zu')}</MenuItem>
+                                <MenuItem value="xh">{t('languages.xh')}</MenuItem>
+                                <MenuItem value="st">{t('languages.st')}</MenuItem>
+                                <MenuItem value="ts">{t('languages.ts')}</MenuItem>
+                                <MenuItem value="ve">{t('languages.ve')}</MenuItem>
                             </Select>
                         </FormControl>
                     </Grid>
 
                     <Grid item xs={12} md={6}>
                         <FormControl fullWidth>
-                            <InputLabel>Currency</InputLabel>
+                            <InputLabel>{t('preferences.currency')}</InputLabel>
                             <Select
                                 value={preferences.currency}
-                                label="Currency"
+                                label={t('preferences.currency')}
                                 name="currency"
                                 onChange={onPreferencesChange}
                                 disabled={loading}
@@ -195,17 +199,17 @@ const PreferencesTab = ({
 
                     <Grid item xs={12} md={6}>
                         <FormControl fullWidth>
-                            <InputLabel>Theme</InputLabel>
+                            <InputLabel>{t('preferences.theme')}</InputLabel>
                             <Select
                                 value={preferences.theme}
-                                label="Theme"
+                                label={t('preferences.theme')}
                                 name="theme"
                                 onChange={onPreferencesChange}
                                 disabled={loading}
                                 startAdornment={<Palette size={16} style={{ marginRight: 8 }} />}
                             >
-                                <MenuItem value="light">Light Theme</MenuItem>
-                                <MenuItem value="dark">Dark Theme</MenuItem>
+                                <MenuItem value="light">{t('preferences.light')}</MenuItem>
+                                <MenuItem value="dark">{t('preferences.dark')}</MenuItem>
                                 <MenuItem value="auto">Auto (System)</MenuItem>
                             </Select>
                         </FormControl>
@@ -215,7 +219,7 @@ const PreferencesTab = ({
 
             {/* Security Preferences */}
             <PreferenceSection
-                title="Security & Privacy"
+                title={t('profile.security')}
                 icon={<Shield size={20} />}
             >
                 <Grid container spacing={2}>
@@ -230,10 +234,10 @@ const PreferencesTab = ({
                                     color="primary"
                                 />
                             }
-                            label="Two-Factor Authentication"
+                            label={t('preferences.twoFactorAuth')}
                         />
                         <Typography variant="body2" color="text.secondary" sx={{ ml: 4 }}>
-                            Add an extra layer of security to your account
+                            {t('preferences.twoFactorAuth')}
                         </Typography>
                     </Grid>
 
@@ -261,7 +265,7 @@ const PreferencesTab = ({
                         py: 1.5
                     }}
                 >
-                    {loading ? 'Saving Preferences...' : 'Save All Preferences'}
+                    {loading ? t('common.loading') : t('preferences.savePreferences')}
                 </Button>
             </Box>
         </Box>

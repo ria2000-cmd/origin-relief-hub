@@ -7,6 +7,7 @@ import {
     IconButton
 } from '@mui/material';
 import { Menu } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Sidebar from './Sidebar';
 import DashboardContent from './DashboardContent';
 import ManageProfile from '../manage-profile/ManageProfile';
@@ -15,6 +16,7 @@ import PaymentsAndTransfers from "../payments-and-transfers/PaymentsAndTransfers
 import QuickLinks from "../quick-links/QuickLinks";
 
 const Dashboard = ({ themePreference, setThemePreference, user,onLogout }) => {
+    const { i18n } = useTranslation();
     const [mobileOpen, setMobileOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState('home');
     const drawerWidth = 260;
@@ -25,7 +27,7 @@ const Dashboard = ({ themePreference, setThemePreference, user,onLogout }) => {
         smsNotifications: false,
         marketingEmails: false,
         securityAlerts: true,
-        language: 'en',
+        language: i18n.language || 'en',
         currency: 'ZAR',
         twoFactorAuth: false,
     });
@@ -53,6 +55,10 @@ const Dashboard = ({ themePreference, setThemePreference, user,onLogout }) => {
         }));
         if (name === 'theme') {
             setThemePreference(newValue);
+        }
+        // Change language when language preference is updated
+        if (name === 'language') {
+            i18n.changeLanguage(newValue);
         }
     };
 

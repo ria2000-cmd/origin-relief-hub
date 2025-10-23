@@ -67,7 +67,6 @@ const BuyElectricity = () => {
 
     useEffect(() => {
         fetchBalance();
-        // fetchPurchaseHistory();
     }, []);
 
     useEffect(() => {
@@ -79,15 +78,22 @@ const BuyElectricity = () => {
         }
     }, [formData.amount]);
 
+    useEffect(() => {
+        fetchBalance();
+    }, []);
+
     const fetchBalance = async () => {
         try {
-            const result = await SassaService.getSassaBalance();
+            const result = await SassaService.getUserBalance();
 
-            if (result.success) {
-                setBalance(result.balance);
+
+            if (result && result.data.balance !== undefined) {
+                setBalance(result.data.balance);
+            } else if (result.data && result.data.balance !== undefined) {
+                setBalance(result.data.balance);
             } else {
                 setBalance(0);
-                setError(result.error);
+                setError('Failed to load balance');
             }
         } catch (err) {
             console.error('Error fetching balance:', err);
@@ -96,17 +102,6 @@ const BuyElectricity = () => {
         }
     };
 
-    // const fetchPurchaseHistory = async () => {
-    //     try {
-    //         const response = await ElectricityService.getPurchaseHistory(5);
-    //
-    //         if (response.data.success) {
-    //             setPurchaseHistory(response.data.data);
-    //         }
-    //     } catch (err) {
-    //         console.error('Error fetching history:', err);
-    //     }
-    // };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -173,10 +168,55 @@ const BuyElectricity = () => {
                 municipality: formData.municipality
             });
 
-            if (response.data.success) {
-                setPurchaseResult(response.data.data);
+            console.log('Electricity purchase response:', response);
+            console.log('Response data:', response.data);
+
+            // Handle different response structures from backend
+            let purchaseData = null;
+
+            // Check if response has nested data structure
+            if (response.data && response.data.data) {
+                purchaseData = response.data.data;
+            }
+            // Check if response.data directly contains the purchase info (with token or voucherCode)
+            else if (response.data && (response.data.token || response.data.voucherCode)) {
+                purchaseData = response.data;
+                // Map voucherCode to token for consistency
+                if (response.data.voucherCode && !response.data.token) {
+                    purchaseData.token = response.data.voucherCode;
+                }
+            }
+            // Check if response directly contains the data
+            else if (response.token || response.voucherCode) {
+                purchaseData = response;
+                if (response.voucherCode && !response.token) {
+                    purchaseData.token = response.voucherCode;
+                }
+            }
+
+            console.log('Extracted purchaseData:', purchaseData);
+
+            if (purchaseData) {
+                // Handle timestamp array format [year, month, day, hour, min, sec, nano]
+                if (purchaseData.timestamp && Array.isArray(purchaseData.timestamp) && !purchaseData.tokenExpiryDate) {
+                    const [year, month, day] = purchaseData.timestamp;
+                    // Create expiry date (7 days from purchase)
+                    const purchaseDate = new Date(year, month - 1, day);
+                    const expiryDate = new Date(purchaseDate);
+                    expiryDate.setDate(expiryDate.getDate() + 7);
+                    purchaseData.tokenExpiryDate = expiryDate.toISOString();
+                }
+
+                setPurchaseResult(purchaseData);
                 setShowSuccess(true);
-                setBalance(response.data.data.remainingBalance);
+
+                // Update balance if provided
+                if (purchaseData.remainingBalance !== undefined) {
+                    setBalance(purchaseData.remainingBalance);
+                } else {
+                    // Recalculate balance if not provided
+                    setBalance(prev => prev - parseFloat(formData.amount));
+                }
 
                 // Clear form
                 setFormData({
@@ -184,13 +224,15 @@ const BuyElectricity = () => {
                     meterNumber: '',
                     municipality: ''
                 });
-
-                // Refresh history
-                // fetchPurchaseHistory();
+            } else {
+                // If we can't find the proper structure, but got a 200 response
+                console.warn('Unexpected response structure, but transaction may have succeeded');
+                setError('Transaction completed but response format unexpected. Please check your purchase history.');
             }
 
         } catch (err) {
             console.error('Electricity purchase error:', err);
+            console.error('Error response:', err.response);
             setError(err.response?.data?.message || 'Purchase failed. Please try again.');
         } finally {
             setLoading(false);
@@ -415,73 +457,109 @@ const BuyElectricity = () => {
                     Electricity Purchase Successful!
                 </DialogTitle>
                 <DialogContent sx={{ mt: 2 }}>
-                    {purchaseResult && (
+                    {purchaseResult ? (
                         <Box>
                             <Typography variant="body1" sx={{ mb: 3 }}>
                                 Your electricity has been purchased successfully!
                             </Typography>
 
                             {/* Token Display */}
-                            <Paper sx={{ p: 3, mb: 3, bgcolor: '#f0fdf4', border: '2px solid #10b981' }}>
-                                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                                    Electricity Token
-                                </Typography>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                                    <Typography
-                                        variant="h5"
-                                        fontWeight="bold"
-                                        sx={{ fontFamily: 'monospace', letterSpacing: 2 }}
-                                    >
-                                        {purchaseResult.token}
+                            {purchaseResult.token && (
+                                <Paper sx={{ p: 3, mb: 3, bgcolor: '#f0fdf4', border: '2px solid #10b981' }}>
+                                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                                        Electricity Token
                                     </Typography>
-                                    <Button
-                                        size="small"
-                                        startIcon={<Copy size={16} />}
-                                        onClick={() => copyToClipboard(purchaseResult.token.replace(/-/g, ''), 'Token')}
-                                    >
-                                        Copy
-                                    </Button>
-                                </Box>
-                                <Typography variant="caption" color="text.secondary">
-                                    Enter this 20-digit token on your prepaid meter
-                                </Typography>
-                            </Paper>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                                        <Typography
+                                            variant="h5"
+                                            fontWeight="bold"
+                                            sx={{ fontFamily: 'monospace', letterSpacing: 2 }}
+                                        >
+                                            {purchaseResult.token}
+                                        </Typography>
+                                        <Button
+                                            size="small"
+                                            startIcon={<Copy size={16} />}
+                                            onClick={() => copyToClipboard(purchaseResult.token.replace(/-/g, ''), 'Token')}
+                                        >
+                                            Copy
+                                        </Button>
+                                    </Box>
+                                    <Typography variant="caption" color="text.secondary">
+                                        Enter this 20-digit token on your prepaid meter
+                                    </Typography>
+                                </Paper>
+                            )}
 
                             {/* Purchase Details */}
                             <Box sx={{ mb: 2 }}>
-                                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                                    <Typography variant="body2">Amount Paid</Typography>
-                                    <Typography variant="body2" fontWeight="600">
-                                        R {purchaseResult.amount.toFixed(2)}
-                                    </Typography>
-                                </Box>
-                                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                                    <Typography variant="body2">Units Purchased</Typography>
-                                    <Typography variant="body2" fontWeight="600" color="#10b981">
-                                        {purchaseResult.units.toFixed(2)} kWh
-                                    </Typography>
-                                </Box>
-                                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                                    <Typography variant="body2">Meter Number</Typography>
-                                    <Typography variant="body2" fontWeight="600">
-                                        {purchaseResult.meterNumber}
-                                    </Typography>
-                                </Box>
-                                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                                    <Typography variant="body2">Remaining Balance</Typography>
-                                    <Typography variant="body2" fontWeight="600" color="primary">
-                                        R {purchaseResult.remainingBalance.toFixed(2)}
-                                    </Typography>
-                                </Box>
+                                {purchaseResult.transactionReference && (
+                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                                        <Typography variant="body2">Reference</Typography>
+                                        <Typography variant="body2" fontWeight="600" sx={{ fontFamily: 'monospace' }}>
+                                            {purchaseResult.transactionReference}
+                                        </Typography>
+                                    </Box>
+                                )}
+                                {purchaseResult.amount !== undefined && (
+                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                                        <Typography variant="body2">Amount</Typography>
+                                        <Typography variant="body2" fontWeight="600">
+                                            R {Number(purchaseResult.amount).toFixed(2)}
+                                        </Typography>
+                                    </Box>
+                                )}
+                                {purchaseResult.fee !== undefined && (
+                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                                        <Typography variant="body2">Fee</Typography>
+                                        <Typography variant="body2" fontWeight="600">
+                                            R {Number(purchaseResult.fee).toFixed(2)}
+                                        </Typography>
+                                    </Box>
+                                )}
+                                {purchaseResult.totalCost !== undefined && (
+                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1, pb: 1, borderBottom: '1px solid #e5e7eb' }}>
+                                        <Typography variant="body2" fontWeight="bold">Total Cost</Typography>
+                                        <Typography variant="body2" fontWeight="bold">
+                                            R {Number(purchaseResult.totalCost).toFixed(2)}
+                                        </Typography>
+                                    </Box>
+                                )}
+                                {purchaseResult.units !== undefined && (
+                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1, mt: 2 }}>
+                                        <Typography variant="body2">Units Purchased</Typography>
+                                        <Typography variant="body2" fontWeight="600" color="#10b981">
+                                            {Number(purchaseResult.units).toFixed(2)} kWh
+                                        </Typography>
+                                    </Box>
+                                )}
+                                {purchaseResult.meterNumber && (
+                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                                        <Typography variant="body2">Meter Number</Typography>
+                                        <Typography variant="body2" fontWeight="600">
+                                            {purchaseResult.meterNumber}
+                                        </Typography>
+                                    </Box>
+                                )}
+                                {purchaseResult.remainingBalance !== undefined && (
+                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1, pt: 1, borderTop: '1px solid #e5e7eb' }}>
+                                        <Typography variant="body2" fontWeight="bold">Remaining Balance</Typography>
+                                        <Typography variant="body2" fontWeight="bold" color="primary">
+                                            R {Number(purchaseResult.remainingBalance).toFixed(2)}
+                                        </Typography>
+                                    </Box>
+                                )}
                             </Box>
 
-                            <Chip
-                                icon={<Calendar size={16} />}
-                                label={`Valid until ${new Date(purchaseResult.tokenExpiryDate).toLocaleDateString()}`}
-                                color="info"
-                                size="small"
-                                sx={{ mb: 2 }}
-                            />
+                            {purchaseResult.tokenExpiryDate && (
+                                <Chip
+                                    icon={<Calendar size={16} />}
+                                    label={`Valid until ${new Date(purchaseResult.tokenExpiryDate).toLocaleDateString()}`}
+                                    color="info"
+                                    size="small"
+                                    sx={{ mb: 2 }}
+                                />
+                            )}
 
                             <Box sx={{ mt: 3, p: 2, bgcolor: '#dbeafe', borderRadius: 1 }}>
                                 <Typography variant="body2" sx={{ color: '#1e40af' }}>
@@ -494,6 +572,12 @@ const BuyElectricity = () => {
                                     3. Your units will be loaded instantly
                                 </Typography>
                             </Box>
+                        </Box>
+                    ) : (
+                        <Box sx={{ textAlign: 'center', py: 3 }}>
+                            <Typography variant="body1" color="text.secondary">
+                                Electricity purchase successful! Please check your purchase history for details.
+                            </Typography>
                         </Box>
                     )}
                 </DialogContent>

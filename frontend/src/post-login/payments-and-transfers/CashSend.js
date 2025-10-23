@@ -32,13 +32,16 @@ const CashSend = () => {
 
     const fetchBalance = async () => {
         try {
-            const result = await SassaService.getSassaBalance();
+            const result = await SassaService.getUserBalance();
+            console.log('result', result)
 
-            if (result.success) {
-                setBalance(result.balance);
+            if (result && result.data.balance !== undefined) {
+                setBalance(result.data.balance);
+            } else if (result.data && result.data.balance !== undefined) {
+                setBalance(result.data.balance);
             } else {
                 setBalance(0);
-                setError(result.error);
+                setError('Failed to load balance');
             }
         } catch (err) {
             console.error('Error fetching balance:', err);
@@ -118,10 +121,38 @@ const CashSend = () => {
                 message: formData.message || null
             });
 
-            if (response.data.success) {
-                setCashSendResult(response.data.data);
+            console.log('Cash send response:', response);
+            console.log('Response data:', response.data);
+
+            // Handle different response structures from backend
+            let cashSendData = null;
+
+            // Check if response has nested data structure
+            if (response.data && response.data.data) {
+                cashSendData = response.data.data;
+            }
+            // Check if response.data directly contains the cash send info
+            else if (response.data && response.data.voucherCode) {
+                cashSendData = response.data;
+            }
+            // Check if response directly contains the data
+            else if (response.voucherCode) {
+                cashSendData = response;
+            }
+
+            console.log('Extracted cashSendData:', cashSendData);
+
+            if (cashSendData) {
+                setCashSendResult(cashSendData);
                 setShowSuccess(true);
-                setBalance(response.data.data.remainingBalance);
+
+                // Update balance if provided
+                if (cashSendData.remainingBalance !== undefined) {
+                    setBalance(cashSendData.remainingBalance);
+                } else {
+                    // Recalculate balance if not provided
+                    setBalance(prev => prev - getTotalCost());
+                }
 
                 // Clear form
                 setFormData({
@@ -130,10 +161,15 @@ const CashSend = () => {
                     recipientName: '',
                     message: ''
                 });
+            } else {
+                // If we can't find the proper structure, but got a 200 response
+                console.warn('Unexpected response structure, but transaction may have succeeded');
+                setError('Transaction completed but response format unexpected. Please check your transaction history.');
             }
 
         } catch (err) {
             console.error('Cash send error:', err);
+            console.error('Error response:', err.response);
             setError(err.response?.data?.message || 'Cash send failed. Please try again.');
         } finally {
             setLoading(false);
@@ -151,7 +187,6 @@ const CashSend = () => {
         setCashSendResult(null);
     };
 
-    // Collection points in South Africa
     const collectionPoints = [
         { name: 'Pick n Pay', icon: <Store size={24} /> },
         { name: 'Shoprite', icon: <Store size={24} /> },
@@ -171,7 +206,6 @@ const CashSend = () => {
                 Send cash to anyone with a phone number - no bank account needed
             </Typography>
 
-            {/* Balance Card */}
             <Paper sx={{ p: 3, mb: 3, borderRadius: 2, bgcolor: '#1e3a8a', color: 'white' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <Box>
@@ -185,7 +219,6 @@ const CashSend = () => {
                 </Box>
             </Paper>
 
-            {/* Alerts */}
             {error && (
                 <Alert severity="error" sx={{ mb: 3 }} onClose={() => setError('')}>
                     {error}
@@ -197,14 +230,12 @@ const CashSend = () => {
                 </Alert>
             )}
 
-            {/* Cash Send Form */}
             <Paper sx={{ p: 4, borderRadius: 3, mb: 3 }}>
                 <form onSubmit={handleSendCash}>
                     <Typography variant="h6" fontWeight="600" sx={{ mb: 3 }}>
                         Send Cash Details
                     </Typography>
 
-                    {/* Amount */}
                     <TextField
                         fullWidth
                         label="Amount"
@@ -222,7 +253,6 @@ const CashSend = () => {
                         helperText="Minimum: R10 | Maximum: R3,000"
                     />
 
-                    {/* Fee Display */}
                     {formData.amount && (
                         <Box sx={{ mb: 3, p: 2, bgcolor: '#f3f4f6', borderRadius: 1 }}>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
@@ -247,7 +277,6 @@ const CashSend = () => {
                         </Box>
                     )}
 
-                    {/* Recipient Phone */}
                     <TextField
                         fullWidth
                         label="Recipient Phone Number"
@@ -269,7 +298,6 @@ const CashSend = () => {
                         helperText="Enter 10-digit South African number"
                     />
 
-                    {/* Recipient Name */}
                     <TextField
                         fullWidth
                         label="Recipient Name"
@@ -373,74 +401,88 @@ const CashSend = () => {
                     Cash Send Successful!
                 </DialogTitle>
                 <DialogContent sx={{ mt: 2 }}>
-                    {cashSendResult && (
+                    {cashSendResult ? (
                         <Box>
                             <Typography variant="body1" sx={{ mb: 3 }}>
-                                Cash has been sent to <strong>{cashSendResult.recipientName}</strong> ({cashSendResult.recipientPhone})
+                                Cash has been sent to <strong>{cashSendResult.recipientName || 'Recipient'}</strong>
+                                {cashSendResult.recipientPhone && ` (${cashSendResult.recipientPhone})`}
                             </Typography>
 
-                            <Paper sx={{ p: 2, bgcolor: '#f3f4f6', mb: 2 }}>
-                                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                                    Voucher Code
-                                </Typography>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                    <Typography variant="h6" fontWeight="bold" sx={{ fontFamily: 'monospace' }}>
-                                        {cashSendResult.voucherCode}
+                            {cashSendResult.voucherCode && (
+                                <Paper sx={{ p: 2, bgcolor: '#f3f4f6', mb: 2 }}>
+                                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                                        Voucher Code
                                     </Typography>
-                                    <Button
-                                        size="small"
-                                        startIcon={<Copy size={16} />}
-                                        onClick={() => copyToClipboard(cashSendResult.voucherCode, 'Voucher code')}
-                                    >
-                                        Copy
-                                    </Button>
-                                </Box>
-                            </Paper>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                        <Typography variant="h6" fontWeight="bold" sx={{ fontFamily: 'monospace' }}>
+                                            {cashSendResult.voucherCode}
+                                        </Typography>
+                                        <Button
+                                            size="small"
+                                            startIcon={<Copy size={16} />}
+                                            onClick={() => copyToClipboard(cashSendResult.voucherCode, 'Voucher code')}
+                                        >
+                                            Copy
+                                        </Button>
+                                    </Box>
+                                </Paper>
+                            )}
 
-                            <Paper sx={{ p: 2, bgcolor: '#f3f4f6', mb: 2 }}>
-                                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                                    PIN
-                                </Typography>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                    <Typography variant="h6" fontWeight="bold" sx={{ fontFamily: 'monospace' }}>
-                                        {cashSendResult.pin}
+                            {cashSendResult.pin && (
+                                <Paper sx={{ p: 2, bgcolor: '#f3f4f6', mb: 2 }}>
+                                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                                        PIN
                                     </Typography>
-                                    <Button
-                                        size="small"
-                                        startIcon={<Copy size={16} />}
-                                        onClick={() => copyToClipboard(cashSendResult.pin, 'PIN')}
-                                    >
-                                        Copy
-                                    </Button>
-                                </Box>
-                            </Paper>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                        <Typography variant="h6" fontWeight="bold" sx={{ fontFamily: 'monospace' }}>
+                                            {cashSendResult.pin}
+                                        </Typography>
+                                        <Button
+                                            size="small"
+                                            startIcon={<Copy size={16} />}
+                                            onClick={() => copyToClipboard(cashSendResult.pin, 'PIN')}
+                                        >
+                                            Copy
+                                        </Button>
+                                    </Box>
+                                </Paper>
+                            )}
 
                             <Box sx={{ mb: 2 }}>
-                                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                                    <Typography variant="body2">Amount Sent</Typography>
-                                    <Typography variant="body2" fontWeight="600">
-                                        R {cashSendResult.amount.toFixed(2)}
-                                    </Typography>
-                                </Box>
-                                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                                    <Typography variant="body2">Fee</Typography>
-                                    <Typography variant="body2" fontWeight="600">
-                                        R {cashSendResult.fee.toFixed(2)}
-                                    </Typography>
-                                </Box>
-                                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                                    <Typography variant="body2">Remaining Balance</Typography>
-                                    <Typography variant="body2" fontWeight="600" color="primary">
-                                        R {cashSendResult.remainingBalance.toFixed(2)}
-                                    </Typography>
-                                </Box>
+                                {cashSendResult.amount !== undefined && (
+                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                                        <Typography variant="body2">Amount Sent</Typography>
+                                        <Typography variant="body2" fontWeight="600">
+                                            R {Number(cashSendResult.amount).toFixed(2)}
+                                        </Typography>
+                                    </Box>
+                                )}
+                                {cashSendResult.fee !== undefined && (
+                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                                        <Typography variant="body2">Fee</Typography>
+                                        <Typography variant="body2" fontWeight="600">
+                                            R {Number(cashSendResult.fee).toFixed(2)}
+                                        </Typography>
+                                    </Box>
+                                )}
+                                {cashSendResult.remainingBalance !== undefined && (
+                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                                        <Typography variant="body2">Remaining Balance</Typography>
+                                        <Typography variant="body2" fontWeight="600" color="primary">
+                                            R {Number(cashSendResult.remainingBalance).toFixed(2)}
+                                        </Typography>
+                                    </Box>
+                                )}
                             </Box>
 
-                            <Chip
-                                label={`Valid until ${new Date(cashSendResult.expiryDate).toLocaleDateString()}`}
-                                color="info"
-                                size="small"
-                            />
+                            {cashSendResult.expiryDate && (
+                                <Chip
+                                    label={`Valid until ${new Date(cashSendResult.expiryDate).toLocaleDateString()}`}
+                                    color="info"
+                                    size="small"
+                                    sx={{ mb: 2 }}
+                                />
+                            )}
 
                             <Box sx={{ mt: 3, p: 2, bgcolor: '#dbeafe', borderRadius: 1 }}>
                                 <Typography variant="body2" sx={{ color: '#1e40af' }}>
@@ -448,6 +490,12 @@ const CashSend = () => {
                                     They can collect cash at Pick n Pay, Shoprite, Checkers, or any major bank ATM.
                                 </Typography>
                             </Box>
+                        </Box>
+                    ) : (
+                        <Box sx={{ textAlign: 'center', py: 3 }}>
+                            <Typography variant="body1" color="text.secondary">
+                                Cash send successful! Please check your transaction history for details.
+                            </Typography>
                         </Box>
                     )}
                 </DialogContent>

@@ -72,6 +72,13 @@ public class Users implements UserDetails {
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
+    @Column(name = "profile_photo_path")
+    private String profilePhotoPath;
+
+    @Column(name = "role", nullable = false)
+    @Builder.Default
+    private String role = "USER";
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     @Builder.Default
@@ -95,9 +102,6 @@ public class Users implements UserDetails {
     @Column(name = "phone_verified")
     @Builder.Default
     private Boolean phoneVerified = false;
-
-    @Column(name = "profile_photo_path")
-    private String profilePhotoPath;
 
     // Relationships
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -142,7 +146,8 @@ public class Users implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> "ROLE_USER");
+        String userRole = this.role != null ? this.role : "USER";
+        return List.of(() -> "ROLE_" + userRole);
     }
 
     @Override

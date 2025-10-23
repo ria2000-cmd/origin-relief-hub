@@ -17,7 +17,16 @@ import {
     Menu,
     MenuItem,
     Alert,
-    InputAdornment
+    InputAdornment,
+    Snackbar,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    CircularProgress,
+    FormControl,
+    InputLabel,
+    Select
 } from '@mui/material';
 import {
     Search,
@@ -31,21 +40,75 @@ import {
     Calendar,
     DollarSign
 } from 'lucide-react';
+import AdminService from '../../service/admin-service';
 
 const ManagePayments = () => {
     const [payments, setPayments] = useState([]);
+    const [users, setUsers] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [filterStatus, setFilterStatus] = useState('All');
     const [anchorEl, setAnchorEl] = useState(null);
     const [selectedPayment, setSelectedPayment] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [snackbar, setSnackbar] = useState({
+        open: false,
+        message: '',
+        severity: 'success'
+    });
+
+    // Process Payment Dialog
+    const [processDialogOpen, setProcessDialogOpen] = useState(false);
+    const [processLoading, setProcessLoading] = useState(false);
+    const [paymentFormData, setPaymentFormData] = useState({
+        userId: '',
+        userName: '',
+        email: '',
+        amount: '',
+        type: 'Grant Payment',
+        paymentMethod: 'Bank Transfer',
+        description: ''
+    });
 
     useEffect(() => {
-        // Load payments from API or mock data
-        const mockPayments = [
+        fetchUsers();
+        fetchPayments();
+    }, []);
+
+    const fetchUsers = async () => {
+        try {
+            const response = await AdminService.getAllUsers();
+            console.log('Users response:', response);
+
+            let usersData = [];
+
+            // Handle different response structures
+            if (response.data && response.data.content && Array.isArray(response.data.content)) {
+                usersData = response.data.content;
+            } else if (Array.isArray(response.data)) {
+                usersData = response.data;
+            }
+
+            console.log('Parsed users:', usersData);
+            setUsers(usersData);
+        } catch (error) {
+            console.error('Error fetching users:', error);
+            setSnackbar({
+                open: true,
+                message: 'Failed to load users',
+                severity: 'error'
+            });
+        }
+    };
+
+    const fetchPayments = async () => {
+        setLoading(true);
+        try {
+            // For now, use mock data - you can replace this with actual API call
+            const mockPayments = [
             {
                 id: 1,
-                user: 'John Doe',
-                email: 'john.doe@example.com',
+                user: 'Ria Maluta',
+                email: 'ree@gmail.com',
                 amount: 1850,
                 status: 'Completed',
                 type: 'Grant Payment',
@@ -55,8 +118,8 @@ const ManagePayments = () => {
             },
             {
                 id: 2,
-                user: 'Jane Smith',
-                email: 'jane.smith@example.com',
+                user: 'Ria Maluta',
+                email: 'riam@interfile.co.za',
                 amount: 2100,
                 status: 'Pending',
                 type: 'Emergency Relief',
@@ -66,8 +129,8 @@ const ManagePayments = () => {
             },
             {
                 id: 3,
-                user: 'Bob Johnson',
-                email: 'bob.johnson@example.com',
+                user: 'hulk hulk',
+                email: 'riammm@interfile.co.za',
                 amount: 1500,
                 status: 'Failed',
                 type: 'Grant Payment',
@@ -75,20 +138,19 @@ const ManagePayments = () => {
                 transactionId: 'TXN-12347',
                 paymentMethod: 'Mobile Money'
             },
-            {
-                id: 4,
-                user: 'Alice Brown',
-                email: 'alice.brown@example.com',
-                amount: 3200,
-                status: 'Processing',
-                type: 'Disability Grant',
-                date: '2024-03-13',
-                transactionId: 'TXN-12348',
-                paymentMethod: 'Bank Transfer'
-            },
         ];
-        setPayments(mockPayments);
-    }, []);
+            setPayments(mockPayments);
+        } catch (error) {
+            console.error('Error fetching payments:', error);
+            setSnackbar({
+                open: true,
+                message: 'Failed to load payments',
+                severity: 'error'
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleMenuOpen = (event, payment) => {
         setAnchorEl(event.currentTarget);
@@ -119,6 +181,206 @@ const ManagePayments = () => {
             p.id === payment.id ? { ...p, status: 'Failed' } : p
         ));
         handleMenuClose();
+    };
+
+    // Export to CSV Function
+    const handleExportCSV = () => {
+        try {
+            // Define CSV headers
+            const headers = [
+                'Transaction ID',
+                'User Name',
+                'Email',
+                'Amount (ZAR)',
+                'Type',
+                'Status',
+                'Payment Method',
+                'Date',
+                'Total Amount'
+            ];
+
+            // Convert payments data to CSV format
+            const csvData = filteredPayments.map(payment => {
+                return [
+                    payment.transactionId || '',
+                    payment.user || '',
+                    payment.email || '',
+                    payment.amount || 0,
+                    payment.type || '',
+                    payment.status || '',
+                    payment.paymentMethod || '',
+                    payment.date || '',
+                    formatCurrency(payment.amount)
+                ].map(field => {
+                    // Escape fields that contain commas, quotes, or newlines
+                    const fieldStr = String(field);
+                    if (fieldStr.includes(',') || fieldStr.includes('"') || fieldStr.includes('\n')) {
+                        return `"${fieldStr.replace(/"/g, '""')}"`;
+                    }
+                    return fieldStr;
+                }).join(',');
+            });
+
+            // Add summary row
+            const summaryRow = [
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                'TOTAL:',
+                formatCurrency(getTotalAmount())
+            ].join(',');
+
+            // Combine headers, data, and summary
+            const csv = [
+                headers.join(','),
+                ...csvData,
+                '',
+                summaryRow,
+                '',
+                `Report Generated: ${new Date().toLocaleString()}`,
+                `Total Transactions: ${filteredPayments.length}`,
+                `Completed: ${statusCounts.completed}`,
+                `Pending: ${statusCounts.pending}`,
+                `Processing: ${statusCounts.processing}`,
+                `Failed: ${statusCounts.failed}`
+            ].join('\n');
+
+            // Create blob and download
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+
+            link.setAttribute('href', url);
+            link.setAttribute('download', `payment_report_${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            setSnackbar({
+                open: true,
+                message: `Successfully exported ${filteredPayments.length} payments to CSV`,
+                severity: 'success'
+            });
+        } catch (error) {
+            console.error('Error exporting CSV:', error);
+            setSnackbar({
+                open: true,
+                message: 'Failed to export CSV. Please try again.',
+                severity: 'error'
+            });
+        }
+    };
+
+    const handleCloseSnackbar = () => {
+        setSnackbar({ ...snackbar, open: false });
+    };
+
+    // Process Payment Functions
+    const handleOpenProcessDialog = () => {
+        setProcessDialogOpen(true);
+    };
+
+    const handleCloseProcessDialog = () => {
+        setProcessDialogOpen(false);
+        setPaymentFormData({
+            userId: '',
+            userName: '',
+            email: '',
+            amount: '',
+            type: 'Grant Payment',
+            paymentMethod: 'Bank Transfer',
+            description: ''
+        });
+    };
+
+    const handlePaymentFormChange = (e) => {
+        const { name, value } = e.target;
+        setPaymentFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleUserSelection = (e) => {
+        const selectedUserId = e.target.value;
+        const selectedUser = users.find(user => user.id === selectedUserId);
+
+        if (selectedUser) {
+            setPaymentFormData(prev => ({
+                ...prev,
+                userId: selectedUserId,
+                userName: selectedUser.fullName || selectedUser.displayName || '',
+                email: selectedUser.email || ''
+            }));
+        }
+    };
+
+    const handleProcessPayment = async () => {
+        // Validate form
+        if (!paymentFormData.userId || !paymentFormData.amount) {
+            setSnackbar({
+                open: true,
+                message: 'Please select a user and enter an amount',
+                severity: 'error'
+            });
+            return;
+        }
+
+        if (parseFloat(paymentFormData.amount) <= 0) {
+            setSnackbar({
+                open: true,
+                message: 'Amount must be greater than 0',
+                severity: 'error'
+            });
+            return;
+        }
+
+        setProcessLoading(true);
+
+        try {
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            // Create new payment
+            const newPayment = {
+                id: payments.length + 1,
+                user: paymentFormData.userName,
+                email: paymentFormData.email,
+                amount: parseFloat(paymentFormData.amount),
+                status: 'Processing',
+                type: paymentFormData.type,
+                date: new Date().toISOString().split('T')[0],
+                transactionId: `TXN-${Date.now().toString().slice(-5)}`,
+                paymentMethod: paymentFormData.paymentMethod,
+                description: paymentFormData.description
+            };
+
+            // Add to payments list
+            setPayments([newPayment, ...payments]);
+
+            setSnackbar({
+                open: true,
+                message: `Payment of ${formatCurrency(parseFloat(paymentFormData.amount))} processed successfully`,
+                severity: 'success'
+            });
+
+            handleCloseProcessDialog();
+        } catch (error) {
+            console.error('Error processing payment:', error);
+            setSnackbar({
+                open: true,
+                message: 'Failed to process payment. Please try again.',
+                severity: 'error'
+            });
+        } finally {
+            setProcessLoading(false);
+        }
     };
 
     const filteredPayments = payments.filter(payment => {
@@ -245,6 +507,8 @@ const ManagePayments = () => {
                                 variant="outlined"
                                 startIcon={<Download size={16} />}
                                 sx={{ textTransform: 'none' }}
+                                onClick={handleExportCSV}
+                                disabled={filteredPayments.length === 0}
                             >
                                 Export Report
                             </Button>
@@ -252,6 +516,7 @@ const ManagePayments = () => {
                                 variant="gold"
                                 startIcon={<Plus size={16} />}
                                 sx={{ textTransform: 'none' }}
+                                onClick={handleOpenProcessDialog}
                             >
                                 Process Payment
                             </Button>
@@ -393,6 +658,151 @@ const ManagePayments = () => {
                     </>
                 )}
             </Menu>
+
+            {/* Process Payment Dialog */}
+            <Dialog
+                open={processDialogOpen}
+                onClose={handleCloseProcessDialog}
+                maxWidth="sm"
+                fullWidth
+            >
+                <DialogTitle sx={{ bgcolor: '#facc15', color: '#1e3a8a', fontWeight: 'bold' }}>
+                    Process New Payment
+                </DialogTitle>
+                <DialogContent sx={{ mt: 2 }}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <FormControl fullWidth required disabled={processLoading}>
+                                <InputLabel>Select User</InputLabel>
+                                <Select
+                                    value={paymentFormData.userId}
+                                    onChange={handleUserSelection}
+                                    label="Select User"
+                                >
+                                    {users.length === 0 ? (
+                                        <MenuItem disabled>No users available</MenuItem>
+                                    ) : (
+                                        users.map((user) => (
+                                            <MenuItem key={user.id} value={user.id}>
+                                                {user.fullName || user.displayName || user.username || 'Unknown User'} ({user.email})
+                                            </MenuItem>
+                                        ))
+                                    )}
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        {paymentFormData.userId && (
+                            <Grid item xs={12}>
+                                <Alert severity="info" sx={{ py: 0.5 }}>
+                                    <Typography variant="body2">
+                                        <strong>Selected User:</strong> {paymentFormData.userName}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        <strong>Email:</strong> {paymentFormData.email}
+                                    </Typography>
+                                </Alert>
+                            </Grid>
+                        )}
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                fullWidth
+                                label="Amount (ZAR)"
+                                name="amount"
+                                type="number"
+                                value={paymentFormData.amount}
+                                onChange={handlePaymentFormChange}
+                                required
+                                disabled={processLoading}
+                                InputProps={{
+                                    startAdornment: <InputAdornment position="start">R</InputAdornment>,
+                                }}
+                                inputProps={{ min: 0, step: 0.01 }}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                fullWidth
+                                select
+                                label="Payment Type"
+                                name="type"
+                                value={paymentFormData.type}
+                                onChange={handlePaymentFormChange}
+                                disabled={processLoading}
+                            >
+                                <MenuItem value="Grant Payment">Grant Payment</MenuItem>
+                                <MenuItem value="Emergency Relief">Emergency Relief</MenuItem>
+                                <MenuItem value="Disability Grant">Disability Grant</MenuItem>
+                                <MenuItem value="Child Support">Child Support</MenuItem>
+                                <MenuItem value="Old Age Pension">Old Age Pension</MenuItem>
+                            </TextField>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                fullWidth
+                                select
+                                label="Payment Method"
+                                name="paymentMethod"
+                                value={paymentFormData.paymentMethod}
+                                onChange={handlePaymentFormChange}
+                                disabled={processLoading}
+                            >
+                                <MenuItem value="Bank Transfer">Bank Transfer</MenuItem>
+                                <MenuItem value="Mobile Money">Mobile Money</MenuItem>
+                                <MenuItem value="Cash">Cash</MenuItem>
+                                <MenuItem value="Check">Check</MenuItem>
+                            </TextField>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                fullWidth
+                                label="Description (Optional)"
+                                name="description"
+                                value={paymentFormData.description}
+                                onChange={handlePaymentFormChange}
+                                multiline
+                                rows={3}
+                                disabled={processLoading}
+                                placeholder="Add any additional notes..."
+                            />
+                        </Grid>
+                    </Grid>
+                </DialogContent>
+                <DialogActions sx={{ px: 3, pb: 2 }}>
+                    <Button
+                        onClick={handleCloseProcessDialog}
+                        disabled={processLoading}
+                        sx={{ textTransform: 'none' }}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        onClick={handleProcessPayment}
+                        variant="contained"
+                        disabled={processLoading}
+                        startIcon={processLoading ? <CircularProgress size={16} /> : <Plus size={16} />}
+                        sx={{
+                            bgcolor: '#facc15',
+                            color: '#1e3a8a',
+                            textTransform: 'none',
+                            '&:hover': { bgcolor: '#eab308' }
+                        }}
+                    >
+                        {processLoading ? 'Processing...' : 'Process Payment'}
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* Snackbar for notifications */}
+            <Snackbar
+                open={snackbar.open}
+                autoHideDuration={4000}
+                onClose={handleCloseSnackbar}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
         </Box>
     );
 };

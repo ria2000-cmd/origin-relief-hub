@@ -19,5 +19,5 @@ public class UserUpdateDto {
     private String phoneNumber;
     private LocalDate dateOfBirth;
     private String address;
-
+    private String idNumber;
 }

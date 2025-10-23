@@ -5,45 +5,47 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="70b2db9c-433d-42e2-bd08-689132dfd35f" name="Changes" comment="back-end changes">
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/CashSendData.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/WithdrawalHistoryDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/.idea/frontend.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/post-login/quick-links/QuickLinks.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/service/withdraw-service.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/relief-hub.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/config/WebConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/call-center/CallCenterModal.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/chatbot/ChatbotModal.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/post-login/admin/AddUserDialog.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/post-login/admin/DeleteConfirmationDialog.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/post-login/admin/EditUserDialog.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/service/admin-service.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/utils/imageUtils.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/controller/CashSendController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/controller/CashSendController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/controller/ElectricityController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/controller/ElectricityController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/controller/PaymentHistoryController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/controller/SassaAccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/controller/SassaAccountController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/controller/WithdrawalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/controller/WithdrawalController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/CashSendResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/CashSendResponseDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/ElectricityPurchaseResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/ElectricityPurchaseResponseDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/CashSendRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/CashSendRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/SassaAccountsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/SassaAccountsRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/UserBalanceRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/UserBalanceRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/WithdrawalRequestRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/WithdrawalRequestRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/extensions.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/controller/UsersController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/controller/UsersController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/LoginResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/LoginResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/UserResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/UserResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/UserUpdateDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/dtos/UserUpdateDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/model/Users.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/model/Users.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/UsersRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/repository/UsersRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/security/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/security/JwtAuthenticationFilter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/security/JwtTokenProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/security/JwtTokenProvider.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/security/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/security/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/service/CashSendService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/service/CashSendService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/service/ElectricityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/service/ElectricityService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/service/WithdrawalService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/service/WithdrawalService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/service/UsersService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/za/co/interfile/service/UsersService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/post-login/admin/AdminLayout.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/post-login/admin/AdminLayout.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/post-login/admin/AdminSidebar.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/post-login/admin/AdminSidebar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/post-login/admin/ManagePayments.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/post-login/admin/ManagePayments.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/post-login/admin/ManageUsers.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/post-login/admin/ManageUsers.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/post-login/admin/ViewReports.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/post-login/admin/ViewReports.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/post-login/dash-board/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/post-login/dash-board/Dashboard.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/post-login/dash-board/DashboardContent.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/post-login/dash-board/DashboardContent.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/post-login/dash-board/Sidebar.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/post-login/dash-board/Sidebar.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/post-login/manage-profile/ManageProfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/post-login/manage-profile/ManageProfile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/post-login/manage-profile/PersonalDetailsTab.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/post-login/manage-profile/PersonalDetailsTab.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/post-login/manage-profile/PreferencesTab.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/post-login/manage-profile/PreferencesTab.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/post-login/payments-and-transfers/BankTransfer.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/post-login/payments-and-transfers/BankTransfer.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/post-login/payments-and-transfers/BuyElectricity.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/post-login/payments-and-transfers/BuyElectricity.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/post-login/payments-and-transfers/CashSend.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/post-login/payments-and-transfers/CashSend.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/post-login/payments-and-transfers/PaymentHistory.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/post-login/payments-and-transfers/PaymentHistory.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/post-login/payments-and-transfers/TransferHistory.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/post-login/payments-and-transfers/TransferHistory.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/service/cash-send-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/service/cash-send-service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/service/electricity-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/service/electricity-service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pre-login/RegisterForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pre-login/RegisterForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/service/profile-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/service/profile-service.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/service/sassa-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/service/sassa-service.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -88,36 +90,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "database.data.extractors.current.export.id": "SQL Inserts",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/rm113162/Documents/React Practice/relief-hub/frontend",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;database.data.extractors.current.export.id&quot;: &quot;SQL Inserts&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/rm113162/Documents/React Practice/relief-hub/frontend&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="ReliefHubApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="relief-hub" />
@@ -158,7 +160,18 @@
       <workItem from="1758801358617" duration="11961000" />
       <workItem from="1759125744551" duration="18567000" />
       <workItem from="1759213313138" duration="15113000" />
-      <workItem from="1759299524113" duration="19692000" />
+      <workItem from="1759299524113" duration="21733000" />
+      <workItem from="1759335948462" duration="14252000" />
+      <workItem from="1759470884548" duration="6918000" />
+      <workItem from="1759929282673" duration="621000" />
+      <workItem from="1760784452469" duration="956000" />
+      <workItem from="1760785815993" duration="4373000" />
+      <workItem from="1760948478604" duration="26000" />
+      <workItem from="1761027744694" duration="42000" />
+      <workItem from="1761030426694" duration="18000" />
+      <workItem from="1761112928352" duration="226000" />
+      <workItem from="1761122056164" duration="1026000" />
+      <workItem from="1761142113761" duration="189000" />
     </task>
     <task id="LOCAL-00001" summary="back-end package">
       <option name="closed" value="true" />

@@ -3,6 +3,7 @@ package za.co.interfile.security.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -19,6 +20,7 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -57,23 +59,7 @@ public class SecurityConfig {
                                 "/api/relief-hub/auth/register",
                                 "/api/relief-hub/auth/login",
                                 "/api/relief-hub/auth/forgot-password",
-                                "/api/relief-hub/auth/reset-password",
-                                "/api/relief-hub/getProfile",
-                                "/api/relief-hub/update/profile",
-                                "/api/relief-hub/update/password",
-                                "/api/relief-hub/sassa-accounts/link",
-                                "/api/relief-hub/sassa-accounts/active",
-                                "/api/relief-hub/sassa-accounts/*/balance",
-                                "/api/relief-hub/cash-send/send",
-                                "/api/relief-hub/cash-send/history",
-                                "/api/relief-hub/electricity/purchase",
-                                "/api/relief-hub/electricity/history",
-                                "/api/relief-hub/electricity/calculate-units",
-                                "/api/relief-hub/user/balance",
-                                "/api/relief-hub/electricity/purchase",
-                                "/api/relief-hub/withdraw",
-                                "/api/relief-hub/withdraw/history"
-
+                                "/api/relief-hub/auth/reset-password"
                         ).permitAll()
                         .requestMatchers("/actuator/**", "/error").permitAll()
                         .anyRequest().authenticated()

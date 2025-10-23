@@ -27,7 +27,8 @@ const ManageProfile = ({ user,
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState('');
     const [error, setError] = useState('');
-
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [previewUrl, setPreviewUrl] = useState(null);
 
     const [personalDetails, setPersonalDetails] = useState({
         firstName: '',
@@ -58,7 +59,60 @@ const ManageProfile = ({ user,
         setLoading(true);
         try {
             const userResponse = await profileService.getUserProfile();
-            setPersonalDetails(userResponse.data);
+
+            console.log('Full userResponse:', userResponse);
+            console.log('userResponse.data:', userResponse.data);
+            console.log('userResponse.data.data:', userResponse.data?.data);
+
+            const userData = userResponse.data.data;
+
+            console.log('Actual userData:', userData);
+            console.log('dateOfBirth:', userData.dateOfBirth);
+            console.log('dateOfBirth is array?', Array.isArray(userData.dateOfBirth));
+
+            const formatDateFromArray = (dateValue) => {
+                if (!dateValue) return '';
+
+                if (typeof dateValue === 'string' && dateValue.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                    return dateValue;
+                }
+
+                if (typeof dateValue === 'string' && dateValue.includes(',')) {
+                    const parts = dateValue.split(',').map(p => p.trim());
+                    if (parts.length >= 3) {
+                        const [year, month, day] = parts;
+                        const paddedMonth = String(month).padStart(2, '0');
+                        const paddedDay = String(day).padStart(2, '0');
+                        return `${year}-${paddedMonth}-${paddedDay}`;
+                    }
+                }
+
+                if (Array.isArray(dateValue) && dateValue.length >= 3) {
+                    const [year, month, day] = dateValue;
+                    const paddedMonth = String(month).padStart(2, '0');
+                    const paddedDay = String(day).padStart(2, '0');
+                    return `${year}-${paddedMonth}-${paddedDay}`;
+                }
+
+                return '';
+            };
+
+            const nameParts = (userData.displayName || '').trim().split(' ');
+            const firstName = nameParts[0] || '';
+            const lastName = nameParts.slice(1).join(' ') || '';
+
+            const formattedDate = formatDateFromArray(userData.dateOfBirth);
+
+            setPersonalDetails({
+                firstName: firstName,
+                lastName: lastName,
+                email: userData.email || '',
+                phone: userData.phone || '',
+                address: userData.address || '',
+                dateOfBirth: formattedDate,
+                idNumber: userData.idNumber || '',
+                username: userData.username || ''
+            });
 
         } catch (err) {
             console.error('Failed to load user data:', err);
@@ -66,6 +120,38 @@ const ManageProfile = ({ user,
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleFileChange = (file) => {
+        if (file) {
+            // Validate file type
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+            if (!validTypes.includes(file.type)) {
+                setError('Please select a valid image file (JPG, PNG, or GIF)');
+                return;
+            }
+
+            // Validate file size (max 5MB)
+            const maxSize = 5 * 1024 * 1024;
+            if (file.size > maxSize) {
+                setError('Image size must be less than 5MB');
+                return;
+            }
+
+            setSelectedFile(file);
+
+            // Create preview URL
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreviewUrl(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleClearFile = () => {
+        setSelectedFile(null);
+        setPreviewUrl(null);
     };
 
     const handlePersonalDetailsChange = (e) => {
@@ -96,7 +182,7 @@ const ManageProfile = ({ user,
     const validatePersonalDetails = () => {
         const { firstName, lastName, email, phone, idNumber } = personalDetails;
 
-        if (!firstName.trim() || !lastName.trim()) {
+        if (!firstName || !firstName.trim() || !lastName || !lastName.trim()) {
             return 'First name and last name are required';
         }
         if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -120,7 +206,6 @@ const ManageProfile = ({ user,
         if (!newPassword || newPassword.length < 8) {
             return 'New password must be at least 8 characters';
         }
-        // Enhanced password validation
         if (!/(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])/.test(newPassword)) {
             return 'Password must contain letters, numbers, and special characters';
         }
@@ -134,6 +219,11 @@ const ManageProfile = ({ user,
     };
 
     const handleSavePersonalDetails = async () => {
+        if (!personalDetails.email && !personalDetails.firstName) {
+            setError('Please wait for profile data to load');
+            return;
+        }
+
         setLoading(true);
         setError('');
         setSuccess('');
@@ -146,11 +236,16 @@ const ManageProfile = ({ user,
         }
 
         try {
-            // Real API call to update profile
-            await profileService.updateUserProfile(personalDetails);
+            await profileService.updateUserProfile(personalDetails, selectedFile);
             setSuccess('Personal details updated successfully!');
 
-            // Auto-clear success message after 5 seconds
+            // Reload user data to get updated profile photo
+            await loadUserData();
+
+            // Clear the selected file
+            setSelectedFile(null);
+            setPreviewUrl(null);
+
             setTimeout(() => setSuccess(''), 5000);
 
         } catch (err) {
@@ -174,30 +269,25 @@ const ManageProfile = ({ user,
         }
 
         try {
-            // Prepare payload for backend (exclude confirmNewPassword)
             const passwordPayload = {
                 currentPassword: passwordData.currentPassword,
                 newPassword: passwordData.newPassword
             };
 
-            // Real API call to change password
             await profileService.changePassword(passwordPayload);
             setSuccess('Password changed successfully!');
 
-            // Clear password form
             setPasswordData({
                 currentPassword: '',
                 newPassword: '',
                 confirmNewPassword: ''
             });
 
-            // Auto-clear success message after 5 seconds
             setTimeout(() => setSuccess(''), 5000);
 
         } catch (err) {
             console.error('Failed to change password:', err);
 
-            // Handle specific backend error messages
             const errorMessage = err.response?.data?.message || err.message;
 
             if (errorMessage.includes('incorrect') || errorMessage.includes('wrong')) {
@@ -220,7 +310,6 @@ const ManageProfile = ({ user,
             newPassword: '',
             confirmNewPassword: ''
         });
-        // Clear any password-related errors
         if (error && (error.includes('password') || error.includes('Password'))) {
             setError('');
         }
@@ -241,7 +330,6 @@ const ManageProfile = ({ user,
                 Update your personal information, change password, and manage your preferences
             </Typography>
 
-            {/* Enhanced Alerts with Auto-dismiss */}
             {error && (
                 <Alert
                     severity="error"
@@ -262,7 +350,6 @@ const ManageProfile = ({ user,
             )}
 
             <Paper sx={{ borderRadius: 3, overflow: 'hidden', boxShadow: 3 }}>
-                {/* Enhanced Tabs */}
                 <Tabs
                     value={activeTab}
                     onChange={handleTabChange}
@@ -303,7 +390,6 @@ const ManageProfile = ({ user,
                     />
                 </Tabs>
 
-                {/* Tab Content */}
                 <Box sx={{ p: 4 }}>
                     {activeTab === 0 && (
                         <PersonalDetailsTab
@@ -313,6 +399,10 @@ const ManageProfile = ({ user,
                             onSave={handleSavePersonalDetails}
                             onReset={loadUserData}
                             loading={loading}
+                            selectedFile={selectedFile}
+                            previewUrl={previewUrl}
+                            onFileChange={handleFileChange}
+                            onClearFile={handleClearFile}
                         />
                     )}
                     {activeTab === 1 && (

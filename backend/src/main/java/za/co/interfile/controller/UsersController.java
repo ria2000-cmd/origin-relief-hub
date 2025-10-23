@@ -1,5 +1,8 @@
 package za.co.interfile.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -184,8 +187,7 @@ public class UsersController {
             @RequestHeader("Authorization") String token) {
 
         try {
-            // Extract user ID from token (you'll need to implement this in your JWT provider)
-            String jwtToken = token.substring(7); // Remove "Bearer " prefix
+            String jwtToken = token.substring(7);
             Long userId = userService.getUserIdFromToken(jwtToken);
 
             UserResponseDto user = userService.getUserById(userId);
@@ -239,7 +241,6 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
     }
-
     /**
      * Update user profile
      */
@@ -247,12 +248,17 @@ public class UsersController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ApiResponse<UserResponseDto>> updateUserProfile(
             @RequestHeader("Authorization") String token,
-            @RequestParam(value = "profilePhoto", required = false) MultipartFile profilePhoto, // Single file, not array
-            @Valid @RequestBody UserUpdateDto updateDto) {
+            @RequestParam(value = "profilePhoto", required = false) MultipartFile profilePhoto,
+            @RequestPart("updateDto") String updateDtoJson) {
 
         try {
             String jwtToken = token.substring(7);
             Long userId = userService.getUserIdFromToken(jwtToken);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            UserUpdateDto updateDto = objectMapper.readValue(updateDtoJson, UserUpdateDto.class);
+
 
             String profilePhotoFileName = null;
 
@@ -299,14 +305,19 @@ public class UsersController {
 
             return ResponseEntity.ok(response);
 
+        } catch (JsonProcessingException e) {
+            log.error("Failed to parse JSON", e);
+            ApiResponse<UserResponseDto> response = ApiResponse.<UserResponseDto>builder()
+                    .success(false)
+                    .message("Invalid request format")
+                    .build();
+            return ResponseEntity.badRequest().body(response);
         } catch (Exception e) {
             log.error("Failed to update user profile", e);
-
             ApiResponse<UserResponseDto> response = ApiResponse.<UserResponseDto>builder()
                     .success(false)
                     .message(e.getMessage())
                     .build();
-
             return ResponseEntity.badRequest().body(response);
         }
     }
@@ -573,7 +584,7 @@ public class UsersController {
     /**
      * Delete user (soft delete)
      */
-    @DeleteMapping("/admin/users/{userId}")
+    @DeleteMapping("/admin/delete/{userId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<String>> deleteUser(@PathVariable Long userId) {
 
@@ -659,6 +670,125 @@ public class UsersController {
             log.error("Failed to get verified users", e);
 
             ApiResponse<Page<UserResponseDto>> response = ApiResponse.<Page<UserResponseDto>>builder()
+                    .success(false)
+                    .message(e.getMessage())
+                    .build();
+
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    @PostMapping("/add/users")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<UserResponseDto>> createUser(
+            @Valid @RequestBody UserRegistrationDto registrationDto) {
+        try {
+            UserResponseDto user = userService.registerUser(registrationDto);
+
+            ApiResponse<UserResponseDto> response = ApiResponse.<UserResponseDto>builder()
+                    .success(true)
+                    .message("User created successfully")
+                    .data(user)
+                    .build();
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            log.error("Failed to create user", e);
+
+            ApiResponse<UserResponseDto> response = ApiResponse.<UserResponseDto>builder()
+                    .success(false)
+                    .message(e.getMessage())
+                    .build();
+
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    /**
+     * Update user by admin
+     */
+    @PutMapping("/admin/users/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<UserResponseDto>> updateUserByAdmin(
+            @PathVariable Long userId,
+            @Valid @RequestBody AdminUserUpdateDto updateDto) {
+
+        try {
+            UserResponseDto updatedUser = userService.updateUserByAdmin(userId, updateDto);
+
+            ApiResponse<UserResponseDto> response = ApiResponse.<UserResponseDto>builder()
+                    .success(true)
+                    .message("User updated successfully")
+                    .data(updatedUser)
+                    .build();
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            log.error("Failed to update user: {}", userId, e);
+
+            ApiResponse<UserResponseDto> response = ApiResponse.<UserResponseDto>builder()
+                    .success(false)
+                    .message(e.getMessage())
+                    .build();
+
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    /**
+     * Make user an admin (temporary endpoint for testing/setup)
+     * TODO: Remove this endpoint in production or add additional security
+     */
+    @PostMapping("/admin/make-admin/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<String>> makeUserAdmin(@PathVariable Long userId) {
+
+        try {
+            userService.makeUserAdmin(userId);
+
+            ApiResponse<String> response = ApiResponse.<String>builder()
+                    .success(true)
+                    .message("User role updated to ADMIN successfully")
+                    .data("User is now an admin")
+                    .build();
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            log.error("Failed to make user admin: {}", userId, e);
+
+            ApiResponse<String> response = ApiResponse.<String>builder()
+                    .success(false)
+                    .message(e.getMessage())
+                    .build();
+
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    /**
+     * Initialize first admin user (no authentication required)
+     * WARNING: This is for initial setup only. Should be disabled in production.
+     */
+    @PostMapping("/auth/init-admin/{userId}")
+    public ResponseEntity<ApiResponse<String>> initializeAdmin(@PathVariable Long userId) {
+
+        try {
+            userService.makeUserAdmin(userId);
+
+            ApiResponse<String> response = ApiResponse.<String>builder()
+                    .success(true)
+                    .message("First admin user initialized successfully")
+                    .data("User is now an admin. Please login again to get new token with admin privileges.")
+                    .build();
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            log.error("Failed to initialize admin: {}", userId, e);
+
+            ApiResponse<String> response = ApiResponse.<String>builder()
                     .success(false)
                     .message(e.getMessage())
                     .build();
