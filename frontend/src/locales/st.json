@@ -1,0 +1,104 @@
+{
+  "common": {
+    "welcome": "O Amohelehile",
+    "save": "Boloka",
+    "cancel": "Hlakola",
+    "delete": "Hlakola",
+    "edit": "Fetola",
+    "add": "Kenya",
+    "search": "Batla",
+    "loading": "E a Laisa...",
+    "success": "Katleho",
+    "error": "Phoso",
+    "confirm": "Netefatsa",
+    "close": "Koala",
+    "submit": "Romela",
+    "back": "Morao",
+    "next": "E Latelang",
+    "logout": "Tswa",
+    "login": "Kena",
+    "register": "Ngodisa"
+  },
+  "dashboard": {
+    "title": "Boto ya Taolo",
+    "overview": "Kakaretso",
+    "accountBalance": "Tekanyo ya Akhaonto",
+    "recentTransactions": "Dikgwebisano tsa Morao-rao",
+    "quickActions": "Diketso tse Potlakileng"
+  },
+  "profile": {
+    "title": "Laola Profaele",
+    "personalDetails": "Dintlha tsa Botho",
+    "preferences": "Dikgetho",
+    "security": "Tshireletso",
+    "firstName": "Lebitso la Pele",
+    "lastName": "Fane",
+    "email": "Imeile",
+    "phone": "Nomoro ya Mohala",
+    "idNumber": "Nomoro ya Boitsebiso",
+    "address": "Aterese",
+    "updateProfile": "Ntjhafatsa Profaele",
+    "profileUpdated": "Profaele e ntjhafaditswe ka katleho"
+  },
+  "preferences": {
+    "title": "Dikgetho",
+    "generalPreferences": "Dikgetho tsa Kakaretso",
+    "language": "Puo",
+    "currency": "Chelete",
+    "theme": "Setlhoa",
+    "light": "Lesedi",
+    "dark": "Lefifi",
+    "notifications": "Ditsebiso",
+    "emailNotifications": "Ditsebiso tsa Imeile",
+    "smsNotifications": "Ditsebiso tsa SMS",
+    "marketingEmails": "Di-imeile tsa Papatso",
+    "securityAlerts": "Ditemoso tsa Tshireletso",
+    "twoFactorAuth": "Tiiso ya Dintho tse Pedi",
+    "savePreferences": "Boloka Dikgetho",
+    "preferencesSaved": "Dikgetho di bolokilwe ka katleho"
+  },
+  "admin": {
+    "title": "Phanele ya Taolo",
+    "manageUsers": "Laola Basebedisi",
+    "addUser": "Kenya Mosebedisi",
+    "editUser": "Fetola Mosebedisi",
+    "deleteUser": "Hlakola Mosebedisi",
+    "confirmDelete": "O netefadile hore o batla ho hlakola mosebedisi enwa?",
+    "userAdded": "Mosebedisi o kentwe ka katleho",
+    "userUpdated": "Mosebedisi o ntjhafaditswe ka katleho",
+    "userDeleted": "Mosebedisi o hlakotswe ka katleho"
+  },
+  "payments": {
+    "title": "Ditefo le Diphetiso",
+    "bankTransfer": "Phetiso ya Banka",
+    "cashSend": "Romela Tjhelete",
+    "buyElectricity": "Reka Motlakase",
+    "paymentHistory": "Nalane ya Ditefo",
+    "transferHistory": "Nalane ya Diphetiso",
+    "amount": "Palo",
+    "recipient": "Moamohedi",
+    "reference": "Tshupiso",
+    "date": "Letsatsi",
+    "status": "Boemo",
+    "makePayment": "Etsa Tefo",
+    "paymentSuccessful": "Tefo e atlegile"
+  },
+  "languages": {
+    "en": "Senyesemane",
+    "af": "Seaforikana",
+    "zu": "Sezulu",
+    "xh": "Sesotho",
+    "st": "Sesotho",
+    "ts": "Xitsonga",
+    "ve": "Tshivenda"
+  },
+  "chatbot": {
+    "title": "Tshehetso ya Puisano",
+    "askQuestion": "Botsa potso...",
+    "send": "Romela"
+  },
+  "callCenter": {
+    "title": "Setsi sa Mangolo",
+    "contactUs": "Re Letsetse"
+  }
+}

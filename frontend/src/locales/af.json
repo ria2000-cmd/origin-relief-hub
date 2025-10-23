@@ -1,0 +1,104 @@
+{
+  "common": {
+    "welcome": "Welkom",
+    "save": "Stoor",
+    "cancel": "Kanselleer",
+    "delete": "Vee uit",
+    "edit": "Wysig",
+    "add": "Voeg by",
+    "search": "Soek",
+    "loading": "Laai...",
+    "success": "Sukses",
+    "error": "Fout",
+    "confirm": "Bevestig",
+    "close": "Sluit",
+    "submit": "Dien in",
+    "back": "Terug",
+    "next": "Volgende",
+    "logout": "Teken uit",
+    "login": "Teken in",
+    "register": "Registreer"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "overview": "Oorsig",
+    "accountBalance": "Rekeningsaldo",
+    "recentTransactions": "Onlangse Transaksies",
+    "quickActions": "Vinnige Aksies"
+  },
+  "profile": {
+    "title": "Bestuur Profiel",
+    "personalDetails": "Persoonlike Besonderhede",
+    "preferences": "Voorkeure",
+    "security": "Sekuriteit",
+    "firstName": "Voornaam",
+    "lastName": "Van",
+    "email": "E-pos",
+    "phone": "Telefoonnommer",
+    "idNumber": "ID Nommer",
+    "address": "Adres",
+    "updateProfile": "Opdateer Profiel",
+    "profileUpdated": "Profiel suksesvol opgedateer"
+  },
+  "preferences": {
+    "title": "Voorkeure",
+    "generalPreferences": "Algemene Voorkeure",
+    "language": "Taal",
+    "currency": "Geldeenheid",
+    "theme": "Tema",
+    "light": "Lig",
+    "dark": "Donker",
+    "notifications": "Kennisgewings",
+    "emailNotifications": "E-pos Kennisgewings",
+    "smsNotifications": "SMS Kennisgewings",
+    "marketingEmails": "Bemarkings E-posse",
+    "securityAlerts": "Sekuriteit Waarskuwings",
+    "twoFactorAuth": "Twee-Faktor Verifikasie",
+    "savePreferences": "Stoor Voorkeure",
+    "preferencesSaved": "Voorkeure suksesvol gestoor"
+  },
+  "admin": {
+    "title": "Admin Paneel",
+    "manageUsers": "Bestuur Gebruikers",
+    "addUser": "Voeg Gebruiker by",
+    "editUser": "Wysig Gebruiker",
+    "deleteUser": "Vee Gebruiker uit",
+    "confirmDelete": "Is jy seker jy wil hierdie gebruiker uitvee?",
+    "userAdded": "Gebruiker suksesvol bygevoeg",
+    "userUpdated": "Gebruiker suksesvol opgedateer",
+    "userDeleted": "Gebruiker suksesvol uitgevee"
+  },
+  "payments": {
+    "title": "Betalings & Oordragte",
+    "bankTransfer": "Bank Oordrag",
+    "cashSend": "Kontant Stuur",
+    "buyElectricity": "Koop Elektrisiteit",
+    "paymentHistory": "Betalingsgeskiedenis",
+    "transferHistory": "Oordraggeskiedenis",
+    "amount": "Bedrag",
+    "recipient": "Ontvanger",
+    "reference": "Verwysing",
+    "date": "Datum",
+    "status": "Status",
+    "makePayment": "Maak Betaling",
+    "paymentSuccessful": "Betaling suksesvol"
+  },
+  "languages": {
+    "en": "Engels",
+    "af": "Afrikaans",
+    "zu": "Zoeloe",
+    "xh": "Xhosa",
+    "st": "Sotho",
+    "ts": "Tsonga",
+    "ve": "Venda"
+  },
+  "chatbot": {
+    "title": "Klets Ondersteuning",
+    "askQuestion": "Vra 'n vraag...",
+    "send": "Stuur"
+  },
+  "callCenter": {
+    "title": "Oproepsentrum",
+    "contactUs": "Kontak Ons"
+  }
+}

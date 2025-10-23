@@ -1,0 +1,104 @@
+{
+  "common": {
+    "welcome": "Welcome",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "loading": "Loading...",
+    "success": "Success",
+    "error": "Error",
+    "confirm": "Confirm",
+    "close": "Close",
+    "submit": "Submit",
+    "back": "Back",
+    "next": "Next",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "overview": "Overview",
+    "accountBalance": "Account Balance",
+    "recentTransactions": "Recent Transactions",
+    "quickActions": "Quick Actions"
+  },
+  "profile": {
+    "title": "Manage Profile",
+    "personalDetails": "Personal Details",
+    "preferences": "Preferences",
+    "security": "Security",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "phone": "Phone Number",
+    "idNumber": "ID Number",
+    "address": "Address",
+    "updateProfile": "Update Profile",
+    "profileUpdated": "Profile updated successfully"
+  },
+  "preferences": {
+    "title": "Preferences",
+    "generalPreferences": "General Preferences",
+    "language": "Language",
+    "currency": "Currency",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "notifications": "Notifications",
+    "emailNotifications": "Email Notifications",
+    "smsNotifications": "SMS Notifications",
+    "marketingEmails": "Marketing Emails",
+    "securityAlerts": "Security Alerts",
+    "twoFactorAuth": "Two-Factor Authentication",
+    "savePreferences": "Save Preferences",
+    "preferencesSaved": "Preferences saved successfully"
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "manageUsers": "Manage Users",
+    "addUser": "Add User",
+    "editUser": "Edit User",
+    "deleteUser": "Delete User",
+    "confirmDelete": "Are you sure you want to delete this user?",
+    "userAdded": "User added successfully",
+    "userUpdated": "User updated successfully",
+    "userDeleted": "User deleted successfully"
+  },
+  "payments": {
+    "title": "Payments & Transfers",
+    "bankTransfer": "Bank Transfer",
+    "cashSend": "Cash Send",
+    "buyElectricity": "Buy Electricity",
+    "paymentHistory": "Payment History",
+    "transferHistory": "Transfer History",
+    "amount": "Amount",
+    "recipient": "Recipient",
+    "reference": "Reference",
+    "date": "Date",
+    "status": "Status",
+    "makePayment": "Make Payment",
+    "paymentSuccessful": "Payment successful"
+  },
+  "languages": {
+    "en": "English",
+    "af": "Afrikaans",
+    "zu": "Zulu",
+    "xh": "Xhosa",
+    "st": "Sotho",
+    "ts": "Tsonga",
+    "ve": "Venda"
+  },
+  "chatbot": {
+    "title": "Chat Support",
+    "askQuestion": "Ask a question...",
+    "send": "Send"
+  },
+  "callCenter": {
+    "title": "Call Center",
+    "contactUs": "Contact Us"
+  }
+}

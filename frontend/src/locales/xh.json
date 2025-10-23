@@ -1,0 +1,104 @@
+{
+  "common": {
+    "welcome": "Wamkelekile",
+    "save": "Gcina",
+    "cancel": "Rhoxisa",
+    "delete": "Cima",
+    "edit": "Hlela",
+    "add": "Yongeza",
+    "search": "Khangela",
+    "loading": "Iyalayisha...",
+    "success": "Impumelelo",
+    "error": "Impazamo",
+    "confirm": "Qinisekisa",
+    "close": "Vala",
+    "submit": "Ngenisa",
+    "back": "Emva",
+    "next": "Okulandelayo",
+    "logout": "Phuma",
+    "login": "Ngena",
+    "register": "Bhalisa"
+  },
+  "dashboard": {
+    "title": "Ibhodi",
+    "overview": "Imbonakalo",
+    "accountBalance": "Ibhalansi ye-Akhawunti",
+    "recentTransactions": "Iintengiselwano Zamvanje",
+    "quickActions": "Izenzo Ezikhawulezayo"
+  },
+  "profile": {
+    "title": "Lawula Iprofayile",
+    "personalDetails": "Iinkcukacha Zobuqu",
+    "preferences": "Izinto Ozikhethayo",
+    "security": "Ukhuseleko",
+    "firstName": "Igama Lokuqala",
+    "lastName": "Ifani",
+    "email": "I-imeyili",
+    "phone": "Inombolo Yomnxeba",
+    "idNumber": "Inombolo Yesazisi",
+    "address": "Idilesi",
+    "updateProfile": "Hlaziya Iprofayile",
+    "profileUpdated": "Iprofayile ihlaziywe ngempumelelo"
+  },
+  "preferences": {
+    "title": "Izinto Ozikhethayo",
+    "generalPreferences": "Izinto Ozikhethayo Ngokubanzi",
+    "language": "Ulwimi",
+    "currency": "Imali",
+    "theme": "Umxholo",
+    "light": "Ukukhanya",
+    "dark": "Ubumnyama",
+    "notifications": "Izaziso",
+    "emailNotifications": "Izaziso ze-imeyili",
+    "smsNotifications": "Izaziso ze-SMS",
+    "marketingEmails": "Ii-imeyili Zentengiso",
+    "securityAlerts": "Izilumkiso Zokhuseleko",
+    "twoFactorAuth": "Ukuqinisekiswa Ngezinto Ezimbini",
+    "savePreferences": "Gcina Izinto Ozikhethayo",
+    "preferencesSaved": "Izinto ozikhethayo zigcinwe ngempumelelo"
+  },
+  "admin": {
+    "title": "Iphaneli Yolawulo",
+    "manageUsers": "Lawula Abasebenzisi",
+    "addUser": "Yongeza Umsebenzisi",
+    "editUser": "Hlela Umsebenzisi",
+    "deleteUser": "Cima Umsebenzisi",
+    "confirmDelete": "Uqinisekile ukuba ufuna ukucima lo msebenzisi?",
+    "userAdded": "Umsebenzisi wongezwe ngempumelelo",
+    "userUpdated": "Umsebenzisi uhlaziywe ngempumelelo",
+    "userDeleted": "Umsebenzisi ucinywe ngempumelelo"
+  },
+  "payments": {
+    "title": "Iintlawulo Nokudlulisela",
+    "bankTransfer": "Ukudlulisela Kwebhanki",
+    "cashSend": "Thumela Imali",
+    "buyElectricity": "Thenga Umbane",
+    "paymentHistory": "Imbali Yeentlawulo",
+    "transferHistory": "Imbali Yokudlulisela",
+    "amount": "Isixa",
+    "recipient": "Umamukeli",
+    "reference": "Isalathiso",
+    "date": "Umhla",
+    "status": "Imeko",
+    "makePayment": "Yenza Intlawulo",
+    "paymentSuccessful": "Intlawulo iphumelele"
+  },
+  "languages": {
+    "en": "IsiNgesi",
+    "af": "IsiBhulu",
+    "zu": "IsiZulu",
+    "xh": "IsiXhosa",
+    "st": "IsiSuthu",
+    "ts": "XiTsonga",
+    "ve": "Tshivenda"
+  },
+  "chatbot": {
+    "title": "Inkxaso Yencoko",
+    "askQuestion": "Buza umbuzo...",
+    "send": "Thumela"
+  },
+  "callCenter": {
+    "title": "Iziko Lomnxeba",
+    "contactUs": "Qhagamshelana Nathi"
+  }
+}

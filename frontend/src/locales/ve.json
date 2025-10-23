@@ -1,0 +1,104 @@
+{
+  "common": {
+    "welcome": "Ro Taniwa",
+    "save": "Vhiga",
+    "cancel": "Khantsela",
+    "delete": "Thuthela",
+    "edit": "Khwinisa",
+    "add": "Engedzela",
+    "search": "Toda",
+    "loading": "Kha ri khou loda...",
+    "success": "Tshenzhemo",
+    "error": "Vhuvha",
+    "confirm": "Khwaṱhisedza",
+    "close": "Vhala",
+    "submit": "Rumela",
+    "back": "Murahu",
+    "next": "Tshipiḓa",
+    "logout": "Bva",
+    "login": "Thoma",
+    "register": "Ṅwalisa"
+  },
+  "dashboard": {
+    "title": "Bodo ḽa Vhulanguli",
+    "overview": "Vhonele",
+    "accountBalance": "Tshiimo tsha Akhantu",
+    "recentTransactions": "Zwi Itaho zwa Zwino",
+    "quickActions": "Mishumo ya Vhukhou"
+  },
+  "profile": {
+    "title": "Langula Phurofaela",
+    "personalDetails": "Zwidodombedzwa zwa Munna",
+    "preferences": "Zwo Ṱodaho",
+    "security": "Tsireledzo",
+    "firstName": "Dzina ḽa U thoma",
+    "lastName": "Tshika",
+    "email": "Imeili",
+    "phone": "Nomboro ya Lutingo",
+    "idNumber": "Nomboro ya ID",
+    "address": "Adresi",
+    "updateProfile": "Mpfuxetedza Phurofaela",
+    "profileUpdated": "Phurofaela yo mpfuxetsedzwa nga ndila yo teaho"
+  },
+  "preferences": {
+    "title": "Zwo Ṱodaho",
+    "generalPreferences": "Zwo Ṱodaho zwa Zwonzhi",
+    "language": "Luambo",
+    "currency": "Mali",
+    "theme": "Thero",
+    "light": "Vhuswa",
+    "dark": "Vhufifi",
+    "notifications": "Manwayo",
+    "emailNotifications": "Manwayo a Imeili",
+    "smsNotifications": "Manwayo a SMS",
+    "marketingEmails": "Ii-imeili dza Vhubindudzi",
+    "securityAlerts": "Zwilaluso zwa Tsireledzo",
+    "twoFactorAuth": "U Khwaṱhisedza ha Zwithu Zwivhili",
+    "savePreferences": "Vhiga Zwo Ṱodaho",
+    "preferencesSaved": "Zwo ṱodaho zwo vhigwa nga ndila yo teaho"
+  },
+  "admin": {
+    "title": "Phanele ya Mulanguli",
+    "manageUsers": "Langula Vhashumisi",
+    "addUser": "Engedzela Mushumisi",
+    "editUser": "Khwinisa Mushumisi",
+    "deleteUser": "Thuthela Mushumisi",
+    "confirmDelete": "Ni na vhuṱanzi uri ni toda u thuthela mushumisi muṅwe na muṅwe?",
+    "userAdded": "Mushumisi o engedzelwa nga ndila yo teaho",
+    "userUpdated": "Mushumisi o mpfuxetsedzwa nga ndila yo teaho",
+    "userDeleted": "Mushumisi o thuthelwa nga ndila yo teaho"
+  },
+  "payments": {
+    "title": "Madivhiso na Tsendedzo",
+    "bankTransfer": "U Sendedza Banga",
+    "cashSend": "Rumela Mali",
+    "buyElectricity": "Renga Tshitakoni",
+    "paymentHistory": "Mbekanyamushumo ya Madivhiso",
+    "transferHistory": "Mbekanyamushumo ya Tsendedzo",
+    "amount": "Tshivhalo",
+    "recipient": "Mutanzi",
+    "reference": "Khumbelo",
+    "date": "Ḓuvha",
+    "status": "Tshiimo",
+    "makePayment": "Ita Divhiso",
+    "paymentSuccessful": "Divhiso ḽo kona"
+  },
+  "languages": {
+    "en": "English",
+    "af": "Afrikaans",
+    "zu": "Tshivenḓa",
+    "xh": "Xhosa",
+    "st": "Sesotho",
+    "ts": "Xitsonga",
+    "ve": "Tshivenḓa"
+  },
+  "chatbot": {
+    "title": "Thikhedzo ya Ṱhoḓisiso",
+    "askQuestion": "Vhudzani mbudziso...",
+    "send": "Rumela"
+  },
+  "callCenter": {
+    "title": "Senthara ya Luṱingo",
+    "contactUs": "Ri Kwamani"
+  }
+}

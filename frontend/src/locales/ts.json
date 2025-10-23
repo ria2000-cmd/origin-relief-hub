@@ -1,0 +1,104 @@
+{
+  "common": {
+    "welcome": "Ku Amukela",
+    "save": "Hlayisa",
+    "cancel": "Herisa",
+    "delete": "Susa",
+    "edit": "Lulamisa",
+    "add": "Engetela",
+    "search": "Lava",
+    "loading": "Yi Layicha...",
+    "success": "Ku Humelela",
+    "error": "Xihoxo",
+    "confirm": "Tiyisisa",
+    "close": "Pfala",
+    "submit": "Rhumela",
+    "back": "Ehandle",
+    "next": "Elandzelaka",
+    "logout": "Huma",
+    "login": "Nghena",
+    "register": "Tsarisa"
+  },
+  "dashboard": {
+    "title": "Bodo ra Vukoxi",
+    "overview": "Vuyelo",
+    "accountBalance": "Mpimo wa Akhawunti",
+    "recentTransactions": "Timhendleto ta Sweswi",
+    "quickActions": "Migingiriko yo Hatlisa"
+  },
+  "profile": {
+    "title": "Lawula Phurofayili",
+    "personalDetails": "Vuxokoxoko bya Munhu",
+    "preferences": "Swo Hlawuleka",
+    "security": "Vuhlayiseki",
+    "firstName": "Vito ra Xihundla",
+    "lastName": "Fane",
+    "email": "Imeyili",
+    "phone": "Nomboro ya Riqingho",
+    "idNumber": "Nomboro ya Xikombiso",
+    "address": "Adirese",
+    "updateProfile": "Pfuxeta Phurofayili",
+    "profileUpdated": "Phurofayili yi pfuxetiwile hi ku humelela"
+  },
+  "preferences": {
+    "title": "Swo Hlawuleka",
+    "generalPreferences": "Swo Hlawuleka hi Maxelo",
+    "language": "Ririmi",
+    "currency": "Mali",
+    "theme": "Nhlokomhaka",
+    "light": "Ku Vonakala",
+    "dark": "Rififi",
+    "notifications": "Switiviso",
+    "emailNotifications": "Switiviso swa Imeyili",
+    "smsNotifications": "Switiviso swa SMS",
+    "marketingEmails": "Ti-imeyili ta Mphindlawulo",
+    "securityAlerts": "Swixumetiso swa Vuhlayiseki",
+    "twoFactorAuth": "Ku Tiyisisa hi Swilo Swimbirhi",
+    "savePreferences": "Hlayisa Swo Hlawuleka",
+    "preferencesSaved": "Swo hlawuleka swi hlayisiwile hi ku humelela"
+  },
+  "admin": {
+    "title": "Phanele ya Vulawuri",
+    "manageUsers": "Lawula Vatirhisi",
+    "addUser": "Engetela Mutirhisi",
+    "editUser": "Lulamisa Mutirhisi",
+    "deleteUser": "Susa Mutirhisi",
+    "confirmDelete": "Xana u tiyisekile leswaku u lava ku susa mutirhisi loyi?",
+    "userAdded": "Mutirhisi u engeteleriwile hi ku humelela",
+    "userUpdated": "Mutirhisi u pfuxetiwile hi ku humelela",
+    "userDeleted": "Mutirhisi u susiwile hi ku humelela"
+  },
+  "payments": {
+    "title": "Mahakelo na Mafambiselo",
+    "bankTransfer": "Ku Fambisa ka Bangi",
+    "cashSend": "Rhumela Mali",
+    "buyElectricity": "Xava Gezi",
+    "paymentHistory": "Matimu ya Mahakelo",
+    "transferHistory": "Matimu ya Mafambiselo",
+    "amount": "Nhlayo",
+    "recipient": "Mutekeli",
+    "reference": "Xikombiso",
+    "date": "Siku",
+    "status": "Xiyimo",
+    "makePayment": "Endla Hakelo",
+    "paymentSuccessful": "Hakelo ri humelerile"
+  },
+  "languages": {
+    "en": "Xinghezi",
+    "af": "Xiafrikaans",
+    "zu": "Xizulu",
+    "xh": "Xhosa",
+    "st": "Sesotho",
+    "ts": "Xitsonga",
+    "ve": "Tshivenda"
+  },
+  "chatbot": {
+    "title": "Mpfuno wa Vulavurisani",
+    "askQuestion": "Vutisa xivutiso...",
+    "send": "Rhumela"
+  },
+  "callCenter": {
+    "title": "Senthara ya Riqingho",
+    "contactUs": "Hi Rhangani"
+  }
+}

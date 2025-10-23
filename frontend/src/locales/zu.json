@@ -1,0 +1,104 @@
+{
+  "common": {
+    "welcome": "Siyakwamukela",
+    "save": "Gcina",
+    "cancel": "Khansela",
+    "delete": "Susa",
+    "edit": "Hlela",
+    "add": "Engeza",
+    "search": "Sesha",
+    "loading": "Iyalayisha...",
+    "success": "Impumelelo",
+    "error": "Iphutha",
+    "confirm": "Qinisekisa",
+    "close": "Vala",
+    "submit": "Thumela",
+    "back": "Emuva",
+    "next": "Okulandelayo",
+    "logout": "Phuma",
+    "login": "Ngena",
+    "register": "Bhalisa"
+  },
+  "dashboard": {
+    "title": "Ibhodi",
+    "overview": "Ukubuka Konke",
+    "accountBalance": "Ibhalansi ye-Akhawunti",
+    "recentTransactions": "Ukuthengiselana Kwakamuva",
+    "quickActions": "Izenzo Ezisheshayo"
+  },
+  "profile": {
+    "title": "Phatha Iphrofayela",
+    "personalDetails": "Imininingwane Yomuntu Siqu",
+    "preferences": "Okuncanyelwayo",
+    "security": "Ukuphepha",
+    "firstName": "Igama Lakuqala",
+    "lastName": "Isibongo",
+    "email": "I-imeyili",
+    "phone": "Inombolo Yefoni",
+    "idNumber": "Inombolo Yesazisi",
+    "address": "Ikheli",
+    "updateProfile": "Buyekeza Iphrofayela",
+    "profileUpdated": "Iphrofayela ibuyekezwe ngempumelelo"
+  },
+  "preferences": {
+    "title": "Okuncanyelwayo",
+    "generalPreferences": "Okuncanyelwayo Okuvamile",
+    "language": "Ulimi",
+    "currency": "Imali",
+    "theme": "Itimu",
+    "light": "Ukukhanya",
+    "dark": "Umnyama",
+    "notifications": "Izaziso",
+    "emailNotifications": "Izaziso ze-imeyili",
+    "smsNotifications": "Izaziso ze-SMS",
+    "marketingEmails": "Ama-imeyili Wezokumaketha",
+    "securityAlerts": "Izexwayiso Zokuphepha",
+    "twoFactorAuth": "Ukuqinisekisa Kwezinto Ezimbili",
+    "savePreferences": "Gcina Okuncanyelwayo",
+    "preferencesSaved": "Okuncanyelwayo kugcinwe ngempumelelo"
+  },
+  "admin": {
+    "title": "Iphaneli Yomlawuli",
+    "manageUsers": "Phatha Abasebenzisi",
+    "addUser": "Engeza Umsebenzisi",
+    "editUser": "Hlela Umsebenzisi",
+    "deleteUser": "Susa Umsebenzisi",
+    "confirmDelete": "Uqinisekile ukuthi ufuna ukususa lo msebenzisi?",
+    "userAdded": "Umsebenzisi wengeziwe ngempumelelo",
+    "userUpdated": "Umsebenzisi ubuyekezwe ngempumelelo",
+    "userDeleted": "Umsebenzisi ususiwe ngempumelelo"
+  },
+  "payments": {
+    "title": "Izinkokhelo Nokudlulisela",
+    "bankTransfer": "Ukudlulisela Kwebhange",
+    "cashSend": "Thumela Imali",
+    "buyElectricity": "Thenga Ugesi",
+    "paymentHistory": "Umlando Wezinkokhelo",
+    "transferHistory": "Umlando Wokudlulisela",
+    "amount": "Inani",
+    "recipient": "Umamukeli",
+    "reference": "Inkomba",
+    "date": "Usuku",
+    "status": "Isimo",
+    "makePayment": "Yenza Inkokhelo",
+    "paymentSuccessful": "Inkokhelo iphumelele"
+  },
+  "languages": {
+    "en": "IsiNgisi",
+    "af": "IsiBhunu",
+    "zu": "IsiZulu",
+    "xh": "IsiXhosa",
+    "st": "IsiSuthu",
+    "ts": "XiTsonga",
+    "ve": "Tshivenda"
+  },
+  "chatbot": {
+    "title": "Usizo Lokuxoxa",
+    "askQuestion": "Buza umbuzo...",
+    "send": "Thumela"
+  },
+  "callCenter": {
+    "title": "Isikhungo Sokushaya",
+    "contactUs": "Sithinte"
+  }
+}
